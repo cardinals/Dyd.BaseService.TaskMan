@@ -16,3 +16,16 @@ E:\HaiL\OpenProject\Dyd.BaseService.TaskManager\Dyd.BaseService.TaskManager.Core
 E:\HaiL\OpenProject\Dyd.BaseService.TaskManager\Dyd.BaseService.TaskManager.Core\bin\Release\zh-Hans\System.Web.Mvc.resources.dll
 E:\HaiL\OpenProject\Dyd.BaseService.TaskManager\Dyd.BaseService.TaskManager.Core\obj\Release\Dyd.BaseService.TaskManager.Core.dll
 E:\HaiL\OpenProject\Dyd.BaseService.TaskManager\Dyd.BaseService.TaskManager.Core\obj\Release\Dyd.BaseService.TaskManager.Core.pdb
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\Dyd.BaseService.TaskManager.Core.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\Dyd.BaseService.TaskManager.Core.pdb
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\Microsoft.Web.Infrastructure.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\Newtonsoft.Json.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\SharpCompress.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\Newtonsoft.Json.xml
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\obj\Release\Dyd.BaseService.TaskManager.Core.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\obj\Release\Dyd.BaseService.TaskManager.Core.pdb
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\System.Net.Http.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\XXF.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\System.Net.Http.xml
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Release\zh-Hans\System.Net.Http.resources.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\obj\Release\Dyd.BaseService.TaskManager.Core.csprojResolveAssemblyReference.cache

@@ -20,6 +20,8 @@ namespace Dyd.BaseService.TaskManager.Core
         ReStartTask=2,
         [Description("卸载任务")]
         UninstallTask=3,
+        [Description("立即运行")]
+        RunTask=4
     }
     /// <summary>
     /// 任务命令状态

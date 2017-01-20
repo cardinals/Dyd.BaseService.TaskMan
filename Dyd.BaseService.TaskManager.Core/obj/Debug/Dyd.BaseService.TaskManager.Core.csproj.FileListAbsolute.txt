@@ -38,3 +38,15 @@ E:\HaiL\OpenProject\Dyd.BaseService.TaskManager\Dyd.BaseService.TaskManager.Core
 E:\HaiL\OpenProject\Dyd.BaseService.TaskManager\Dyd.BaseService.TaskManager.Core\bin\Debug\XXF.dll
 E:\HaiL\OpenProject\Dyd.BaseService.TaskManager\Dyd.BaseService.TaskManager.Core\bin\Debug\Newtonsoft.Json.xml
 E:\HaiL\OpenProject\Dyd.BaseService.TaskManager\Dyd.BaseService.TaskManager.Core\obj\Debug\Dyd.BaseService.TaskManager.Core.csprojResolveAssemblyReference.cache
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\Dyd.BaseService.TaskManager.Core.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\Dyd.BaseService.TaskManager.Core.pdb
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\Microsoft.Web.Infrastructure.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\Newtonsoft.Json.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\SharpCompress.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\Newtonsoft.Json.xml
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\obj\Debug\Dyd.BaseService.TaskManager.Core.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\obj\Debug\Dyd.BaseService.TaskManager.Core.pdb
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\System.Net.Http.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\XXF.dll
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\System.Net.Http.xml
+E:\project2\Dyd.BasService.TaskMan\Dyd.BaseService.TaskManager.Core\bin\Debug\zh-Hans\System.Net.Http.resources.dll
