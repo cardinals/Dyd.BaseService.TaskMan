@@ -1,1 +1,6 @@
-.svn/
+**/bin/
+**/debug/
+**/obj/
+/backup
+packages/
+packages/

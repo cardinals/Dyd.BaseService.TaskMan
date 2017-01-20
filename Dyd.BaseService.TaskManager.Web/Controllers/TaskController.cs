@@ -316,6 +316,39 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
             });
         }
 
+        public JsonResult Run(int id)
+        {
+            return this.Visit(Core.EnumUserRole.Admin, () =>
+            {
+                try
+                {
+                    tb_task_dal dal = new tb_task_dal();
+                    tb_command_dal cmdDal = new tb_command_dal();
+                    using (DbConn PubConn =
+                     DbConfig.CreateConn(Config.TaskConnectString))
+                    {
+                            PubConn.Open();
+                        tb_task_model task= dal.GetOneTask(PubConn, id);
+                        tb_command_model c = new tb_command_model()
+                            {
+                                command = "",
+                                commandcreatetime = DateTime.Now,
+                                commandname =EnumTaskCommandName.RunTask.ToString(),
+                                taskid = id,
+                                nodeid = task.nodeid,
+                                commandstate = (int)EnumTaskCommandState.None
+                            };
+                            cmdDal.Add(PubConn, c);
+                        return Json(new { code = 1, msg = "Success" });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Json(new {code = -1, msg = ex.Message});
+                }
+            });
+        }
+
         public JsonResult Uninstall(int id)
         {
             return this.Visit(Core.EnumUserRole.Admin, () =>

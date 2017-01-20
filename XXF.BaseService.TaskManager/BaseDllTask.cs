@@ -11,15 +11,24 @@ using XXF.BaseService.TaskManager.OpenOperator;
 
 namespace XXF.BaseService.TaskManager
 {
+    public interface IMicroService
+    {
+
+    }
+
     /// <summary>
     /// 基础dll任务
     /// </summary>
     public abstract class BaseDllTask : MarshalByRefObject, IDisposable
     {
+        public AppDomain Domain { get; set; }
+
         /// <summary>
         /// 是否运行在测试中
         /// </summary>
         public bool IsTesting = false;
+
+        protected bool IsInited = false;
         /// <summary>
         /// 任务的配置信息，类似项目app.config文件配置
         /// 测试时需要手工代码填写配置,线上环境需要在任务发布的时候配置
@@ -47,9 +56,12 @@ namespace XXF.BaseService.TaskManager
         {
             SystemRuntimeOperator = new TaskSystemRuntimeOperator(this);
             OpenOperator = new TaskOpenOperator(this);
+            
         }
 
-       
+        protected virtual void OnInit()
+        {
+        }
 
 
         /*忽略默认的对象租用行为，以便“在主机应用程序域运行时始终”将对象保存在内存中.   
@@ -68,6 +80,7 @@ namespace XXF.BaseService.TaskManager
             {
                 IsTesting = false;
                 SystemRuntimeOperator.UpdateLastStartTime(DateTime.Now);
+                CheckInited();
                 Run();
                 SystemRuntimeOperator.UpdateLastEndTime(DateTime.Now);
                 SystemRuntimeOperator.UpdateTaskSuccess();
@@ -105,7 +118,17 @@ namespace XXF.BaseService.TaskManager
         public virtual void TestRun()
         {
             IsTesting = true;
+            CheckInited();
             Run();
+        }
+
+        private void CheckInited()
+        {
+            if (!IsInited)
+            {
+                OnInit();
+                IsInited = true;
+            }
         }
 
         /// <summary>

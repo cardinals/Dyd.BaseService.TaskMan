@@ -9,7 +9,7 @@ namespace Dyd.BaseService.TaskManager.Node
 {
     public class Program
     {
-        private static bool testing = true;//是否测试
+        private static bool testing = false;//是否测试
         [STAThread]
         static void Main(string[] args)
         {
@@ -28,7 +28,7 @@ namespace Dyd.BaseService.TaskManager.Node
 
             if (testing)
             {
-                GlobalConfig.TaskDataBaseConnectString = "server=192.168.17.201;Initial Catalog=dyd_bs_task;User ID=sa;Password=Xx~!@#;";
+                GlobalConfig.TaskDataBaseConnectString = "server=10.4.11.12;Initial Catalog=ky_monitor;User ID=dev;Password=dev201404";
                 GlobalConfig.NodeID = 361;
                 XXF.Common.IOHelper.CreateDirectory(GlobalConfig.TaskSharedDllsDir + @"\");
                 //CommandQueueProcessor.lastMaxID = 1;

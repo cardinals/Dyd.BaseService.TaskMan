@@ -26,7 +26,9 @@ namespace Dyd.BaseService.TaskManager.Node.Tools
                 setup.ConfigurationFile = dllpath + ".config";
             setup.ShadowCopyFiles = "true";
             setup.ApplicationBase = System.IO.Path.GetDirectoryName(dllpath);
+            
             domain = AppDomain.CreateDomain(System.IO.Path.GetFileName(dllpath), null, setup);
+      
             AppDomain.MonitoringIsEnabled = true;
             T obj = (T)domain.CreateInstanceFromAndUnwrap(dllpath, classpath);
             return obj;

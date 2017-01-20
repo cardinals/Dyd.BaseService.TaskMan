@@ -106,6 +106,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
         /// 
         /// </summary>
         public string taskremark { get; set; }
-        
+        /// <summary>
+        /// 任务类型
+        /// </summary>
+        public string task_type { get; set; }
+
     }
 }

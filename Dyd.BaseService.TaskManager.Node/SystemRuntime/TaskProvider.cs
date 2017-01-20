@@ -58,6 +58,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             try
             {
                 var dlltask = new AppDomainLoader<BaseDllTask>().Load(fileinstallmainclassdllpath, taskruntimeinfo.TaskModel.taskmainclassnamespace, out taskruntimeinfo.Domain);
+                dlltask.Domain = taskruntimeinfo.Domain;
                 var sdktaskmodel = new XXF.BaseService.TaskManager.model.tb_task_model();
                 PropertyHelper.Copy(taskruntimeinfo.TaskModel, sdktaskmodel);
                 dlltask.SystemRuntimeInfo = new TaskSystemRuntimeInfo()
@@ -72,10 +73,21 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     dlltask.AppConfig = new XXF.Serialization.JsonHelper().Deserialize<TaskAppConfigInfo>(taskruntimeinfo.TaskModel.taskappconfigjson);
                 }
                 taskruntimeinfo.DllTask = dlltask;
+                if (dlltask is IMicroService)
+                {
+                    taskruntimeinfo.TaskModel.task_type = TaskType.Service.Code;
+                }
+                else
+                {
+                    taskruntimeinfo.TaskModel.task_type = TaskType.Task.Code;
+
+                }
                 bool r = TaskPoolManager.CreateInstance().Add(taskid.ToString(), taskruntimeinfo);
                 SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
                 {
                     tb_task_dal taskdal = new tb_task_dal();
+                    //更新类型 
+                    taskdal.Edit(c, taskruntimeinfo.TaskModel);
                     taskdal.UpdateTaskState(c, taskid, (int)EnumTaskState.Running);
                 });
                 LogHelper.AddTaskLog("节点开启任务成功", taskid);
@@ -87,6 +99,32 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 throw exp;
             }
         }
+
+        public bool Run(int taskid)
+        {
+            var taskruntimeinfo = TaskPoolManager.CreateInstance().Get(taskid.ToString());
+            if (taskruntimeinfo == null)
+            {
+                throw new Exception("任务不在运行中");
+            }
+            try
+            {
+                
+                taskruntimeinfo.DllTask.TryRun();
+                LogHelper.AddTaskLog("任务执行成功", taskid);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                LogHelper.AddTaskError("任务执行失败",taskid,ex);
+
+                return false;
+
+            }
+            
+            
+        }
+
         /// <summary>
         /// 任务的关闭
         /// </summary>

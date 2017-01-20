@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Dyd.BaseService.TaskManager.Domain.Model;
 using XXF.BaseService.TaskManager;
+using XXF.BaseService.TaskManager.model;
 using XXF.BaseService.TaskManager.SystemRuntime;
+using tb_task_model = Dyd.BaseService.TaskManager.Domain.Model.tb_task_model;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {

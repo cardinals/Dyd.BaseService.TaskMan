@@ -15,11 +15,13 @@ namespace Dyd.BaseService.TaskManager.WinService
         static void Main()
         {
             ServiceBase[] ServicesToRun;
-            ServicesToRun = new ServiceBase[] 
+          /*  ServicesToRun = new ServiceBase[] 
             { 
                 new Service1() 
             };
-            ServiceBase.Run(ServicesToRun);
+            ServiceBase.Run(ServicesToRun);*/
+            Service1 a=new Service1();
+            
         }
     }
 }

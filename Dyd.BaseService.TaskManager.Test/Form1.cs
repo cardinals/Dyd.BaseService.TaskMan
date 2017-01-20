@@ -10,9 +10,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Dyd.BaseService.TaskManager.Core;
 using Dyd.BaseService.TaskManager.Domain.Model;
+using Dyd.BaseService.TaskManager.Node.SystemRuntime;
+using Dyd.BaseService.TaskManager.Node.Tools;
 using SharpCompress.Archive.Rar;
 using SharpCompress.Common;
 using SharpCompress.Reader;
+using XXF.BaseService.TaskManager;
 using XXF.ProjectTool;
 
 namespace Dyd.BaseService.TaskManager.Test
@@ -50,8 +53,13 @@ namespace Dyd.BaseService.TaskManager.Test
            //});
 
             XXF.BaseService.TaskManager.SystemRuntime.TaskAppConfigInfo tai = new XXF.BaseService.TaskManager.SystemRuntime.TaskAppConfigInfo();
-            tai.Add("ConfigConnectString", @"server=192.168.17.205;Initial Catalog=dyd_new_config;User ID=sa;Password=Xx~!@#; ");
+            tai.Add("ConfigConnectString", @"server=10.4.11.12;Initial Catalog=ky_monitor;User ID=dev;Password=dev201404");
             string o = new XXF.Serialization.JsonHelper().Serializer(tai);
+            NodeTaskRuntimeInfo taskruntimeinfo = new NodeTaskRuntimeInfo();
+            
+            var dlltask = new AppDomainLoader<BaseDllTask>().Load(AppDomain.CurrentDomain.BaseDirectory+ @"a\debug\EPlatformServer.exe", "EPlatformServer.Task.CenterProviderManagerTask", out taskruntimeinfo.Domain);
+            dlltask.TryRun();
+            MessageBox.Show("ok");
             //int a = 1;
 
             //EmailHelper email = new EmailHelper();
@@ -65,12 +73,12 @@ namespace Dyd.BaseService.TaskManager.Test
             //email.mailCcArray = new string[] { };//抄送者邮件集合
             //if (email.Send())
             //{
-              
+
 
             //}
             //else
             //{
-                
+
             //}
         }
     }

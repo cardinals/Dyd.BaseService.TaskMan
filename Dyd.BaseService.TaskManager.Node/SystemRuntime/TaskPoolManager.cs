@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dyd.BaseService.TaskManager.Node.Corn;
 using Quartz;
 using Quartz.Impl;
+using static Dyd.BaseService.TaskManager.Node.SystemRuntime.TaskType;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
@@ -69,16 +70,33 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         {
             lock (_locktag)
             {
-                if (!TaskRuntimePool.ContainsKey(taskid))
+                switch (taskruntimeinfo.TaskModel.task_type)
                 {
-                    JobDetail jobDetail = new JobDetail(taskruntimeinfo.TaskModel.id.ToString(), taskruntimeinfo.TaskModel.categoryid.ToString(), typeof(TaskJob));// 任务名，任务组，任务执行类  
-                    var trigger = CornFactory.CreateTigger(taskruntimeinfo);
-                    _sched.ScheduleJob(jobDetail, trigger);  
+                    case "service":
+                      
+                          
 
-                    TaskRuntimePool.Add(taskid, taskruntimeinfo);
-                    return true;
+                        if (!TaskRuntimePool.ContainsKey(taskid))
+                        {
+                            taskruntimeinfo.DllTask.TryRun();
+
+                            TaskRuntimePool.Add(taskid, taskruntimeinfo);
+                            return true;
+                        }
+                        return false;
+                    default:
+                        if (!TaskRuntimePool.ContainsKey(taskid))
+                        {
+                            JobDetail jobDetail = new JobDetail(taskruntimeinfo.TaskModel.id.ToString(),
+                                taskruntimeinfo.TaskModel.categoryid.ToString(), typeof(TaskJob)); // 任务名，任务组，任务执行类  
+                            var trigger = CornFactory.CreateTigger(taskruntimeinfo);
+                            _sched.ScheduleJob(jobDetail, trigger);
+
+                            TaskRuntimePool.Add(taskid, taskruntimeinfo);
+                            return true;
+                        }
+                        return false;
                 }
-                return false;
             }
         }
         /// <summary>

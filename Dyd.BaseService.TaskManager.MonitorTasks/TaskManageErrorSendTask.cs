@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dyd.BaseService.TaskManager.Core;
 using Dyd.BaseService.TaskManager.Domain.Dal;
 using Dyd.BaseService.TaskManager.Domain.Model;
+
 using XXF.ProjectTool;
 
 namespace Dyd.BaseService.TaskManager.MonitorTasks
@@ -89,9 +90,9 @@ namespace Dyd.BaseService.TaskManager.MonitorTasks
         public override void TestRun()
         {
             this.AppConfig = new XXF.BaseService.TaskManager.SystemRuntime.TaskAppConfigInfo();
-            this.AppConfig.Add("sendmailhost", "smtp.163.com");
-            this.AppConfig.Add("sendmailname", "fengyeguigui@163.com");
-            this.AppConfig.Add("password", "*******");
+            this.AppConfig.Add("sendmailhost", "smtp.fastfish.com.cn");
+            this.AppConfig.Add("sendmailname", "ffadmin");
+            this.AppConfig.Add("password", "ffadmin@ex");
 
             base.TestRun();
         }

@@ -97,11 +97,12 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 					//
 					new ProcedureParameter("@taskmainclassnamespace",    model.taskmainclassnamespace),
 					//
-					new ProcedureParameter("@taskremark",    model.taskremark)
+					new ProcedureParameter("@taskremark",    model.taskremark),
+                    new ProcedureParameter("@task_type",    model.task_type)
             };
 			Par.Add(new ProcedureParameter("@id",  model.id));
 
-            int rev = PubConn.ExecuteSql("update tb_task set taskname=@taskname,categoryid=@categoryid,nodeid=@nodeid,taskcreatetime=@taskcreatetime,taskupdatetime=@taskupdatetime,tasklaststarttime=@tasklaststarttime,tasklastendtime=@tasklastendtime,tasklasterrortime=@tasklasterrortime,taskerrorcount=@taskerrorcount,taskruncount=@taskruncount,taskcreateuserid=@taskcreateuserid,taskstate=@taskstate,taskversion=@taskversion,taskappconfigjson=@taskappconfigjson,taskcron=@taskcron,taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark where id=@id", Par);
+            int rev = PubConn.ExecuteSql("update tb_task set taskname=@taskname,categoryid=@categoryid,nodeid=@nodeid,taskcreatetime=@taskcreatetime,taskupdatetime=@taskupdatetime,tasklaststarttime=@tasklaststarttime,tasklastendtime=@tasklastendtime,tasklasterrortime=@tasklasterrortime,taskerrorcount=@taskerrorcount,taskruncount=@taskruncount,taskcreateuserid=@taskcreateuserid,taskstate=@taskstate,taskversion=@taskversion,taskappconfigjson=@taskappconfigjson,taskcron=@taskcron,taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark,task_type=@task_type where id=@id", Par);
             return rev == 1;
 
         }

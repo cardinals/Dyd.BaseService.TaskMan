@@ -97,7 +97,33 @@
                 }
             });
         }
-    } 
+    }
+    function Run(id) 
+    {
+
+        if(confirm("确认马上执行！"))
+        {
+            $.ajax({
+                url: '@Url.Action("Run", "Task")',
+                type: "post",
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                     
+                            alert("发送运行成功！");
+                            //window.location.reload();
+                        }
+                    
+                    else {
+                        alert(data.msg);
+                    }
+                }
+            });
+        }
+
+    }
     function Uninstall(id) {
         if(confirm("确定要尝试强制卸载该任务？"))
         {
@@ -254,16 +280,17 @@
                                     <span id="Start_@item.id"><input type="button" class="btn1 hide" onclick="ChangeTaskState('@item.id','@item.nodeid','@item.taskname',1)" value="启动" /></span>
                                     <span id="Stop_@item.id" class="hide"><input type="button" class="btn1" onclick="ChangeTaskState('@item.id','@item.nodeid','@item.taskname',0)" value="停止" /></span>
                                  <input class="btn1" type="button" value="强制卸载" onclick="Uninstall('@item.id    ')" />
-                                <input class="btn1" type="button" value="删除" onclick="Delete('@item.id    ')" />
-                                }
+                                <input class="btn1" type="button" value="删除" onclick="Delete('@item.id    ')"/>
+                                                      }
                                 else
                                 {
                                     <span id="Start_@item.id" class="hide"><input type="button" class="btn1" onclick="ChangeTaskState('@item.id','@item.nodeid','@item.taskname',1)" value="启动" /></span>
                                     <span id="Stop_@item.id"><input type="button" class="btn1 hide" onclick="ChangeTaskState('@item.id','@item.nodeid','@item.taskname',0)" value="停止" /></span>
-                                 <input class="btn1" type="button" value="强制卸载" onclick="Uninstall('@item.id    ')" />
+                                    <input class="btn1" type="button" value="强制卸载" onclick="Uninstall('@item.id    ')"/>
+                                    <input class="btn1" type="button" value="执行" onclick="Run('@item.id')" />
                                 }
-                                
-                                
+
+
                             }
                             <p><a class="btn1" href="@Url.Action("Update", "Task", new { taskid = item.id })" target="_blank">
                                 @((role==(int)Dyd.BaseService.TaskManager.Core.EnumUserRole.Admin && item.taskstate==(int)Dyd.BaseService.TaskManager.Core.EnumTaskState.Stop)?"修改":"查看")</a></p>

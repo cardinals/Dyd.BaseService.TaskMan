@@ -1,5 +1,3 @@
-using System;
-using System.Xml.Serialization;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -9,8 +7,8 @@ using Dyd.BaseService.TaskManager.Domain.Model;
 
 namespace Dyd.BaseService.TaskManager.Domain.Dal
 {
-	/*代码自动生成工具自动生成,不要在这里写自己的代码，否则会被自动覆盖哦 - 车毅*/
-	public partial class tb_version_dal
+    /*代码自动生成工具自动生成,不要在这里写自己的代码，否则会被自动覆盖哦 - 车毅*/
+    public partial class tb_version_dal
     {
         public virtual bool Add(DbConn PubConn, tb_version_model model)
         {
