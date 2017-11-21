@@ -58,7 +58,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             try
             {
                 var dlltask = new AppDomainLoader<BaseDllTask>().Load(fileinstallmainclassdllpath, taskruntimeinfo.TaskModel.taskmainclassnamespace, out taskruntimeinfo.Domain);
-                dlltask.Domain = taskruntimeinfo.Domain;
+              //  dlltask.Domain = taskruntimeinfo.Domain;
                 var sdktaskmodel = new XXF.BaseService.TaskManager.model.tb_task_model();
                 PropertyHelper.Copy(taskruntimeinfo.TaskModel, sdktaskmodel);
                 dlltask.SystemRuntimeInfo = new TaskSystemRuntimeInfo()

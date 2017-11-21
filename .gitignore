@@ -4,3 +4,6 @@
 /backup
 packages/
 packages/
+bin/
+obj/
+obj
