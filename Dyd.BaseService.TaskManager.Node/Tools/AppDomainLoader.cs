@@ -28,11 +28,20 @@ namespace Dyd.BaseService.TaskManager.Node.Tools
             setup.ApplicationBase = System.IO.Path.GetDirectoryName(dllpath);
             
             domain = AppDomain.CreateDomain(System.IO.Path.GetFileName(dllpath), null, setup);
-      
+            domain.UnhandledException += Domain_UnhandledException;
             AppDomain.MonitoringIsEnabled = true;
             T obj = (T)domain.CreateInstanceFromAndUnwrap(dllpath, classpath);
             return obj;
         }
+
+        private void Domain_UnhandledException(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception e = (Exception)args.ExceptionObject;
+            LogHelper.AddNodeError($"异常{e.Message}",e);
+        }
+
+
+
         /// <summary>
         /// 卸载应用程序域
         /// </summary>
