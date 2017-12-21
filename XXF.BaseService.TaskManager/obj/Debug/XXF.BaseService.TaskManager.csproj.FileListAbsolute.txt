@@ -50,3 +50,8 @@ E:\project2\EPlatform\lib\dyd.TaskMan\XXF.BaseService.TaskManager.dll
 E:\project2\EPlatform\lib\dyd.TaskMan\XXF.BaseService.TaskManager.pdb
 E:\project2\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.dll
 E:\project2\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.pdb
+D:\Source\KF09\EPlatform\lib\dyd.TaskMan\XXF.BaseService.TaskManager.dll
+D:\Source\KF09\EPlatform\lib\dyd.TaskMan\XXF.BaseService.TaskManager.pdb
+D:\Source\KF09\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.dll
+D:\Source\KF09\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.pdb
+D:\Source\KF09\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.csprojResolveAssemblyReference.cache
