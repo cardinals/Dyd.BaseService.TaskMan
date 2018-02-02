@@ -186,5 +186,38 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
         }
 
 
+        public JsonResult Uninstall(int id)
+        {
+            try
+            {
+                tb_command_dal commanddal = new tb_command_dal();
+                tb_task_dal dal = new tb_task_dal();
+                using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                {
+                    PubConn.Open();
+                    var taskmodel = dal.Get(PubConn, id);
+                    dal.UpdateTaskState(PubConn, id, (int)Core.EnumTaskState.Stop);
+
+                    tb_command_model m = new tb_command_model()
+                    {
+                        command = "",
+                        commandcreatetime = DateTime.Now,
+                        commandname = EnumTaskCommandName.UninstallTask.ToString(),
+                        taskid = id,
+                        nodeid = taskmodel.nodeid,
+                        commandstate = (int)EnumTaskCommandState.None
+                    };
+                    commanddal.Add(PubConn, m);
+
+                    return Json(new { code = 1 });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { code = -1, msg = ex.Message });
+            }
+
+        }
+
     }
 }
