@@ -180,7 +180,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                         };
                         dal.Add(PubConn, m);
                     }
-                    return Json(new { code = 0, message = "程序启动或关闭成功" });
+                    return Json(new { code = 0, message = string.Format("程序{0}成功", state == 1 ? "开启" : "关闭") });
                 }
             });
         }
@@ -209,12 +209,12 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                     };
                     commanddal.Add(PubConn, m);
 
-                    return Json(new { code = 1 });
+                    return Json(new { code = 1, message="程序卸载成功！" });
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { code = -1, msg = ex.Message });
+                return Json(new { code = -1, message = ex.Message });
             }
 
         }
