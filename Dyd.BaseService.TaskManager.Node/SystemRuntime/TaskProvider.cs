@@ -73,6 +73,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     dlltask.AppConfig = new XXF.Serialization.JsonHelper().Deserialize<TaskAppConfigInfo>(taskruntimeinfo.TaskModel.taskappconfigjson);
                 }
                 taskruntimeinfo.DllTask = dlltask;
+                //数据库中已读取
+                /*
                 if (dlltask is IMicroService)
                 {
                     taskruntimeinfo.TaskModel.task_type = TaskType.Service.Code;
@@ -82,6 +84,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     taskruntimeinfo.TaskModel.task_type = TaskType.Task.Code;
 
                 }
+                */
                 bool r = TaskPoolManager.CreateInstance().Add(taskid.ToString(), taskruntimeinfo);
                 SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
                 {
