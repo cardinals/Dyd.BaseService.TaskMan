@@ -393,5 +393,52 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
         {
             return View();
         }
+
+        public JsonResult Copy(int id)
+        {
+            tb_task_model model = new tb_task_model();
+            tb_version_model vermodel = new tb_version_model();
+            tb_tempdata_model tempdatamodel = new tb_tempdata_model();
+
+            return this.Visit(Core.EnumUserRole.Admin, () =>
+            {
+                try
+                {
+                    tb_task_dal dal = new tb_task_dal();
+                    tb_version_dal dalversion = new tb_version_dal();
+                    tb_tempdata_dal tempdatadal = new tb_tempdata_dal();
+
+                    using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                    {
+                        PubConn.Open();
+
+                        //取出需要复制的数据
+                        model = dal.GetOneTask(PubConn, id);
+                        tempdatamodel = tempdatadal.GetByTaskID(PubConn, id);
+                        vermodel = dalversion.GetCurrentVersion(PubConn, id, model.taskversion);
+
+                        //分别插入
+                        model.taskstate = 0;
+                        model.taskcreatetime = DateTime.Now;
+                        model.taskversion = 1;
+                        int taskid = dal.AddTask(PubConn, model);
+
+                        vermodel.taskid = taskid;
+                        vermodel.version = 1;
+                        vermodel.versioncreatetime = DateTime.Now;
+                        dalversion.Add(PubConn, vermodel);
+
+                        tempdatamodel.taskid = taskid;
+                        tempdatamodel.tempdatalastupdatetime = DateTime.Now;
+                        tempdatadal.Add(PubConn, tempdatamodel);
+                    }
+                    return Json(new { code = 1, state = "复制成功" });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { code = -1, msg = ex.Message });
+                }
+            });
+        }
     }
 }

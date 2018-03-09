@@ -59,6 +59,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
         public ActionResult Login(string appid, string sign, string returnurl, string username, string password, string validate)
         {
 
+
             if (System.Configuration.ConfigurationManager.AppSettings["loginType"] == "1")
             {
                 tb_user_model user = Common.GetUser(username, password);

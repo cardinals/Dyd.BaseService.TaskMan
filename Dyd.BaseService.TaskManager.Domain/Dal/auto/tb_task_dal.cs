@@ -51,10 +51,12 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 					//
 					new ProcedureParameter("@taskmainclassnamespace",    model.taskmainclassnamespace),
 					//
-					new ProcedureParameter("@taskremark",    model.taskremark)   
+					new ProcedureParameter("@taskremark",    model.taskremark),
+                    //
+					new ProcedureParameter("@task_type",    model.task_type)
                 };
-            int rev = PubConn.ExecuteSql(@"insert into tb_task(taskname,categoryid,nodeid,taskcreatetime,taskupdatetime,tasklaststarttime,tasklastendtime,tasklasterrortime,taskerrorcount,taskruncount,taskcreateuserid,taskstate,taskversion,taskappconfigjson,taskcron,taskmainclassnamespace,taskremark)
-										   values(@taskname,@categoryid,@nodeid,@taskcreatetime,@taskupdatetime,@tasklaststarttime,@tasklastendtime,@tasklasterrortime,@taskerrorcount,@taskruncount,@taskcreateuserid,@taskstate,@taskversion,@taskappconfigjson,@taskcron,@taskmainclassnamespace,@taskremark)", Par);
+            int rev = PubConn.ExecuteSql(@"insert into tb_task(taskname,categoryid,nodeid,taskcreatetime,taskupdatetime,tasklaststarttime,tasklastendtime,tasklasterrortime,taskerrorcount,taskruncount,taskcreateuserid,taskstate,taskversion,taskappconfigjson,taskcron,taskmainclassnamespace,taskremark,task_type)
+										   values(@taskname,@categoryid,@nodeid,@taskcreatetime,@taskupdatetime,@tasklaststarttime,@tasklastendtime,@tasklasterrortime,@taskerrorcount,@taskruncount,@taskcreateuserid,@taskstate,@taskversion,@taskappconfigjson,@taskcron,@taskmainclassnamespace,@taskremark,@task_type)", Par);
             return rev == 1;
 
         }
@@ -98,6 +100,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 					new ProcedureParameter("@taskmainclassnamespace",    model.taskmainclassnamespace),
 					//
 					new ProcedureParameter("@taskremark",    model.taskremark),
+                    //
                     new ProcedureParameter("@task_type",    model.task_type)
             };
 			Par.Add(new ProcedureParameter("@id",  model.id));
@@ -239,8 +242,13 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 			if(dr.Table.Columns.Contains("taskremark"))
 			{
 				o.taskremark = dr["taskremark"].Tostring();
-			}
-			return o;
+            }
+            //
+            if (dr.Table.Columns.Contains("task_type"))
+            {
+                o.task_type = dr["task_type"].Tostring();
+            }
+            return o;
         }
     }
 }

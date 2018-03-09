@@ -10,13 +10,13 @@
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Dyd.BaseService.TaskManager.Core.dll">
-      <publishTime>12/21/2017 14:18:11</publishTime>
+      <publishTime>12/21/2017 18:55:30</publishTime>
     </File>
     <File Include="bin/Dyd.BaseService.TaskManager.Domain.dll">
-      <publishTime>12/21/2017 14:18:11</publishTime>
+      <publishTime>03/02/2018 15:28:51</publishTime>
     </File>
     <File Include="bin/Dyd.BaseService.TaskManager.Web.dll">
-      <publishTime>12/21/2017 15:01:37</publishTime>
+      <publishTime>03/02/2018 15:28:52</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>12/21/2017 13:19:30</publishTime>
@@ -31,7 +31,7 @@
       <publishTime>11/21/2015 14:16:28</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>01/28/2016 14:22:24</publishTime>
+      <publishTime>12/21/2017 18:55:30</publishTime>
     </File>
     <File Include="bin/ServiceStack.Common.dll">
       <publishTime>01/19/2015 10:58:57</publishTime>
@@ -682,7 +682,7 @@
       <publishTime>12/21/2017 13:19:30</publishTime>
     </File>
     <File Include="Views/Task/Add.cshtml">
-      <publishTime>12/21/2017 13:19:30</publishTime>
+      <publishTime>03/02/2018 14:06:49</publishTime>
     </File>
     <File Include="Views/Task/Cron.cshtml">
       <publishTime>12/21/2017 13:19:30</publishTime>
@@ -691,10 +691,10 @@
       <publishTime>12/21/2017 13:19:30</publishTime>
     </File>
     <File Include="Views/Task/Index.cshtml">
-      <publishTime>12/21/2017 14:52:18</publishTime>
+      <publishTime>03/02/2018 15:27:35</publishTime>
     </File>
     <File Include="Views/Task/Update.cshtml">
-      <publishTime>12/21/2017 13:19:30</publishTime>
+      <publishTime>03/02/2018 14:07:48</publishTime>
     </File>
     <File Include="Views/User/Add.cshtml">
       <publishTime>12/21/2017 13:19:30</publishTime>
@@ -709,7 +709,7 @@
       <publishTime>12/21/2017 13:19:30</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/21/2017 15:01:38</publishTime>
+      <publishTime>03/02/2018 15:28:53</publishTime>
     </File>
   </ItemGroup>
 </Project>

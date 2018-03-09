@@ -98,8 +98,12 @@
             </li>
             <li>
                 <label>Cron表达式</label>
-
                 <input  type="text"  id="taskcron" name="taskcron" @Html.Raw(Model.taskstate==(int)Dyd.BaseService.TaskManager.Core.EnumTaskState.Running?"readonly=readonly":"") value="@Model.taskcron"> <a target="_blank" href="@Url.Action("cron", "Task", new {  })">Cron表达式生成器</a> <a target="_blank" href="@Url.Action("CustomCorn", "Task", new {  })">自定义cron表达式</a>
+            </li>
+            <li>
+                <label>任务类型</label>
+                <input type="radio" name="task_type" value="service" @Html.Raw(Model.task_type=="service"? "checked=\"checked\"" : "")  />微服务
+                <input type="radio" name="task_type" value="task" @Html.Raw(Model.task_type=="task"? "checked=\"checked\"" : "") />定时任务
             </li>
             <li>
                 <label>任务入口类的命名空间</label><input class="mylongtext" type="text" @Html.Raw(Model.taskstate==(int)Dyd.BaseService.TaskManager.Core.EnumTaskState.Running?"readonly=readonly":"") id="taskmainclassnamespace" name="taskmainclassnamespace" value="@Model.taskmainclassnamespace" />
