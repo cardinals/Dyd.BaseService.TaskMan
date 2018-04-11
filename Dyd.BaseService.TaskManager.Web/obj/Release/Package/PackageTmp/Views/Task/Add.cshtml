@@ -37,9 +37,9 @@
     }
     function save()
     {
-        if ($("#taskremark").val().length < 20)
+        if ($("#taskremark").val().length < 5)
         {
-            alert("备注不得少于20个字符" );
+            alert("备注不得少于5个字符" );
             return false;
         }
     }
@@ -112,7 +112,7 @@
         </li>
         <li>
             <label>备注</label>
-            <textarea id="taskremark" name="taskremark" style="height:200px"></textarea>(不得少于20个字符)
+            <textarea id="taskremark" name="taskremark" style="height:200px"></textarea>(不得少于5个字符)
         </li>
         <li>
             <input type="submit" class="btn1" value="提交" onclick="return save()" />

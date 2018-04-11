@@ -182,7 +182,7 @@
             <ul>
                 <li>
                     <label>任务id</label>
-                    <input type="text" name="taskid" value="@(string.IsNullOrEmpty(ViewBag.taskid)?"":ViewBag.taskid)" />
+                    <input type="text" name="taskid" style="width:150px" value="@(string.IsNullOrEmpty(ViewBag.taskid)?"":ViewBag.taskid)" />
                 </li>
                 <li>
                     <label>关键字</label>
@@ -242,9 +242,9 @@
                     </select>
                 </li>
                 <li>
-                    <label>创建时间</label><input type="text" class="text" autocomplete="off"name="CStime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'1900-01-01',readOnly:true})" value="@(string.IsNullOrEmpty(ViewBag.CStime)?"":ViewBag.CStime)" />
+                    <label>创建时间</label><input type="text" class="text" style="width:150px" autocomplete="off"name="CStime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'1900-01-01',readOnly:true})" value="@(string.IsNullOrEmpty(ViewBag.CStime)?"":ViewBag.CStime)" />
                     至
-                <input type="text" class="text" autocomplete="off" name="CEtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'1900-01-01',readOnly:true})" value="@(string.IsNullOrEmpty(ViewBag.CEtime)?"":ViewBag.CEtime)"/>
+                <input type="text" class="text" autocomplete="off" style="width:150px" name="CEtime" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',minDate:'1900-01-01',readOnly:true})" value="@(string.IsNullOrEmpty(ViewBag.CEtime)?"":ViewBag.CEtime)"/>
                 </li>
                 
                 <li class="search">
@@ -267,7 +267,7 @@
                     <th>任务名</th>
                     <th>当前运行状态</th>
                     <th>任务信息</th>
-                    <th style="width:300px;">任务备注</th>
+                    <th style="width:300px">任务配置</th>
                     <th style="width:100px">操作</th>
                 </tr>
                 @foreach (var item in Model)
@@ -317,8 +317,8 @@
                                 }
 
                                 <p><input class="btn1" type="button" value="复制" onclick="Copy('@item.id')" /></p>
-                                    }
-<p><a class="btn1" href="@Url.Action("Update", "Task", new { taskid = item.id })" target="_blank">
+                            }
+                            <p><a class="btn1" href="@Url.Action("Update", "Task", new { taskid = item.id })" target="_blank">
                                 @((role==(int)Dyd.BaseService.TaskManager.Core.EnumUserRole.Admin && item.taskstate==(int)Dyd.BaseService.TaskManager.Core.EnumTaskState.Stop)?"修改":"查看")</a></p>
                             
                             <p><a class="btn1" href="@Url.Action("Log", "Log", new { taskid = @item.id })" target="_blank">查看日志</a></p>
