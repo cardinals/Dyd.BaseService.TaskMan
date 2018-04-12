@@ -21,9 +21,7 @@ namespace Dyd.BaseService.TaskManager.Core
         [Description("卸载任务")]
         UninstallTask = 3,
         [Description("立即运行")]
-        RunTask = 4,
-        [Description("回滚运行")]
-        RollbackStartTask = 5
+        RunTask = 4
     }
     /// <summary>
     /// 任务命令状态

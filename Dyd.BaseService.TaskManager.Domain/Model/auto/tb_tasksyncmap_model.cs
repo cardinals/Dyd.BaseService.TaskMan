@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Dyd.BaseService.TaskManager.Domain.Model.auto
+namespace Dyd.BaseService.TaskManager.Domain.Model
 {
     /// <summary>
     /// 任务同步映射(从测试同步到正式目录)
     /// </summary>
     [Serializable]
-    public partial class tb_tasksyncmap
+    public partial class tb_tasksyncmap_model
     {
         public int id { get; set; }
         /// <summary>

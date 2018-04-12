@@ -81,8 +81,8 @@
     <Compile Include="Dal\tb_log_dal.cs" />
     <Compile Include="Dal\tb_node_dal.cs" />
     <Compile Include="Dal\tb_tasksyncmap_dal.cs" />
-    <Compile Include="Model\auto\tb_businessversion.cs" />
-    <Compile Include="Model\auto\tb_tasksyncmap.cs" />
+    <Compile Include="Model\auto\tb_businessversion_model.cs" />
+    <Compile Include="Model\auto\tb_tasksyncmap_model.cs" />
     <Compile Include="Model\tb_performanceinfo_model.cs" />
     <Compile Include="Dal\tb_performance_dal.cs" />
     <Compile Include="Dal\tb_task_dal.cs" />

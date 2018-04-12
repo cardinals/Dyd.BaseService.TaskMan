@@ -9,7 +9,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
     /// 发布的业务版本管理
     /// </summary>
     [Serializable]
-    public partial class tb_businessversion
+    public partial class tb_businessversion_model
     {
         /// <summary>
         /// 
