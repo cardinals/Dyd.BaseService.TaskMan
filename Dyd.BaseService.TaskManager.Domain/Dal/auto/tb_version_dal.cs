@@ -47,11 +47,13 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 					//压缩文件二进制文件
 					new ProcedureParameter("@zipfile",    model.zipfile),
 					//
-					new ProcedureParameter("@zipfilename",    model.zipfilename)
+					new ProcedureParameter("@zipfilename",    model.zipfilename),
+
+                    new ProcedureParameter("@assemblyversion",    model.assemblyversion)
             };
 			Par.Add(new ProcedureParameter("@id",  model.id));
 
-            int rev = PubConn.ExecuteSql("update tb_version set taskid=@taskid,version=@version,versioncreatetime=@versioncreatetime,zipfile=@zipfile,zipfilename=@zipfilename where id=@id", Par);
+            int rev = PubConn.ExecuteSql("update tb_version set taskid=@taskid,version=@version,versioncreatetime=@versioncreatetime,zipfile=@zipfile,zipfilename=@zipfilename,assemblyversion=@assemblyversion where id=@id", Par);
             return rev == 1;
 
         }

@@ -13,15 +13,17 @@ namespace Dyd.BaseService.TaskManager.Core
     public enum EnumTaskCommandName
     {
         [Description("关闭任务")]
-        StopTask=0,
+        StopTask = 0,
         [Description("开启任务")]
-        StartTask=1,
+        StartTask = 1,
         [Description("重启任务")]
-        ReStartTask=2,
+        ReStartTask = 2,
         [Description("卸载任务")]
-        UninstallTask=3,
+        UninstallTask = 3,
         [Description("立即运行")]
-        RunTask=4
+        RunTask = 4,
+        [Description("回滚运行")]
+        RollbackStartTask = 5
     }
     /// <summary>
     /// 任务命令状态
@@ -29,11 +31,11 @@ namespace Dyd.BaseService.TaskManager.Core
     public enum EnumTaskCommandState
     {
         [Description("未执行")]
-        None=0,
+        None = 0,
         [Description("执行错误")]
-        Error=1,
+        Error = 1,
         [Description("成功执行")]
-        Success=2
+        Success = 2
     }
     /// <summary>
     /// 任务执行状态
@@ -41,9 +43,9 @@ namespace Dyd.BaseService.TaskManager.Core
     public enum EnumTaskState
     {
         [Description("停止")]
-        Stop=0,
+        Stop = 0,
         [Description("运行中")]
-        Running=1,
+        Running = 1,
     }
     /// <summary>
     /// 系统用户角色
@@ -51,9 +53,9 @@ namespace Dyd.BaseService.TaskManager.Core
     public enum EnumUserRole
     {
         [Description("管理员")]
-        Admin=0,
+        Admin = 0,
         [Description("开发人员")]
-        Developer=1,
+        Developer = 1,
         [Description("无控制")]
         None = -1
     }

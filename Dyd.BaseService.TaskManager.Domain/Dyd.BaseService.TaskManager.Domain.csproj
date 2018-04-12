@@ -62,21 +62,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dal\auto\tb_businessversion_dal.cs" />
     <Compile Include="Dal\auto\tb_category_dal.cs" />
     <Compile Include="Dal\auto\tb_command_dal.cs" />
     <Compile Include="Dal\auto\tb_error_dal.cs" />
     <Compile Include="Dal\auto\tb_log_dal.cs" />
     <Compile Include="Dal\auto\tb_node_dal.cs" />
     <Compile Include="Dal\auto\tb_performance_dal.cs" />
+    <Compile Include="Dal\auto\tb_tasksyncmap_dal.cs" />
     <Compile Include="Dal\auto\tb_task_dal.cs" />
     <Compile Include="Dal\auto\tb_tempdata_dal.cs" />
     <Compile Include="Dal\auto\tb_user_dal.cs" />
     <Compile Include="Dal\auto\tb_version_dal.cs" />
+    <Compile Include="Dal\tb_businessversion_dal.cs" />
     <Compile Include="Dal\tb_category_dal.cs" />
     <Compile Include="Dal\tb_command_dal.cs" />
     <Compile Include="Dal\tb_error_dal.cs" />
     <Compile Include="Dal\tb_log_dal.cs" />
     <Compile Include="Dal\tb_node_dal.cs" />
+    <Compile Include="Dal\tb_tasksyncmap_dal.cs" />
+    <Compile Include="Model\auto\tb_businessversion.cs" />
+    <Compile Include="Model\auto\tb_tasksyncmap.cs" />
     <Compile Include="Model\tb_performanceinfo_model.cs" />
     <Compile Include="Dal\tb_performance_dal.cs" />
     <Compile Include="Dal\tb_task_dal.cs" />

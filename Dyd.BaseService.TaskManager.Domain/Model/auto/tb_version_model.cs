@@ -41,6 +41,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
         /// 
         /// </summary>
         public string zipfilename { get; set; }
-        
+
+        /// <summary>
+        /// ³ÌÐò¼¯°æ±¾ºÅ
+        /// </summary>
+        public string assemblyversion { get; set; }
     }
 }
