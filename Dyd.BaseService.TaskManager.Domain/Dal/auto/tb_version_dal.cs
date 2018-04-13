@@ -125,7 +125,12 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 			{
 				o.zipfilename = dr["zipfilename"].Tostring();
 			}
-			return o;
+            //
+            if (dr.Table.Columns.Contains("assemblyversion"))
+            {
+                o.assemblyversion = dr["assemblyversion"].Tostring();
+            }
+            return o;
         }
     }
 }

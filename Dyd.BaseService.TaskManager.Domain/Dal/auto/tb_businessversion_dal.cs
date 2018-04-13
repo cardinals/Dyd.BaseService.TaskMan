@@ -7,7 +7,7 @@ using System.Text;
 using XXF.Db;
 using XXF.Extensions;
 
-namespace Dyd.BaseService.TaskManager.Domain.Dal.auto
+namespace Dyd.BaseService.TaskManager.Domain.Dal
 {
     public partial class tb_businessversion_dal
     {
@@ -18,9 +18,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal.auto
                 {
 					
 					//
-					new ProcedureParameter("@versionid",    model.versionid),
-					//
-					new ProcedureParameter("@taskid",    model.taskid),
+					new ProcedureParameter("@taskjson",    model.taskjson),
 					//
 					new ProcedureParameter("@businessversion",    model.businessversion),
 					//
@@ -28,8 +26,8 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal.auto
 					//
 					new ProcedureParameter("@createtime",    model.createtime)
                 };
-            int rev = PubConn.ExecuteSql(@"insert into tb_businessversion(versionid,taskid,businessversion,description,createtime)
-										   values(@versionid,@taskid,@businessversion,@description,@createtime)", Par);
+            int rev = PubConn.ExecuteSql(@"insert into tb_businessversion(taskjson,businessversion,description,createtime)
+										   values(@taskjson,@businessversion,@description,@createtime)", Par);
             return rev == 1;
 
         }
@@ -40,9 +38,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal.auto
             {
                     
 					//
-					new ProcedureParameter("@versionid",    model.versionid),
-					//
-					new ProcedureParameter("@taskid",    model.taskid),
+					new ProcedureParameter("@taskjson",    model.taskjson),
 					//
 					new ProcedureParameter("@businessversion",    model.businessversion),
 					
@@ -52,7 +48,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal.auto
             };
             Par.Add(new ProcedureParameter("@id", model.id));
 
-            int rev = PubConn.ExecuteSql("update tb_businessversion set versionid=@versionid,taskid=@taskid,businessversion=@businessversion,description=@description,createtime=@createtime where id=@id", Par);
+            int rev = PubConn.ExecuteSql("update tb_businessversion set taskjson=@taskjson,businessversion=@businessversion,description=@description,createtime=@createtime where id=@id", Par);
             return rev == 1;
 
         }
@@ -100,14 +96,9 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal.auto
                 o.id = dr["id"].Toint();
             }
             //
-            if (dr.Table.Columns.Contains("versionid"))
+            if (dr.Table.Columns.Contains("taskjson"))
             {
-                o.versionid = dr["versionid"].Toint();
-            }
-            //
-            if (dr.Table.Columns.Contains("taskid"))
-            {
-                o.taskid = dr["taskid"].Toint();
+                o.taskjson = dr["taskjson"].ToString();
             }
             //
             if (dr.Table.Columns.Contains("businessversion"))

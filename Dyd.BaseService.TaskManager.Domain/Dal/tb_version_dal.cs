@@ -56,5 +56,24 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 return model;
             });
         }
+
+        /// <summary>
+        /// 指定任务的程序集版本更新
+        /// </summary>
+        /// <param name="PubConn"></param>
+        /// <param name="id"></param>
+        /// <param name="assemblyversion"></param>
+        /// <returns></returns>
+        public int UpdateAssemblyVersion(DbConn PubConn, int id, string assemblyversion)
+        {
+            return SqlHelper.Visit(ps =>
+            {
+                ps.Add("@assemblyversion", assemblyversion);
+                ps.Add("@id", id);
+                StringBuilder stringSql = new StringBuilder();
+                stringSql.Append(@"update tb_version set assemblyversion=@assemblyversion where id=@id");
+                return PubConn.ExecuteSql(stringSql.ToString(), ps.ToParameters());
+            });
+        }
     }
 }

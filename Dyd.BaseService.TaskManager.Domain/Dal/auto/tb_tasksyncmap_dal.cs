@@ -92,7 +92,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 o.id = dr["id"].Toint();
             }
             //
-            if (dr.Table.Columns.Contains("taskid"))
+            if (dr.Table.Columns.Contains("fromtaskid"))
             {
                 o.fromtaskid = dr["fromtaskid"].Toint();
             }

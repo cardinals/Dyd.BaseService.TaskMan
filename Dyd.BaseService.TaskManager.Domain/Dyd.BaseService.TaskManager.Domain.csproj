@@ -83,6 +83,7 @@
     <Compile Include="Dal\tb_tasksyncmap_dal.cs" />
     <Compile Include="Model\auto\tb_businessversion_model.cs" />
     <Compile Include="Model\auto\tb_tasksyncmap_model.cs" />
+    <Compile Include="Model\taskjson_model.cs" />
     <Compile Include="Model\tb_performanceinfo_model.cs" />
     <Compile Include="Dal\tb_performance_dal.cs" />
     <Compile Include="Dal\tb_task_dal.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Model\tb_loginfo_model.cs" />
     <Compile Include="Model\tb_senderror_model.cs" />
     <Compile Include="Model\tb_tasklist_model.cs" />
+    <Compile Include="Model\tb_tasksyncmapinfo_model.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

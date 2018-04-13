@@ -12,6 +12,8 @@ using System.Drawing;
 using System.IO;
 using Dyd.BaseService.TaskManager.Core;
 using XXF.Extensions;
+using Dyd.BaseService.TaskManager.Web.Tools;
+using Newtonsoft.Json;
 
 namespace Dyd.BaseService.TaskManager.Web.Controllers
 {
@@ -21,7 +23,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
         //
         // GET: /Task/
 
-        public ActionResult Index(string taskid, string keyword, string CStime,string CEtime, int categoryid = -1, int nodeid = -1, int userid = -1, int state = -999, int pagesize = 10, int pageindex = 1)
+        public ActionResult Index(string taskid, string keyword, string CStime, string CEtime, int categoryid = -1, int nodeid = -1, int userid = -1, int state = -999, int pagesize = 10, int pageindex = 1)
         {
             return this.Visit(Core.EnumUserRole.None, () =>
             {
@@ -42,7 +44,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                 using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
                 {
                     PubConn.Open();
-                    List<tb_tasklist_model> List = dal.GetList(PubConn,taskid, keyword, CStime,CEtime, categoryid, nodeid, userid, state, pagesize, pageindex, out count);
+                    List<tb_tasklist_model> List = dal.GetList(PubConn, taskid, keyword, CStime, CEtime, categoryid, nodeid, userid, state, pagesize, pageindex, out count);
                     pageList = new PagedList<tb_tasklist_model>(List, pageindex, pagesize, count);
                     List<tb_node_model> Node = new tb_node_dal().GetListAll(PubConn);
                     List<tb_category_model> Category = new tb_category_dal().GetList(PubConn, "");
@@ -327,24 +329,24 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                     using (DbConn PubConn =
                      DbConfig.CreateConn(Config.TaskConnectString))
                     {
-                            PubConn.Open();
-                        tb_task_model task= dal.GetOneTask(PubConn, id);
+                        PubConn.Open();
+                        tb_task_model task = dal.GetOneTask(PubConn, id);
                         tb_command_model c = new tb_command_model()
-                            {
-                                command = "",
-                                commandcreatetime = DateTime.Now,
-                                commandname =EnumTaskCommandName.RunTask.ToString(),
-                                taskid = id,
-                                nodeid = task.nodeid,
-                                commandstate = (int)EnumTaskCommandState.None
-                            };
-                            cmdDal.Add(PubConn, c);
+                        {
+                            command = "",
+                            commandcreatetime = DateTime.Now,
+                            commandname = EnumTaskCommandName.RunTask.ToString(),
+                            taskid = id,
+                            nodeid = task.nodeid,
+                            commandstate = (int)EnumTaskCommandState.None
+                        };
+                        cmdDal.Add(PubConn, c);
                         return Json(new { code = 1, msg = "Success" });
                     }
                 }
                 catch (Exception ex)
                 {
-                    return Json(new {code = -1, msg = ex.Message});
+                    return Json(new { code = -1, msg = ex.Message });
                 }
             });
         }
@@ -361,13 +363,13 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                     {
                         PubConn.Open();
                         var taskmodel = dal.Get(PubConn, id);
-                        dal.UpdateTaskState(PubConn, id,(int)Core.EnumTaskState.Stop);
+                        dal.UpdateTaskState(PubConn, id, (int)Core.EnumTaskState.Stop);
 
                         tb_command_model m = new tb_command_model()
                         {
                             command = "",
                             commandcreatetime = DateTime.Now,
-                            commandname =  EnumTaskCommandName.UninstallTask.ToString(),
+                            commandname = EnumTaskCommandName.UninstallTask.ToString(),
                             taskid = id,
                             nodeid = taskmodel.nodeid,
                             commandstate = (int)EnumTaskCommandState.None
@@ -438,6 +440,145 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                 {
                     return Json(new { code = -1, msg = ex.Message });
                 }
+            });
+        }
+
+        /// <summary>
+        /// 同步页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Sync()
+        {
+            return this.Visit(Core.EnumUserRole.Admin, () =>
+            {
+                PagedList<tb_tasksyncmapinfo_model> pageList;
+                var list = new List<tb_tasksyncmap_model>();
+                using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                {
+                    tb_tasksyncmap_dal tasksyncdal = new tb_tasksyncmap_dal();
+                    list = tasksyncdal.GetList(PubConn);
+                }
+                var modelList = new List<tb_tasksyncmapinfo_model>();
+                if (list != null && list.Count > 0)
+                {
+                    foreach (var item in list)
+                    {
+                        var fromtaskinfo = TaskHelper.GetTask(item.fromtaskid);
+                        var fromtasknodeinfo = TaskHelper.GetNode(fromtaskinfo.nodeid);
+                        var totaskinfo = TaskHelper.GetTask(item.totaskid);
+                        var totasknodeinfo = TaskHelper.GetNode(totaskinfo.nodeid);
+                        var fromtaskversioninfo = TaskHelper.GetVersion(fromtaskinfo.id, fromtaskinfo.taskversion);
+                        var totaskversioninfo = TaskHelper.GetVersion(totaskinfo.id, totaskinfo.taskversion);
+                        modelList.Add(new tb_tasksyncmapinfo_model
+                        {
+                            id = item.id,
+                            fromtask = new tasksyncinfo { taskid = fromtaskinfo.id, taskname = fromtaskinfo.taskname, nodeid = fromtasknodeinfo.id, nodename = fromtasknodeinfo.nodename, version = fromtaskinfo.taskversion.ToString(), assemblyversion = fromtaskversioninfo.assemblyversion, createtime = fromtaskversioninfo.versioncreatetime.ToString("yyyy-MM-dd HH:mm:ss") },
+                            totask = new tasksyncinfo { taskid = totaskinfo.id, taskname = totaskinfo.taskname, nodeid = totasknodeinfo.id, nodename = totasknodeinfo.nodename, version = totaskinfo.taskversion.ToString(), assemblyversion = totaskversioninfo.assemblyversion, createtime = totaskversioninfo.versioncreatetime.ToString("yyyy-MM-dd HH:mm:ss") },
+                            isdiff = fromtaskversioninfo.assemblyversion != totaskversioninfo.assemblyversion
+                        });
+                    }
+                }
+                pageList = new PagedList<tb_tasksyncmapinfo_model>(modelList.Where(item => item.isdiff), 1, 100);
+                return View(pageList);
+            });
+        }
+
+        /// <summary>
+        /// 同步提交
+        /// </summary>
+        [HttpPost]
+        public JsonResult Sync(string ids, string description)
+        {
+            List<string> idList = ids.Split(',').ToList();
+            return this.Visit(Core.EnumUserRole.Admin, () =>
+            {
+                try
+                {
+                    string currentVersion = "1.0";
+                    var latestVersion = TaskHelper.GetLatestBusinessVersion();
+                    if (latestVersion != null)
+                    {
+                        double version;
+                        double.TryParse(latestVersion.businessversion, out version);
+                        currentVersion = (version + 0.1).ToString("F1");
+                    }
+
+                    List<taskjson_model> taskjsonList = new List<taskjson_model>();
+                    foreach (var item in idList)
+                    {
+                        int id;
+                        int.TryParse(item, out id);
+                        var entity = TaskHelper.GetTaskSyncMap(id);
+                        if (entity != null)
+                        {
+                            //有些任务可能已经删除掉，就不再同步
+                            var totask = TaskHelper.GetTask(entity.totaskid);
+                            var totaskversion = TaskHelper.GetVersion(totask.id, totask.taskversion);
+                            var fromtask = TaskHelper.GetTask(entity.fromtaskid);
+                            var fromtaskversion = TaskHelper.GetVersion(fromtask.id, fromtask.taskversion);
+
+                            if (totask != null)
+                            {
+                                //停止原来的任务
+                                bool result = TaskHelper.AddTaskCommand(new tb_command_model
+                                {
+                                    command = "",
+                                    commandcreatetime = DateTime.Now,
+                                    taskid = totask.id,
+                                    nodeid = totask.nodeid,
+                                    commandname = EnumTaskCommandName.StopTask.ToString(),
+                                    commandstate = (int)EnumTaskCommandState.None
+                                });
+                                //复制源任务到发布任务,s 并启动同步后的任务
+                                var model = new tb_version_model
+                                {
+                                    taskid = totask.id,
+                                    version = totaskversion.version + 1,
+                                    versioncreatetime = DateTime.Now,
+                                    zipfile = fromtaskversion.zipfile,
+                                    zipfilename = fromtaskversion.zipfilename
+                                };
+                                TaskHelper.AddVersion(model);
+                                TaskHelper.AddTaskCommand(new tb_command_model
+                                {
+                                    command = "",
+                                    commandcreatetime = DateTime.Now,
+                                    taskid = totask.id,
+                                    nodeid = totask.nodeid,
+                                    commandname = EnumTaskCommandName.StartTask.ToString(),
+                                    commandstate = (int)EnumTaskCommandState.None
+                                });
+                                totask.taskversion = model.version;
+                                totask.taskupdatetime = DateTime.Now;
+                                totask.businessversion = currentVersion;
+                                TaskHelper.UpdateTask(totask);
+                                taskjsonList.Add(new taskjson_model { id = totask.id, v = model.version });
+                            }
+                        }
+                    }
+                   
+                    using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                    {
+                        PubConn.Open();
+                        tb_businessversion_dal dal = new tb_businessversion_dal();
+                        var result = dal.Add(PubConn, new tb_businessversion_model
+                        {
+                            createtime = DateTime.Now,
+                            businessversion = currentVersion,
+                            description = description,
+                            taskjson = JsonConvert.SerializeObject(taskjsonList)
+                        });
+                        if (!result)
+                        {
+                            return Json(new { code = -1, msg = "业务版本发布失败" });
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { code = 1, msg = ex.Message });
+                }
+                return Json(new { code = 1, msg = "" });
             });
         }
     }

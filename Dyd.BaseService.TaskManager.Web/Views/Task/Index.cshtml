@@ -256,7 +256,9 @@
     <div class="tab_cont">
         @if (role == (int)Dyd.BaseService.TaskManager.Core.EnumUserRole.Admin)
         {
-            <a class="btn1" href="@Url.Action("add", "task")">新增</a>@*
+            <a class="btn1" href="@Url.Action("add", "task")">新增</a>
+            <a class="btn1" href="@Url.Action("sync", "task")">同步</a>
+            @*
             <input type="button" class="btn1" onclick="ChangeMoreState()" value="批量处理" />*@
         }
         <div id="tradelist" class="list">
@@ -267,6 +269,7 @@
                     <th>任务名</th>
                     <th>当前运行状态</th>
                     <th>任务信息</th>
+                    <th>同步版本</th>
                     <th style="width:300px">任务配置</th>
                     <th style="width:100px">操作</th>
                 </tr>
@@ -293,6 +296,7 @@
                             【创建时间】@item.taskcreatetime<br/>
                             【创建人】@item.username<br/>
                         </td>
+                        <td>@item.businessversion</td>
                         <td style="word-break:break-all; text-align:left; vertical-align:top;">@item.taskappconfigjson</td>
                         <td>
                             

@@ -260,6 +260,11 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             {
                 o.task_type = dr["task_type"].Tostring();
             }
+            //
+            if (dr.Table.Columns.Contains("businessversion"))
+            {
+                o.businessversion = dr["businessversion"].Tostring();
+            }
             return o;
         }
 
@@ -319,9 +324,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskmainclassdllfilename", model.taskmainclassdllfilename);
                 ps.Add("@taskversion", model.taskversion);
                 ps.Add("@task_type", model.task_type);
+                ps.Add("@businessversion", model.businessversion);
                 string sql = "Update tb_task Set taskname=@taskname,categoryid=@categoryid,nodeid=@nodeid,taskupdatetime=@taskupdatetime,";
                 sql += "taskappconfigjson=@taskappconfigjson,taskcron=@taskcron,taskcreateuserid=@taskcreateuserid,";
-                sql += "taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark,taskmainclassdllfilename=@taskmainclassdllfilename,taskversion=@taskversion,task_type=@task_type";
+                sql += "taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark,taskmainclassdllfilename=@taskmainclassdllfilename,taskversion=@taskversion,task_type=@task_type,businessversion=@businessversion";
                 sql += " where id=@id";
                 int i = PubConn.ExecuteSql(sql, ps.ToParameters());
                 return i;

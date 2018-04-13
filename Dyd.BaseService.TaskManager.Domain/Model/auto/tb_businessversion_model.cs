@@ -16,13 +16,9 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
         /// </summary>
         public int id { get; set; }
         /// <summary>
-        /// tb_version表id
+        /// json([{"taskid":1,"version":1},{"taskid":1,"version":1}])
         /// </summary>
-        public int versionid { get; set; }
-        /// <summary>
-        /// 任务id
-        /// </summary>
-        public int taskid { get; set; }
+        public string taskjson { get; set; }
         /// <summary>
         /// 业务版本号(1.0)
         /// </summary>

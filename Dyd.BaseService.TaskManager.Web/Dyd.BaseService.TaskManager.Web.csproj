@@ -154,6 +154,7 @@
     <Compile Include="Models\AuthorityCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\LogHelper.cs" />
+    <Compile Include="Tools\TaskHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Cron\cron.js" />
@@ -361,6 +362,7 @@
     <Content Include="Views\Performance\NodeIndex.cshtml" />
     <Content Include="Views\Task\Cron.cshtml" />
     <Content Include="Views\Task\CustomCorn.cshtml" />
+    <Content Include="Views\Task\sync.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
