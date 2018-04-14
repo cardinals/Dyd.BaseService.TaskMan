@@ -24,7 +24,7 @@
                 {
                     foreach (var item in ViewBag.TopVersionList)
                     {
-                        <option value="@item.id" @Html.Raw(string.Format("{0}",ViewBag.CurrentId==item.id?"selected":"")) >@Html.Raw("v" + item.businessversion)</option>
+                        <option value="@item.id" @Html.Raw(string.Format("{0}",ViewBag.CurrentId==item.id?"selected":"")) >@Html.Raw(string.Format("v{0}({1})", item.businessversion,item.createtime.ToString("yyyy.MM.dd")))</option>
                     }
                 }
             </select>
