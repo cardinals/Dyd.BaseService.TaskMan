@@ -362,7 +362,8 @@
     <Content Include="Views\Performance\NodeIndex.cshtml" />
     <Content Include="Views\Task\Cron.cshtml" />
     <Content Include="Views\Task\CustomCorn.cshtml" />
-    <Content Include="Views\Task\sync.cshtml" />
+    <Content Include="Views\Task\Sync.cshtml" />
+    <Content Include="Views\Task\Rollback.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -478,7 +478,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                         });
                     }
                 }
-                pageList = new PagedList<tb_tasksyncmapinfo_model>(modelList.Where(item => item.isdiff), 1, 100);
+                pageList = new PagedList<tb_tasksyncmapinfo_model>(modelList.Where(item => item.isdiff), 1, 1000);
                 return View(pageList);
             });
         }
@@ -504,21 +504,18 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                     }
 
                     List<taskjson_model> taskjsonList = new List<taskjson_model>();
-                    foreach (var item in idList)
+                    List<tb_tasksyncmap_model> tasksynclist = TaskHelper.GetTaskSyncMapList();
+                    foreach (var item in tasksynclist)
                     {
-                        int id;
-                        int.TryParse(item, out id);
-                        var entity = TaskHelper.GetTaskSyncMap(id);
-                        if (entity != null)
+                        if (idList.Exists(id => id == item.id.ToString()))
                         {
                             //有些任务可能已经删除掉，就不再同步
-                            var totask = TaskHelper.GetTask(entity.totaskid);
-                            var totaskversion = TaskHelper.GetVersion(totask.id, totask.taskversion);
-                            var fromtask = TaskHelper.GetTask(entity.fromtaskid);
-                            var fromtaskversion = TaskHelper.GetVersion(fromtask.id, fromtask.taskversion);
-
+                            var totask = TaskHelper.GetTask(item.totaskid);
                             if (totask != null)
                             {
+                                var totaskversion = TaskHelper.GetVersion(totask.id, totask.taskversion);
+                                var fromtask = TaskHelper.GetTask(item.fromtaskid);
+                                var fromtaskversion = TaskHelper.GetVersion(fromtask.id, fromtask.taskversion);
                                 //停止原来的任务
                                 bool result = TaskHelper.AddTaskCommand(new tb_command_model
                                 {
@@ -529,7 +526,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                                     commandname = EnumTaskCommandName.StopTask.ToString(),
                                     commandstate = (int)EnumTaskCommandState.None
                                 });
-                                //复制源任务到发布任务,s 并启动同步后的任务
+                                //复制源任务到发布任务,并启动同步后的任务
                                 var model = new tb_version_model
                                 {
                                     taskid = totask.id,
@@ -552,11 +549,19 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                                 totask.taskupdatetime = DateTime.Now;
                                 totask.businessversion = currentVersion;
                                 TaskHelper.UpdateTask(totask);
-                                taskjsonList.Add(new taskjson_model { id = totask.id, v = model.version });
+                                taskjsonList.Add(new taskjson_model { id = totask.id, v = model.version, n = 1 });
+                            }
+                        }
+                        else
+                        {
+                            var totask = TaskHelper.GetTask(item.totaskid);
+                            if (totask != null)
+                            {
+                                taskjsonList.Add(new taskjson_model { id = totask.id, v = totask.taskversion, n = 0 });
                             }
                         }
                     }
-                   
+
                     using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
                     {
                         PubConn.Open();
@@ -576,9 +581,175 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                 }
                 catch (Exception ex)
                 {
-                    return Json(new { code = 1, msg = ex.Message });
+                    return Json(new { code = -1, msg = ex.Message });
                 }
                 return Json(new { code = 1, msg = "" });
+            });
+        }
+
+        /// <summary>
+        /// 回滚操作页面
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult RollbackView(int id = 0)
+        {
+            return this.Visit(Core.EnumUserRole.Admin, () =>
+            {
+                var topversionlist = TaskHelper.GetBusinessVersionList(20);
+                if (topversionlist.Count == 0)
+                {
+                    return RedirectToAction("Sync");
+                }
+                ViewBag.TopVersionList = topversionlist;
+                PagedList<tasksyncinfo> pageList;
+                var currentVersion = TaskHelper.GetLatestBusinessVersion();
+                if (id > 0)
+                {
+                    currentVersion = TaskHelper.GetBusinessVersion(id);
+                }
+                ViewBag.CurrentId = id;
+                var modelList = new List<tasksyncinfo>();
+                if (currentVersion != null)
+                {
+                    ViewBag.VersionTime = currentVersion.createtime.ToString("yyyy-MM-dd HH:mm:ss");
+                    ViewBag.Description = currentVersion.description;
+                    var taskList = GetTaskJsonList(currentVersion.taskjson);
+                    foreach (var item in taskList)
+                    {
+                        if (item.n == 1)
+                        {
+                            var taskinfo = TaskHelper.GetTask(item.id);
+                            if (taskinfo != null)
+                            {
+                                var tasknodeinfo = TaskHelper.GetNode(taskinfo.nodeid);
+                                var taskversioninfo = TaskHelper.GetVersion(item.id, item.v);
+                                modelList.Add(new tasksyncinfo
+                                {
+                                    taskid = taskinfo.id,
+                                    taskname = taskinfo.taskname,
+                                    nodename = tasknodeinfo == null ? "" : tasknodeinfo.nodename,
+                                    version = item.v.ToString(),
+                                    assemblyversion = taskversioninfo != null ? taskversioninfo.assemblyversion : "",
+                                    createtime = taskversioninfo != null ? taskversioninfo.versioncreatetime.ToString("yyyy-MM-dd HH:mm:ss") : string.Empty,
+                                    nodeid = tasknodeinfo == null ? 0 : tasknodeinfo.id
+                                });
+                            }
+                        }
+                    }
+                }
+                pageList = new PagedList<tasksyncinfo>(modelList, 1, 1000);
+                return View("rollback",pageList);
+            });
+        }
+
+        private List<taskjson_model> GetTaskJsonList(string json)
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<List<taskjson_model>>(json);
+            }
+            catch
+            {
+                return new List<taskjson_model>();
+            }
+        }
+
+
+        /// <summary>
+        /// 回滚
+        /// </summary>
+        /// <param name="versionid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult Rollback(int versionid)
+        {
+            return this.Visit(Core.EnumUserRole.Admin, () =>
+            {
+                try
+                {
+                    string currentVersion = "1.01";
+                    var latestVersion = TaskHelper.GetLatestBusinessVersion();
+                    if (latestVersion != null)
+                    {
+                        double version;
+                        double.TryParse(latestVersion.businessversion, out version);
+                        currentVersion = (version + 0.01).ToString("F2");
+                    }
+
+                    List<taskjson_model> taskjsonList = new List<taskjson_model>();
+                    var versioninfo = TaskHelper.GetBusinessVersion(versionid);
+                    if (versioninfo != null)
+                    {
+                        var taskList = GetTaskJsonList(versioninfo.taskjson);
+                        foreach (var item in taskList)
+                        {
+                            var totask = TaskHelper.GetTask(item.id);
+                            if (totask != null)
+                            {
+                                var totaskversion = TaskHelper.GetVersion(totask.id, totask.taskversion);
+                                var fromtaskversion = TaskHelper.GetVersion(totask.id, item.v);
+                                //停止原来的任务
+                                bool result = TaskHelper.AddTaskCommand(new tb_command_model
+                                {
+                                    command = "",
+                                    commandcreatetime = DateTime.Now,
+                                    taskid = totask.id,
+                                    nodeid = totask.nodeid,
+                                    commandname = EnumTaskCommandName.StopTask.ToString(),
+                                    commandstate = (int)EnumTaskCommandState.None
+                                });
+                                var model = new tb_version_model
+                                {
+                                    taskid = totask.id,
+                                    version = totaskversion.version + 1,
+                                    versioncreatetime = DateTime.Now,
+                                    zipfile = fromtaskversion.zipfile,
+                                    zipfilename = fromtaskversion.zipfilename
+                                };
+                                TaskHelper.AddVersion(model);
+                                TaskHelper.AddTaskCommand(new tb_command_model
+                                {
+                                    command = "",
+                                    commandcreatetime = DateTime.Now,
+                                    taskid = totask.id,
+                                    nodeid = totask.nodeid,
+                                    commandname = EnumTaskCommandName.StartTask.ToString(),
+                                    commandstate = (int)EnumTaskCommandState.None
+                                });
+                                totask.taskversion = model.version;
+                                totask.taskupdatetime = DateTime.Now;
+                                totask.businessversion = currentVersion;
+                                TaskHelper.UpdateTask(totask);
+                                taskjsonList.Add(new taskjson_model { id = totask.id, v = model.version, n = 1 });
+                            }
+                        }
+                        using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                        {
+                            PubConn.Open();
+                            tb_businessversion_dal dal = new tb_businessversion_dal();
+                            var result = dal.Add(PubConn, new tb_businessversion_model
+                            {
+                                createtime = DateTime.Now,
+                                businessversion = currentVersion,
+                                description = "【回滚操作】" + versioninfo.description,
+                                taskjson = JsonConvert.SerializeObject(taskjsonList)
+                            });
+                            if (!result)
+                            {
+                                return Json(new { code = -1, msg = "回滚版本发布失败" });
+                            }
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { code = -1, msg = "版本不存在" });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { code = -1, msg = ex.Message });
+                }
+                return Json(new { code = 1, msg = "回滚成功" });
             });
         }
     }

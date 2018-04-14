@@ -90,5 +90,32 @@ namespace Dyd.BaseService.TaskManager.Web.Tools
                 return dal.UpdateTask(PubConn, model);
             }
         }
+
+        public static List<tb_tasksyncmap_model> GetTaskSyncMapList()
+        {
+            using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+            {
+                tb_tasksyncmap_dal tasksyncdal = new tb_tasksyncmap_dal();
+                return tasksyncdal.GetList(PubConn);
+            }
+        }
+
+        public static List<tb_businessversion_model> GetBusinessVersionList(int topCount)
+        {
+            using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+            {
+                tb_businessversion_dal dal = new tb_businessversion_dal();
+                return dal.GetList(PubConn, topCount);
+            }
+        }
+
+        public static tb_businessversion_model GetBusinessVersion(int id)
+        {
+            using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+            {
+                tb_businessversion_dal dal = new tb_businessversion_dal();
+                return dal.Get(PubConn, id);
+            }
+        }
     }
 }

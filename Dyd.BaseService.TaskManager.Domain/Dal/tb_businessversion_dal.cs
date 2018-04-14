@@ -31,5 +31,29 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 return null;
             });
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="PubConn"></param>
+        /// <returns></returns>
+        public List<tb_businessversion_model> GetList(DbConn PubConn, int topCount = 20)
+        {
+            List<tb_businessversion_model> model = new List<tb_businessversion_model>();
+
+            DataSet dsList = SqlHelper.Visit<DataSet>(ps =>
+            {
+                string sql = $"SELECT top {topCount} * FROM [ky_monitor].[dbo].[tb_businessversion] ORDER BY ID DESC";
+                DataSet ds = new DataSet();
+                PubConn.SqlToDataSet(ds, sql, ps.ToParameters());
+                return ds;
+            });
+            foreach (DataRow dr in dsList.Tables[0].Rows)
+            {
+                tb_businessversion_model m = CreateModel(dr);
+                model.Add(m);
+            }
+            return model;
+        }
     }
 }

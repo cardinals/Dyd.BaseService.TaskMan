@@ -13,13 +13,17 @@
     .totask {
         width:500px;text-align: left!important
     }
+    .toolbar {margin: 0px 0px 5px 0px
+    }
 </style>
 <div class="head">
     <div class="title">同步发布</div>
 </div>
 <div class="orderlist m10 myorder">
     <div class="tab_cont">
-        <input type="button" class="btn1" value="同步" onclick="sync();" />
+        <div class="toolbar">
+            <input type="button" class="btn1" value="同步" onclick="sync();" />
+        </div>
         <div id="tradelist" class="list">
 @if (Model.Count > 0)
 {
