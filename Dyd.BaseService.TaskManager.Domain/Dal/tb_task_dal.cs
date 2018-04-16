@@ -11,10 +11,10 @@ using Dyd.BaseService.TaskManager.Core;
 
 namespace Dyd.BaseService.TaskManager.Domain.Dal
 {
-	
-	public partial class tb_task_dal
+
+    public partial class tb_task_dal
     {
-        public List<int> GetTaskIDsByState(DbConn PubConn, int taskstate,int nodeid)
+        public List<int> GetTaskIDsByState(DbConn PubConn, int taskstate, int nodeid)
         {
             return SqlHelper.Visit(ps =>
             {
@@ -60,7 +60,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 
         }
 
-        public List<tb_tasklist_model> GetList(DbConn PubConn, string taskid, string keyword, string CStime, string CEtime, int categoryid, int nodeid ,int userid, int state , int pagesize, int pageindex, out int count)
+        public List<tb_tasklist_model> GetList(DbConn PubConn, string taskid, string keyword, string CStime, string CEtime, int categoryid, int nodeid, int userid, int state, int pagesize, int pageindex, out int count)
         {
             int _count = 0;
             List<tb_tasklist_model> model = new List<tb_tasklist_model>();
@@ -102,7 +102,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                     ps.Add("taskcreateuserid", userid);
                     sqlwhere += " and T.taskcreateuserid=@taskcreateuserid";
                 }
-                DateTime d=DateTime.Now;
+                DateTime d = DateTime.Now;
                 if (DateTime.TryParse(CStime, out d))
                 {
                     ps.Add("CStime", Convert.ToDateTime(CStime));
@@ -293,7 +293,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskerrorcount", 0);
                 ps.Add("@taskruncount", 0);
                 ps.Add("@taskcreateuserid", model.taskcreateuserid);
-                ps.Add("@taskstate",0);
+                ps.Add("@taskstate", 0);
                 ps.Add("@taskversion", 1);
                 ps.Add("@taskappconfigjson", model.taskappconfigjson.NullToEmpty());
                 ps.Add("@taskcron", model.taskcron);
@@ -324,7 +324,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskmainclassdllfilename", model.taskmainclassdllfilename);
                 ps.Add("@taskversion", model.taskversion);
                 ps.Add("@task_type", model.task_type);
-                ps.Add("@businessversion", model.businessversion);
+                ps.Add("@businessversion", string.IsNullOrEmpty(model.businessversion) ? "" : model.businessversion);
                 string sql = "Update tb_task Set taskname=@taskname,categoryid=@categoryid,nodeid=@nodeid,taskupdatetime=@taskupdatetime,";
                 sql += "taskappconfigjson=@taskappconfigjson,taskcron=@taskcron,taskcreateuserid=@taskcreateuserid,";
                 sql += "taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark,taskmainclassdllfilename=@taskmainclassdllfilename,taskversion=@taskversion,task_type=@task_type,businessversion=@businessversion";
@@ -378,6 +378,6 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 return i > 0;
             });
         }
-        
+
     }
 }

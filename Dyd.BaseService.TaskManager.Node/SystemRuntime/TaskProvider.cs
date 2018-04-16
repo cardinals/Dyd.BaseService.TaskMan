@@ -57,6 +57,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             CompressHelper.UnCompress(filelocalcachepath, fileinstallpath);
             //拷贝共享程序集
             XXF.Common.IOHelper.CopyDirectory(taskshareddlldir, fileinstallpath);
+            LogHelper.AddTaskLog($"原程序集版本：{taskruntimeinfo.TaskVersionModel.assemblyversion}", taskid);
+            LogHelper.AddTaskLog($"程序集文件：{fileinstallmainclassdllpath}",taskid);
             string assemblyVersion = GetAssemblyVersion(fileinstallmainclassdllpath);
             try
             {
@@ -96,7 +98,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     taskdal.Edit(c, taskruntimeinfo.TaskModel);
                     taskdal.UpdateTaskState(c, taskid, (int)EnumTaskState.Running);
                     //程序集版本更新
-                    if (!string.IsNullOrEmpty(assemblyVersion)) {
+                    if (!string.IsNullOrEmpty(assemblyVersion))
+                    {
                         if (taskruntimeinfo.TaskVersionModel.assemblyversion != assemblyVersion)
                         {
                             taskruntimeinfo.TaskVersionModel.assemblyversion = assemblyVersion;
@@ -127,7 +130,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             {
                 try
                 {
-                    var assembly = Assembly.LoadFrom(fileName);
+                    byte[] buffer = System.IO.File.ReadAllBytes(fileName);//不要用LoadFile去加载，那样会锁住文件，在下次启动时对文件覆盖就被占用
+                    var assembly = Assembly.Load(buffer);
                     Regex reg = new Regex("Version=([^,]+)");
                     var m = reg.Match(assembly.FullName);
                     if (m.Success && m.Groups.Count > 1)
