@@ -58,7 +58,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             //拷贝共享程序集
             XXF.Common.IOHelper.CopyDirectory(taskshareddlldir, fileinstallpath);
             LogHelper.AddTaskLog($"原程序集版本：{taskruntimeinfo.TaskVersionModel.assemblyversion}", taskid);
-            LogHelper.AddTaskLog($"程序集文件：{fileinstallmainclassdllpath}",taskid);
+            //LogHelper.AddTaskLog($"程序集文件：{fileinstallmainclassdllpath}",taskid);
             string assemblyVersion = GetAssemblyVersion(fileinstallmainclassdllpath);
             try
             {
