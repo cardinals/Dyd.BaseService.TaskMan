@@ -11,33 +11,71 @@ namespace Dyd.BaseService.TaskManager.Web.Tools
 {
     public class TaskHelper
     {
-        public static tb_task_model GetTask(int id)
+        public static tb_task_model GetTask(int id, DbConn conn = null)
         {
             tb_task_dal dal = new tb_task_dal();
-            using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+            if (conn == null)
             {
-                PubConn.Open();
-                return dal.Get(PubConn, id);
+                using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                {
+                    PubConn.Open();
+                    return dal.Get(PubConn, id);
+                }
+            }
+            else
+            {
+                return dal.Get(conn, id);
             }
         }
 
-        public static tb_node_model GetNode(int id)
+        public static tb_node_model GetNode(int id, DbConn conn = null)
         {
             tb_node_dal dal = new tb_node_dal();
-            using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+            if (conn == null)
             {
-                PubConn.Open();
-                return dal.Get(PubConn, id);
+                using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                {
+                    PubConn.Open();
+                    return dal.Get(PubConn, id);
+                }
+            }
+            else
+            {
+                return dal.Get(conn, id);
             }
         }
 
-        public static tb_version_model GetVersion(int taskid, int version)
+        public static tb_version_model GetVersion(int taskid, int version, DbConn conn = null)
         {
             tb_version_dal dal = new tb_version_dal();
-            using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+            if (conn == null)
             {
-                PubConn.Open();
-                return dal.GetCurrentVersion(PubConn, taskid, version);
+                using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                {
+                    PubConn.Open();
+                    return dal.GetCurrentVersion(PubConn, taskid, version);
+                }
+            }
+            else
+            {
+                return dal.GetCurrentVersion(conn, taskid, version);
+            }
+        }
+
+        public static tb_version_model GetSimpleVersion(int taskid, int version, DbConn conn = null)
+        {
+            tb_version_dal dal = new tb_version_dal();
+            if (conn == null)
+            {
+                using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                {
+                    PubConn.Open();
+                    return dal.GetSimpleVersion(PubConn, taskid, version);
+                }
+            }
+            else
+            {
+                return dal.GetSimpleVersion(conn, taskid, version);
             }
         }
 

@@ -455,31 +455,33 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                 var list = new List<tb_tasksyncmap_model>();
                 using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
                 {
+                    PubConn.Open();
                     tb_tasksyncmap_dal tasksyncdal = new tb_tasksyncmap_dal();
                     list = tasksyncdal.GetList(PubConn);
-                }
-                var modelList = new List<tb_tasksyncmapinfo_model>();
-                if (list != null && list.Count > 0)
-                {
-                    foreach (var item in list)
+
+                    var modelList = new List<tb_tasksyncmapinfo_model>();
+                    if (list != null && list.Count > 0)
                     {
-                        var fromtaskinfo = TaskHelper.GetTask(item.fromtaskid);
-                        var fromtasknodeinfo = TaskHelper.GetNode(fromtaskinfo.nodeid);
-                        var totaskinfo = TaskHelper.GetTask(item.totaskid);
-                        var totasknodeinfo = TaskHelper.GetNode(totaskinfo.nodeid);
-                        var fromtaskversioninfo = TaskHelper.GetVersion(fromtaskinfo.id, fromtaskinfo.taskversion);
-                        var totaskversioninfo = TaskHelper.GetVersion(totaskinfo.id, totaskinfo.taskversion);
-                        modelList.Add(new tb_tasksyncmapinfo_model
+                        foreach (var item in list)
                         {
-                            id = item.id,
-                            fromtask = new tasksyncinfo { taskid = fromtaskinfo.id, taskname = fromtaskinfo.taskname, nodeid = fromtasknodeinfo.id, nodename = fromtasknodeinfo.nodename, version = fromtaskinfo.taskversion.ToString(), assemblyversion = fromtaskversioninfo.assemblyversion, createtime = fromtaskversioninfo.versioncreatetime.ToString("yyyy-MM-dd HH:mm:ss") },
-                            totask = new tasksyncinfo { taskid = totaskinfo.id, taskname = totaskinfo.taskname, nodeid = totasknodeinfo.id, nodename = totasknodeinfo.nodename, version = totaskinfo.taskversion.ToString(), assemblyversion = totaskversioninfo.assemblyversion, createtime = totaskversioninfo.versioncreatetime.ToString("yyyy-MM-dd HH:mm:ss") },
-                            isdiff = fromtaskversioninfo.assemblyversion != totaskversioninfo.assemblyversion
-                        });
+                            var fromtaskinfo = TaskHelper.GetTask(item.fromtaskid, PubConn);
+                            var fromtasknodeinfo = TaskHelper.GetNode(fromtaskinfo.nodeid, PubConn);
+                            var totaskinfo = TaskHelper.GetTask(item.totaskid, PubConn);
+                            var totasknodeinfo = TaskHelper.GetNode(totaskinfo.nodeid, PubConn);
+                            var fromtaskversioninfo = TaskHelper.GetSimpleVersion(fromtaskinfo.id, fromtaskinfo.taskversion, PubConn);
+                            var totaskversioninfo = TaskHelper.GetSimpleVersion(totaskinfo.id, totaskinfo.taskversion, PubConn);
+                            modelList.Add(new tb_tasksyncmapinfo_model
+                            {
+                                id = item.id,
+                                fromtask = new tasksyncinfo { taskid = fromtaskinfo.id, taskname = fromtaskinfo.taskname, nodeid = fromtasknodeinfo.id, nodename = fromtasknodeinfo.nodename, version = fromtaskinfo.taskversion.ToString(), assemblyversion = fromtaskversioninfo.assemblyversion, createtime = fromtaskversioninfo.versioncreatetime.ToString("yyyy-MM-dd HH:mm:ss") },
+                                totask = new tasksyncinfo { taskid = totaskinfo.id, taskname = totaskinfo.taskname, nodeid = totasknodeinfo.id, nodename = totasknodeinfo.nodename, version = totaskinfo.taskversion.ToString(), assemblyversion = totaskversioninfo.assemblyversion, createtime = totaskversioninfo.versioncreatetime.ToString("yyyy-MM-dd HH:mm:ss") },
+                                isdiff = fromtaskversioninfo.assemblyversion != totaskversioninfo.assemblyversion
+                            });
+                        }
                     }
+                    pageList = new PagedList<tb_tasksyncmapinfo_model>(modelList.Where(item => item.isdiff), 1, 1000);
+                    return View(pageList);
                 }
-                pageList = new PagedList<tb_tasksyncmapinfo_model>(modelList.Where(item => item.isdiff), 1, 1000);
-                return View(pageList);
             });
         }
 
@@ -622,7 +624,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                             if (taskinfo != null)
                             {
                                 var tasknodeinfo = TaskHelper.GetNode(taskinfo.nodeid);
-                                var taskversioninfo = TaskHelper.GetVersion(item.id, item.v);
+                                var taskversioninfo = TaskHelper.GetSimpleVersion(item.id, item.v);
                                 modelList.Add(new tasksyncinfo
                                 {
                                     taskid = taskinfo.id,
@@ -638,7 +640,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                     }
                 }
                 pageList = new PagedList<tasksyncinfo>(modelList, 1, 1000);
-                return View("rollback",pageList);
+                return View("rollback", pageList);
             });
         }
 
