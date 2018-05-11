@@ -34,7 +34,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemMonitor
             SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
                 {
                     tb_task_dal taskdal = new tb_task_dal();
-                    taskids = taskdal.GetTaskIDsByState(c, (int)EnumTaskState.Stop,GlobalConfig.NodeID);
+                    taskids = taskdal.GetTaskIDsByState(c, (int) EnumTaskState.Stop, GlobalConfig.NodeID, onlyTask:true);
                 });
             List<int> currentscantaskids = new List<int>();
             foreach (var taskid in taskids)

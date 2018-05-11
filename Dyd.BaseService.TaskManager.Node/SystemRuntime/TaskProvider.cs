@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using Dyd.BaseService.TaskManager.Core;
@@ -55,48 +57,106 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             CompressHelper.UnCompress(filelocalcachepath, fileinstallpath);
             //拷贝共享程序集
             XXF.Common.IOHelper.CopyDirectory(taskshareddlldir, fileinstallpath);
-            try
+            if(taskruntimeinfo.TaskModel.task_type==TaskType.Service.Code)
             {
-                var dlltask = new AppDomainLoader<BaseDllTask>().Load(fileinstallmainclassdllpath, taskruntimeinfo.TaskModel.taskmainclassnamespace, out taskruntimeinfo.Domain);
-              //  dlltask.Domain = taskruntimeinfo.Domain;
-                var sdktaskmodel = new XXF.BaseService.TaskManager.model.tb_task_model();
-                PropertyHelper.Copy(taskruntimeinfo.TaskModel, sdktaskmodel);
-                dlltask.SystemRuntimeInfo = new TaskSystemRuntimeInfo()
+                try
                 {
-                    TaskConnectString = GlobalConfig.TaskDataBaseConnectString,
-                    TaskModel = sdktaskmodel
-                };
 
-                dlltask.AppConfig = new TaskAppConfigInfo();
-                if (!string.IsNullOrEmpty(taskruntimeinfo.TaskModel.taskappconfigjson))
-                {
-                    dlltask.AppConfig = new XXF.Serialization.JsonHelper().Deserialize<TaskAppConfigInfo>(taskruntimeinfo.TaskModel.taskappconfigjson);
-                }
-                taskruntimeinfo.DllTask = dlltask;
-                if (dlltask is IMicroService)
-                {
-                    taskruntimeinfo.TaskModel.task_type = TaskType.Service.Code;
-                }
-                else
-                {
-                    taskruntimeinfo.TaskModel.task_type = TaskType.Task.Code;
 
+                    Process result = new Process
+                    {
+                        StartInfo = new ProcessStartInfo
+                        {
+
+                            FileName = fileinstallmainclassdllpath,
+                            Arguments = taskruntimeinfo.TaskModel
+                                .taskappconfigjson,
+                            UseShellExecute = false,
+                            RedirectStandardOutput = true,
+                            CreateNoWindow = true
+                        }
+                    };
+                    result.Start();
+                    while (!result.StandardOutput.EndOfStream)
+                    {
+                        string line = result.StandardOutput.ReadLine();
+                        // do something with line
+                        LogHelper.AddTaskLog(line, taskid);
+                    }
+
+                   
                 }
-                bool r = TaskPoolManager.CreateInstance().Add(taskid.ToString(), taskruntimeinfo);
+
+                catch (Exception ex)
+                {
+                    LogHelper.AddTaskLog(ex.Message,taskid);
+                    return false;
+                }
+
                 SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
                 {
                     tb_task_dal taskdal = new tb_task_dal();
                     //更新类型 
                     taskdal.Edit(c, taskruntimeinfo.TaskModel);
-                    taskdal.UpdateTaskState(c, taskid, (int)EnumTaskState.Running);
+                    taskdal.UpdateTaskState(c, taskid, (int) EnumTaskState.Running);
                 });
                 LogHelper.AddTaskLog("节点开启任务成功", taskid);
-                return r;
+                return true;
+
             }
-            catch (Exception exp)
+            else
             {
-                DisposeTask(taskid, taskruntimeinfo,true);
-                throw exp;
+
+
+
+                try
+                {
+                    var dlltask = new AppDomainLoader<BaseDllTask>().Load(fileinstallmainclassdllpath,
+                        taskruntimeinfo.TaskModel.taskmainclassnamespace, out taskruntimeinfo.Domain);
+                    //  dlltask.Domain = taskruntimeinfo.Domain;
+                    var sdktaskmodel = new XXF.BaseService.TaskManager.model.tb_task_model();
+                    PropertyHelper.Copy(taskruntimeinfo.TaskModel, sdktaskmodel);
+                    dlltask.SystemRuntimeInfo = new TaskSystemRuntimeInfo()
+                    {
+                        TaskConnectString = GlobalConfig.TaskDataBaseConnectString,
+                        TaskModel = sdktaskmodel
+                    };
+
+                    dlltask.AppConfig = new TaskAppConfigInfo();
+                    if (!string.IsNullOrEmpty(taskruntimeinfo.TaskModel.taskappconfigjson))
+                    {
+                        dlltask.AppConfig =
+                            new XXF.Serialization.JsonHelper().Deserialize<TaskAppConfigInfo>(taskruntimeinfo.TaskModel
+                                .taskappconfigjson);
+                    }
+
+                    taskruntimeinfo.DllTask = dlltask;
+                 /*   if (dlltask is IMicroService)
+                    {
+                        taskruntimeinfo.TaskModel.task_type = TaskType.Service.Code;
+                    }
+                    else
+                    {
+                        taskruntimeinfo.TaskModel.task_type = TaskType.Task.Code;
+
+                    }*/
+
+                    bool r = TaskPoolManager.CreateInstance().Add(taskid.ToString(), taskruntimeinfo);
+                    SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
+                    {
+                        tb_task_dal taskdal = new tb_task_dal();
+                        //更新类型 
+                        taskdal.Edit(c, taskruntimeinfo.TaskModel);
+                        taskdal.UpdateTaskState(c, taskid, (int) EnumTaskState.Running);
+                    });
+                    LogHelper.AddTaskLog("节点开启任务成功", taskid);
+                    return r;
+                }
+                catch (Exception exp)
+                {
+                    DisposeTask(taskid, taskruntimeinfo, true);
+                    throw exp;
+                }
             }
         }
 
@@ -160,7 +220,26 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             {
                 throw new Exception("任务不在运行中");
             }
-            var r= DisposeTask(taskid, taskruntimeinfo,true);
+
+            bool r;
+            if (taskruntimeinfo.TaskModel.task_type == TaskType.Service.Code)
+            {
+                try
+                {
+                    taskruntimeinfo.Process.Kill();
+                    r = true;
+                }
+                catch (Exception e)
+                {
+                    r = false;
+                }
+                LogHelper.AddTaskLog("节点卸载任务成功", taskid);
+            }
+            else
+            {
+
+               r= DisposeTask(taskid, taskruntimeinfo, true);
+            }
 
             SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
             {

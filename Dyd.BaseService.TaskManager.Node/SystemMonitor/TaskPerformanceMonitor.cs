@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Dyd.BaseService.TaskManager.Core;
 using Dyd.BaseService.TaskManager.Domain.Dal;
 using Dyd.BaseService.TaskManager.Node.Tools;
+using XXF.BaseService.TaskManager.SystemRuntime;
 using XXF.ProjectTool;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemMonitor
@@ -31,6 +32,9 @@ namespace Dyd.BaseService.TaskManager.Node.SystemMonitor
                 try
                 {
                     if (taskruntimeinfo == null)
+                        continue;
+                    /*如果dispose，skip*/
+                    if(taskruntimeinfo.DllTask.SafeDisposeOperator.DisposedState!=TaskDisposedState.None)
                         continue;
                     string fileinstallpath = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + GlobalConfig.TaskDllDir + @"\" + taskruntimeinfo.TaskModel.id;
                     double dirsizeM = -1;

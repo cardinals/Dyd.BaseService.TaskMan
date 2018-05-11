@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,5 +37,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         /// 任务锁机制,用于执行状态的锁定，保证任务单次运行
         /// </summary>
         public TaskLock TaskLock;
+
+        public Process Process { get; set; }
     }
 }

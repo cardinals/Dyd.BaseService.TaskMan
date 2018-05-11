@@ -28,6 +28,7 @@ namespace Dyd.BaseService.TaskManager.Node
             thread = new System.Threading.Thread(Running);
             thread.IsBackground = true;
             thread.Start();
+           
         }
         /// <summary>
         /// 运行处理循环
@@ -35,7 +36,7 @@ namespace Dyd.BaseService.TaskManager.Node
         public static void Run()
         { }
 
-        static void Running()
+       static void Running()
         {
             //lastMaxID = 0;//仅测试
             RecoveryStartTasks();

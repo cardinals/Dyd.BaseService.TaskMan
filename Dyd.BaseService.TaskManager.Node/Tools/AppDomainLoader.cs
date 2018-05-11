@@ -27,6 +27,7 @@ namespace Dyd.BaseService.TaskManager.Node.Tools
             setup.ShadowCopyFiles = "true";
             setup.ApplicationBase = System.IO.Path.GetDirectoryName(dllpath);
             
+            
             domain = AppDomain.CreateDomain(System.IO.Path.GetFileName(dllpath), null, setup);
             domain.UnhandledException += Domain_UnhandledException;
             AppDomain.MonitoringIsEnabled = true;
@@ -38,6 +39,8 @@ namespace Dyd.BaseService.TaskManager.Node.Tools
         {
             Exception e = (Exception)args.ExceptionObject;
             LogHelper.AddNodeError($"异常{e.Message}",e);
+              
+        
         }
 
 
@@ -48,8 +51,20 @@ namespace Dyd.BaseService.TaskManager.Node.Tools
         /// <param name="domain"></param>
         public void UnLoad(AppDomain domain)
         {
-            AppDomain.Unload(domain);
+            try
+            {
+                AppDomain.Unload(domain);
+            
+              
+            }
+            catch (CannotUnloadAppDomainException)
+            {
+                GC.Collect();
+                AppDomain.Unload(domain);
+            }
             domain = null;
+           
+            
         }
     }
 }
