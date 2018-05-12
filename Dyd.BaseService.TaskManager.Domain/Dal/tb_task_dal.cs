@@ -14,14 +14,19 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 	
 	public partial class tb_task_dal
     {
-        public List<int> GetTaskIDsByState(DbConn PubConn, int taskstate,int nodeid)
+        public List<int> GetTaskIDsByState(DbConn PubConn, int taskstate,int nodeid,bool onlyTask=false)
         {
             return SqlHelper.Visit(ps =>
             {
                 ps.Add("@taskstate", taskstate);
                 ps.Add("@nodeid", nodeid);
                 StringBuilder stringSql = new StringBuilder();
-                stringSql.Append(@"select id from tb_task s where s.taskstate=@taskstate and s.nodeid=@nodeid");
+                if(onlyTask)
+                    stringSql.Append(@"select id from tb_task s where s.taskstate=@taskstate and s.nodeid=@nodeid and task_type<>'service'");
+                else
+                {
+                    stringSql.Append(@"select id from tb_task s where s.taskstate=@taskstate and s.nodeid=@nodeid");
+                }
                 DataSet ds = new DataSet();
                 PubConn.SqlToDataSet(ds, stringSql.ToString(), ps.ToParameters());
                 List<int> rs = new List<int>();

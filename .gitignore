@@ -7,3 +7,5 @@ packages/
 bin/
 obj/
 obj
+/.vs
+/.idea
