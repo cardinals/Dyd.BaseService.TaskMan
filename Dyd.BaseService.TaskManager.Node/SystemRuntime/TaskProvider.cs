@@ -84,13 +84,12 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                         LogHelper.AddTaskLog(line, taskid);
                     }
 
-                   
-                }
 
+                }
                 catch (Exception ex)
                 {
-                    LogHelper.AddTaskLog(ex.Message,taskid);
-                    return false;
+                    LogHelper.AddTaskLog($"节点开启任务失败{ex.Message}", taskid);
+                    throw;
                 }
 
                 SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
