@@ -28,6 +28,24 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             });
         }
 
+        public virtual tb_version_model GetSimpleVersion(DbConn PubConn, int taskid, int version)
+        {
+            return SqlHelper.Visit(ps =>
+            {
+                ps.Add("@taskid", taskid);
+                ps.Add("@version", version);
+                StringBuilder stringSql = new StringBuilder();
+                stringSql.Append(@"select id,taskid,version,versioncreatetime,zipfilename,assemblyversion from tb_version(nolock) s where s.taskid=@taskid and s.version=@version");
+                DataSet ds = new DataSet();
+                PubConn.SqlToDataSet(ds, stringSql.ToString(), ps.ToParameters());
+                if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
+                {
+                    return CreateModel(ds.Tables[0].Rows[0]);
+                }
+                return null;
+            });
+        }
+
         public int GetVersion(DbConn PubConn, int taskid)
         {
             return SqlHelper.Visit(ps =>
@@ -54,6 +72,25 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                     model.Add(m);
                 }
                 return model;
+            });
+        }
+
+        /// <summary>
+        /// 指定任务的程序集版本更新
+        /// </summary>
+        /// <param name="PubConn"></param>
+        /// <param name="id"></param>
+        /// <param name="assemblyversion"></param>
+        /// <returns></returns>
+        public int UpdateAssemblyVersion(DbConn PubConn, int id, string assemblyversion)
+        {
+            return SqlHelper.Visit(ps =>
+            {
+                ps.Add("@assemblyversion", assemblyversion);
+                ps.Add("@id", id);
+                StringBuilder stringSql = new StringBuilder();
+                stringSql.Append(@"update tb_version set assemblyversion=@assemblyversion where id=@id");
+                return PubConn.ExecuteSql(stringSql.ToString(), ps.ToParameters());
             });
         }
     }

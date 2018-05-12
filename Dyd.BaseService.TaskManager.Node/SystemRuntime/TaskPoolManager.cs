@@ -78,7 +78,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
                         if (!TaskRuntimePool.ContainsKey(taskid))
                         {
-                            taskruntimeinfo.DllTask.TryRun();
+                            //taskruntimeinfo.DllTask.TryRun();
 
                             TaskRuntimePool.Add(taskid, taskruntimeinfo);
                             return true;

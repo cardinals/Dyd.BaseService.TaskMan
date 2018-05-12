@@ -45,6 +45,7 @@ namespace Dyd.BaseService.TaskManager.Node
             }
             else
             {
+               Console.WriteLine(GlobalConfig.NodeID);
                 Application.Run(new NodeMain());
             }
         }

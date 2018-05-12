@@ -13,6 +13,8 @@ using Dyd.BaseService.TaskManager.Node.Tools;
 using XXF.BaseService.TaskManager;
 using XXF.BaseService.TaskManager.SystemRuntime;
 using XXF.ProjectTool;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
@@ -43,13 +45,19 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     taskruntimeinfo.TaskModel = taskdal.Get(c, taskid);
                     tb_version_dal versiondal = new tb_version_dal();
                     taskruntimeinfo.TaskVersionModel = versiondal.GetCurrentVersion(c, taskid, taskruntimeinfo.TaskModel.taskversion);
+                    //taskruntimeinfo.ProcessId=taskdal.GetProcess(c, taskid);
                 });
-            string filelocalcachepath = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\"+GlobalConfig.TaskDllCompressFileCacheDir + @"\" + taskruntimeinfo.TaskModel.id + @"\" + taskruntimeinfo.TaskModel.taskversion + @"\" +
+            //如果异常退出，进程后没有更新
+            /*if (taskruntimeinfo.TaskModel.task_type == TaskType.Service.Code)
+            {
+
+            }*/
+            string filelocalcachepath = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + GlobalConfig.TaskDllCompressFileCacheDir + @"\" + taskruntimeinfo.TaskModel.id + @"\" + taskruntimeinfo.TaskModel.taskversion + @"\" +
                 taskruntimeinfo.TaskVersionModel.zipfilename;
-            string fileinstallpath = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\"+GlobalConfig.TaskDllDir + @"\" +  taskruntimeinfo.TaskModel.id ;
+            string fileinstallpath = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + GlobalConfig.TaskDllDir + @"\" + taskruntimeinfo.TaskModel.id;
             string fileinstallmainclassdllpath = fileinstallpath + @"\" + taskruntimeinfo.TaskModel.taskmainclassdllfilename;
             string taskshareddlldir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + GlobalConfig.TaskSharedDllsDir;
-             
+
             XXF.Common.IOHelper.CreateDirectory(filelocalcachepath);
             XXF.Common.IOHelper.CreateDirectory(fileinstallpath);
             System.IO.File.WriteAllBytes(filelocalcachepath, taskruntimeinfo.TaskVersionModel.zipfile);
@@ -57,12 +65,14 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             CompressHelper.UnCompress(filelocalcachepath, fileinstallpath);
             //拷贝共享程序集
             XXF.Common.IOHelper.CopyDirectory(taskshareddlldir, fileinstallpath);
+            LogHelper.AddTaskLog($"原程序集版本：{taskruntimeinfo.TaskVersionModel.assemblyversion}", taskid);
+            //LogHelper.AddTaskLog($"程序集文件：{fileinstallmainclassdllpath}",taskid);
+            string assemblyVersion = GetAssemblyVersion(fileinstallmainclassdllpath);
+      
             if(taskruntimeinfo.TaskModel.task_type==TaskType.Service.Code)
             {
                 try
                 {
-
-
                     Process result = new Process
                     {
                         StartInfo = new ProcessStartInfo
@@ -76,14 +86,37 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                             CreateNoWindow = true
                         }
                     };
-                    result.Start();
-                    while (!result.StandardOutput.EndOfStream)
-                    {
-                        string line = result.StandardOutput.ReadLine();
-                        // do something with line
-                        LogHelper.AddTaskLog(line, taskid);
-                    }
 
+                    taskruntimeinfo.Process = result;
+                  /*  AppDomain.CurrentDomain.DomainUnload += (s, e) =>
+                    {
+                        result.Kill();
+                        result.WaitForExit();
+                    };
+                    AppDomain.CurrentDomain.ProcessExit += (s, e) =>
+                    {
+                        result.Kill();
+                        result.WaitForExit();
+                    };
+                    AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+                    {
+                        result.Kill();
+                        result.WaitForExit();
+                    };
+                  */
+                    Task a = Task.Factory.StartNew(() =>
+                    {
+                     
+                        result.Start();
+                        ChildProcessTracker.AddProcess(result);
+                        while (!result.StandardOutput.EndOfStream)
+                        {
+                            string line = result.StandardOutput.ReadLine();
+                            // do something with line
+                            LogHelper.AddTaskLog(line, taskid);
+                        }
+                    });
+                 
 
                 }
                 catch (Exception ex)
@@ -91,16 +124,28 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     LogHelper.AddTaskLog($"节点开启任务失败{ex.Message}", taskid);
                     throw;
                 }
-
+                bool r = TaskPoolManager.CreateInstance().Add(taskid.ToString(), taskruntimeinfo);
                 SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
                 {
                     tb_task_dal taskdal = new tb_task_dal();
                     //更新类型 
                     taskdal.Edit(c, taskruntimeinfo.TaskModel);
                     taskdal.UpdateTaskState(c, taskid, (int) EnumTaskState.Running);
+                    taskdal.UpdateProcess(c, taskid, taskruntimeinfo.Process.Id);
+                    //程序集版本更新
+                    if (!string.IsNullOrEmpty(assemblyVersion))
+                    {
+                        if (taskruntimeinfo.TaskVersionModel.assemblyversion != assemblyVersion)
+                        {
+                            taskruntimeinfo.TaskVersionModel.assemblyversion = assemblyVersion;
+                            tb_version_dal versiondal = new tb_version_dal();
+                            versiondal.UpdateAssemblyVersion(c, taskruntimeinfo.TaskVersionModel.id, assemblyVersion);
+                         
+                        }
+                    }
                 });
                 LogHelper.AddTaskLog("节点开启任务成功", taskid);
-                return true;
+                return r;
 
             }
             else
@@ -147,7 +192,18 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                         //更新类型 
                         taskdal.Edit(c, taskruntimeinfo.TaskModel);
                         taskdal.UpdateTaskState(c, taskid, (int) EnumTaskState.Running);
+                        //程序集版本更新
+                        if (!string.IsNullOrEmpty(assemblyVersion))
+                        {
+                            if (taskruntimeinfo.TaskVersionModel.assemblyversion != assemblyVersion)
+                            {
+                                taskruntimeinfo.TaskVersionModel.assemblyversion = assemblyVersion;
+                                tb_version_dal versiondal = new tb_version_dal();
+                                versiondal.UpdateAssemblyVersion(c, taskruntimeinfo.TaskVersionModel.id, assemblyVersion);
+                            }
+                        }
                     });
+                   
                     LogHelper.AddTaskLog("节点开启任务成功", taskid);
                     return r;
                 }
@@ -159,6 +215,37 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             }
         }
 
+        /// <summary>
+        /// 获取程序集版本
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        private string GetAssemblyVersion(string fileName)
+        {
+            string version = string.Empty;
+            if (System.IO.File.Exists(fileName))
+            {
+                try
+                {
+                    byte[] buffer = System.IO.File.ReadAllBytes(fileName);//不要用LoadFile去加载，那样会锁住文件，在下次启动时对文件覆盖就被占用
+                    var assembly = Assembly.Load(buffer);
+                    Regex reg = new Regex("Version=([^,]+)");
+                    var m = reg.Match(assembly.FullName);
+                    if (m.Success && m.Groups.Count > 1)
+                    {
+                        version = m.Groups[1].Value;
+                    }
+
+                    assembly = null;
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.AddNodeError("获取程序集版本异常", ex);
+                }
+            }
+            return version;
+        }
+
         public bool Run(int taskid)
         {
             var taskruntimeinfo = TaskPoolManager.CreateInstance().Get(taskid.ToString());
@@ -168,20 +255,20 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             }
             try
             {
-                
+
                 taskruntimeinfo.DllTask.TryRun();
                 LogHelper.AddTaskLog("任务执行成功", taskid);
                 return true;
             }
             catch (Exception ex)
             {
-                LogHelper.AddTaskError("任务执行失败",taskid,ex);
+                LogHelper.AddTaskError("任务执行失败", taskid, ex);
 
                 return false;
 
             }
-            
-            
+
+
         }
 
         /// <summary>
@@ -197,7 +284,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 throw new Exception("任务不在运行中");
             }
 
-            var r= DisposeTask(taskid, taskruntimeinfo,false);
+            var r = DisposeTask(taskid, taskruntimeinfo, false);
 
             SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
             {
@@ -224,8 +311,10 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             if (taskruntimeinfo.TaskModel.task_type == TaskType.Service.Code)
             {
                 try
+
+
                 {
-                    taskruntimeinfo.Process.Kill();
+                    KillProcess(taskid.ToString(),taskruntimeinfo);
                     r = true;
                 }
                 catch (Exception e)
@@ -244,10 +333,27 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             {
                 tb_task_dal taskdal = new tb_task_dal();
                 taskdal.UpdateTaskState(c, taskid, (int)EnumTaskState.Stop);
+                //update proc id
+                taskdal.UpdateProcess(c,taskid,-1);
             });
             LogHelper.AddTaskLog("节点卸载任务成功", taskid);
             return r;
         }
+
+        private static void KillProcess(string taskId,NodeTaskRuntimeInfo taskruntimeinfo)
+        {
+            taskruntimeinfo.Process.Kill();
+            taskruntimeinfo.Process.WaitForExit();
+            try
+            {
+                TaskPoolManager.CreateInstance().Remove(taskId);
+            }
+            catch (Exception e)
+            {
+                LogHelper.AddNodeError("强制资源释放之任务池释放", e);
+            }
+        }
+
         /// <summary>
         /// 任务的资源释放
         /// </summary>
@@ -260,7 +366,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 try { taskruntimeinfo.DllTask.Dispose(); taskruntimeinfo.DllTask = null; }
                 catch (TaskSafeDisposeTimeOutException ex)
                 {
-                    LogHelper.AddNodeError("强制资源释放之任务资源释放", ex); 
+                    LogHelper.AddNodeError("强制资源释放之任务资源释放", ex);
                     if (isforceDispose == false)
                         throw ex;
                 }

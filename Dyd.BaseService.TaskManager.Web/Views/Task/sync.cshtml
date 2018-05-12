@@ -1,0 +1,135 @@
+﻿@using Webdiyer.WebControls.Mvc
+@using Dyd.BaseService.TaskManager.Domain.Model;
+@model PagedList<Dyd.BaseService.TaskManager.Domain.Model.tb_tasksyncmapinfo_model>
+@{
+    ViewBag.Title = "同步";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link  rel="stylesheet" href="~/Content/themes/base/jquery.ui.all.css"/>
+<style>
+    .fromtask { width:500px;text-align: left;}
+    .totask {width:500px;text-align: left!important}
+    .toolbar {margin: 0px 0px 5px 0px}
+</style>
+<div class="head">
+    <div class="title">同步发布</div>
+</div>
+<div class="orderlist m10 myorder">
+    <div class="tab_cont">
+        <div class="toolbar">
+            <input type="button" class="btn1" value="同步" onclick="sync();" />
+        </div>
+        <div id="tradelist" class="list">
+@if (Model.Count > 0)
+{
+            <table>
+                <tr>
+                    <th><input type="checkbox" id="checkall" onclick="CheckAll()" /></th>
+                    <th width="50px">id</th>
+                    <th>源任务</th>
+                    <th>发布任务</th>
+                </tr>
+                    @foreach (var item in Model)
+                    {
+                            <tr>
+                                <td><input type="checkbox" name="checkson" value="@item.id" /></td>
+                                <td>@item.id</td>
+                                <td class="fromtask">
+                                    【任务名称】:@item.fromtask.taskname (@item.fromtask.taskid)<br />
+                                    【节点信息】:@item.fromtask.nodename (@item.fromtask.nodeid)<br />
+                                    【发布版本】:@item.fromtask.version<br />
+                                    【程序集版本】:@item.fromtask.assemblyversion<br />
+                                    【发布时间】:@item.fromtask.createtime
+                                </td>
+                                <td class="totask">
+                                    【任务名称】:@item.totask.taskname (@item.totask.taskid)<br />
+                                    【节点信息】:@item.totask.nodename (@item.totask.nodeid)<br />
+                                    【发布版本】:@item.totask.version<br />
+                                    【程序集版本】:@item.totask.assemblyversion<br />
+                                    【发布时间】:@item.totask.createtime
+                                </td>
+                            </tr>
+                    }
+            </table>
+}
+else {
+<div>暂时没有需要同步的任务!</div>
+}
+        </div>
+    </div>
+</div>
+<div id="dialogSync" style="display:none">
+    <textarea id="textDescription" style="width:400px;height:300px;" placeholder="发布功能说明">
+    </textarea>
+    <p id="pWait" style="font-size:16px;color:red;display:none">同步中，请等待...</p>
+</div>
+<script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+<script>
+    function CheckAll() {
+        $("[name=checkson]").prop("checked", $("#checkall").prop("checked"));
+    }
+    var syncing = false;
+    function sync()
+    {
+        var ids = [];
+        $("input[name=checkson]:checked").each(function () {
+            ids.push($(this).val());
+        })
+        console.log(ids);
+        if (ids.length == 0) {
+            alert("请至少选择一个同步任务");
+            return;
+        }
+        $("#textDescription").val("");
+        $("#dialogSync").dialog({
+            title: "发布功能说明",
+            resizable: false,
+            height: "auto",
+            width: 425,
+            modal: true,
+            buttons: {
+                "发布": function () {
+                    if (syncing) {
+                        alert("正在同步中");
+                        return;
+                    }
+                    $("#pWait").show();
+                    syncing = true;
+                    var _this = $(this);
+                    var description = $("#textDescription").val();
+                    console.log(description);
+                    if (description.length < 10) {
+                        alert("请输入至少10个字符的描述");
+                        $("#pWait").hide();
+                        syncing = false;
+                        return;
+                    }
+                    $.ajax({
+                        url: '@Url.Action("Sync", "Task")',
+                        type: "post",
+                        data: {
+                            ids: ids.join(","),
+                            description: description
+                        },
+                        success: function (data) {
+                            if (data.code == 1) {
+                                _this.dialog("close");
+                                location.reload();
+                            }
+                            else {
+                                alert(data.msg);
+                                $("#pWait").hide();
+                                syncing = false;
+                            }
+                        }
+                    });
+                },
+                Cancel: function () {
+                    syncing = false;
+                    $("#pWait").hide();
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+</script>

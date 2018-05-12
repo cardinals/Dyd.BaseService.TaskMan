@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
@@ -47,11 +48,13 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 					//压缩文件二进制文件
 					new ProcedureParameter("@zipfile",    model.zipfile),
 					//
-					new ProcedureParameter("@zipfilename",    model.zipfilename)
+					new ProcedureParameter("@zipfilename",    model.zipfilename),
+
+                    new ProcedureParameter("@assemblyversion",    model.assemblyversion)
             };
 			Par.Add(new ProcedureParameter("@id",  model.id));
 
-            int rev = PubConn.ExecuteSql("update tb_version set taskid=@taskid,version=@version,versioncreatetime=@versioncreatetime,zipfile=@zipfile,zipfilename=@zipfilename where id=@id", Par);
+            int rev = PubConn.ExecuteSql("update tb_version set taskid=@taskid,version=@version,versioncreatetime=@versioncreatetime,zipfile=@zipfile,zipfilename=@zipfilename,assemblyversion=@assemblyversion where id=@id", Par);
             return rev == 1;
 
         }
@@ -123,7 +126,15 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 			{
 				o.zipfilename = dr["zipfilename"].Tostring();
 			}
-			return o;
+            //
+            if (dr.Table.Columns.Contains("assemblyversion"))
+            {
+                o.assemblyversion = dr["assemblyversion"].Tostring();
+            }
+            return o;
         }
+
+      
+
     }
 }

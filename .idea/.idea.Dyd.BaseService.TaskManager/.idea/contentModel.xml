@@ -30,6 +30,7 @@
         <e p="Bin" t="ExcludeRecursive" />
         <e p="Dal" t="Include">
           <e p="auto" t="Include">
+            <e p="tb_businessversion_dal.cs" t="Include" />
             <e p="tb_category_dal.cs" t="Include" />
             <e p="tb_command_dal.cs" t="Include" />
             <e p="tb_error_dal.cs" t="Include" />
@@ -37,10 +38,12 @@
             <e p="tb_node_dal.cs" t="Include" />
             <e p="tb_performance_dal.cs" t="Include" />
             <e p="tb_task_dal.cs" t="Include" />
+            <e p="tb_tasksyncmap_dal.cs" t="Include" />
             <e p="tb_tempdata_dal.cs" t="Include" />
             <e p="tb_user_dal.cs" t="Include" />
             <e p="tb_version_dal.cs" t="Include" />
           </e>
+          <e p="tb_businessversion_dal.cs" t="Include" />
           <e p="tb_category_dal.cs" t="Include" />
           <e p="tb_command_dal.cs" t="Include" />
           <e p="tb_error_dal.cs" t="Include" />
@@ -48,6 +51,7 @@
           <e p="tb_node_dal.cs" t="Include" />
           <e p="tb_performance_dal.cs" t="Include" />
           <e p="tb_task_dal.cs" t="Include" />
+          <e p="tb_tasksyncmap_dal.cs" t="Include" />
           <e p="tb_tempdata_dal.cs" t="Include" />
           <e p="tb_user_dal.cs" t="Include" />
           <e p="tb_version_dal.cs" t="Include" />
@@ -55,6 +59,7 @@
         <e p="Dyd.BaseService.TaskManager.Domain.csproj" t="IncludeRecursive" />
         <e p="Model" t="Include">
           <e p="auto" t="Include">
+            <e p="tb_businessversion_model.cs" t="Include" />
             <e p="tb_category_model.cs" t="Include" />
             <e p="tb_command_model.cs" t="Include" />
             <e p="tb_error_model.cs" t="Include" />
@@ -62,16 +67,19 @@
             <e p="tb_node_model.cs" t="Include" />
             <e p="tb_performance_model.cs" t="Include" />
             <e p="tb_task_model.cs" t="Include" />
+            <e p="tb_tasksyncmap_model.cs" t="Include" />
             <e p="tb_tempdata_model.cs" t="Include" />
             <e p="tb_user_model.cs" t="Include" />
             <e p="tb_version_model.cs" t="Include" />
           </e>
+          <e p="taskjson_model.cs" t="Include" />
           <e p="tb_command_model_Ex.cs" t="Include" />
           <e p="tb_errorinfo_model.cs" t="Include" />
           <e p="tb_loginfo_model.cs" t="Include" />
           <e p="tb_performanceinfo_model.cs" t="Include" />
           <e p="tb_senderror_model.cs" t="Include" />
           <e p="tb_tasklist_model.cs" t="Include" />
+          <e p="tb_tasksyncmapinfo_model.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive" />
         <e p="packages.config" t="Include" />
@@ -425,6 +433,7 @@
         </e>
         <e p="Tools" t="Include">
           <e p="LogHelper.cs" t="Include" />
+          <e p="TaskHelper.cs" t="Include" />
         </e>
         <e p="Views" t="Include">
           <e p="_ViewStart.cshtml" t="Include" />
@@ -463,6 +472,8 @@
             <e p="Cron.cshtml" t="Include" />
             <e p="CustomCorn.cshtml" t="Include" />
             <e p="Index.cshtml" t="Include" />
+            <e p="Rollback.cshtml" t="Include" />
+            <e p="Sync.cshtml" t="Include" />
             <e p="Update.cshtml" t="Include" />
           </e>
           <e p="User" t="Include">

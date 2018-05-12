@@ -60,3 +60,9 @@ C:\work_luoqs\EPlatform\lib\dyd.TaskMan\XXF.BaseService.TaskManager.pdb
 C:\work_luoqs\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.dll
 C:\work_luoqs\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.pdb
 C:\work_luoqs\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.csprojResolveAssemblyReference.cache
+D:\project\EPlatform\lib\dyd.TaskMan\XXF.BaseService.TaskManager.dll
+D:\project\EPlatform\lib\dyd.TaskMan\XXF.BaseService.TaskManager.pdb
+D:\project\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.csprojResolveAssemblyReference.cache
+D:\project\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.csproj.CoreCompileInputs.cache
+D:\project\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.dll
+D:\project\Dyd.BasService.TaskMan\XXF.BaseService.TaskManager\obj\Debug\XXF.BaseService.TaskManager.pdb

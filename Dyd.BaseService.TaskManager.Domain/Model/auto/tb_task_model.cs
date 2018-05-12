@@ -111,5 +111,6 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
         /// </summary>
         public string task_type { get; set; }
 
+        public string businessversion { get; set; }
     }
 }

@@ -248,6 +248,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             {
                 o.task_type = dr["task_type"].Tostring();
             }
+            if (dr.Table.Columns.Contains("businessversion"))
+            {
+                o.businessversion = dr["businessversion"]==null? string.Empty: dr["businessversion"].ToString();
+            }
             return o;
         }
     }

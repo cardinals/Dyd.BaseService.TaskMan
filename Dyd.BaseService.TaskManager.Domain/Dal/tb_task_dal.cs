@@ -11,9 +11,10 @@ using Dyd.BaseService.TaskManager.Core;
 
 namespace Dyd.BaseService.TaskManager.Domain.Dal
 {
-	
-	public partial class tb_task_dal
+
+    public partial class tb_task_dal
     {
+    
         public List<int> GetTaskIDsByState(DbConn PubConn, int taskstate,int nodeid,bool onlyTask=false)
         {
             return SqlHelper.Visit(ps =>
@@ -65,7 +66,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 
         }
 
-        public List<tb_tasklist_model> GetList(DbConn PubConn, string taskid, string keyword, string CStime, string CEtime, int categoryid, int nodeid ,int userid, int state , int pagesize, int pageindex, out int count)
+        public List<tb_tasklist_model> GetList(DbConn PubConn, string taskid, string keyword, string CStime, string CEtime, int categoryid, int nodeid, int userid, int state, int pagesize, int pageindex, out int count)
         {
             int _count = 0;
             List<tb_tasklist_model> model = new List<tb_tasklist_model>();
@@ -107,7 +108,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                     ps.Add("taskcreateuserid", userid);
                     sqlwhere += " and T.taskcreateuserid=@taskcreateuserid";
                 }
-                DateTime d=DateTime.Now;
+                DateTime d = DateTime.Now;
                 if (DateTime.TryParse(CStime, out d))
                 {
                     ps.Add("CStime", Convert.ToDateTime(CStime));
@@ -265,6 +266,11 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             {
                 o.task_type = dr["task_type"].Tostring();
             }
+            //
+            if (dr.Table.Columns.Contains("businessversion"))
+            {
+                o.businessversion = dr["businessversion"].Tostring();
+            }
             return o;
         }
 
@@ -293,7 +299,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskerrorcount", 0);
                 ps.Add("@taskruncount", 0);
                 ps.Add("@taskcreateuserid", model.taskcreateuserid);
-                ps.Add("@taskstate",0);
+                ps.Add("@taskstate", 0);
                 ps.Add("@taskversion", 1);
                 ps.Add("@taskappconfigjson", model.taskappconfigjson.NullToEmpty());
                 ps.Add("@taskcron", model.taskcron);
@@ -324,9 +330,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskmainclassdllfilename", model.taskmainclassdllfilename);
                 ps.Add("@taskversion", model.taskversion);
                 ps.Add("@task_type", model.task_type);
+                ps.Add("@businessversion", string.IsNullOrEmpty(model.businessversion) ? "" : model.businessversion);
                 string sql = "Update tb_task Set taskname=@taskname,categoryid=@categoryid,nodeid=@nodeid,taskupdatetime=@taskupdatetime,";
                 sql += "taskappconfigjson=@taskappconfigjson,taskcron=@taskcron,taskcreateuserid=@taskcreateuserid,";
-                sql += "taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark,taskmainclassdllfilename=@taskmainclassdllfilename,taskversion=@taskversion,task_type=@task_type";
+                sql += "taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark,taskmainclassdllfilename=@taskmainclassdllfilename,taskversion=@taskversion,task_type=@task_type,businessversion=@businessversion";
                 sql += " where id=@id";
                 int i = PubConn.ExecuteSql(sql, ps.ToParameters());
                 return i;
@@ -377,6 +384,29 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 return i > 0;
             });
         }
-        
+
+        public void UpdateProcess(DbConn dbConn, int taskId, int Id)
+        {
+            return;
+        /*    List<ProcedureParameter> Par = new List<ProcedureParameter>();
+            Par.Add(new ProcedureParameter("@id", Id));
+            Par.Add(new ProcedureParameter("@taskId", taskId));
+
+            dbConn.ExecuteSql($"update a set process_id=@id from tb_task a where a.Id=@taskId", Par);*/
+
+        }
+
+        public int GetProcess(DbConn dbConn, int taskId)
+        {
+
+           /* List<ProcedureParameter> Par = new List<ProcedureParameter>();
+
+            Par.Add(new ProcedureParameter("@taskId", taskId));
+            object o = dbConn.ExecuteScalar($"select process_id from tb_task a where a.Id=@taskId", Par);
+            return Convert.IsDBNull(o) ? -1 : Convert.ToInt32(o);*/
+            return 0;
+
+        }
+
     }
 }

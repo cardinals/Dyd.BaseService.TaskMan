@@ -20,8 +20,8 @@ namespace Dyd.BaseService.TaskManager.Node
         public NodeMain()
         {
             //此处隐藏节点窗体
-            this.ShowInTaskbar = false;
-            this.WindowState = FormWindowState.Minimized;
+         //   this.ShowInTaskbar = false;
+           // this.WindowState = FormWindowState.Minimized;
             InitializeComponent();
         }
 

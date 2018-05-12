@@ -1,0 +1,122 @@
+﻿@using Webdiyer.WebControls.Mvc
+@using Dyd.BaseService.TaskManager.Domain.Model;
+@model PagedList<Dyd.BaseService.TaskManager.Domain.Model.tasksyncinfo>
+@{
+    ViewBag.Title = "版本回滚";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" href="~/Content/themes/base/jquery.ui.all.css" />
+<style>
+    .bs-callout {padding: 20px; margin: 20px 0;border: 1px solid #eee;border-left-width: 5px;border-radius: 3px;}
+        .bs-callout h4 {margin-top: 0; margin-bottom: 5px;}
+    .bs-callout-info {border-left-color: #1b809e;}
+    #tradelist table th {text-align:center !important}
+</style>
+<div class="head">
+    <div class="title">版本回滚</div>
+</div>
+<div class="orderlist m10 myorder">
+    <div class="tab_cont">
+        <div class="toolbar">
+            <label>版本选择</label>
+            <select id="selectVersion">
+                @if (ViewBag.TopVersionList != null)
+                {
+                    foreach (var item in ViewBag.TopVersionList)
+                    {
+                        <option value="@item.id" @Html.Raw(string.Format("{0}",ViewBag.CurrentId==item.id?"selected":"")) >@Html.Raw(string.Format("v{0}({1})", item.businessversion,item.createtime.ToString("yyyy.MM.dd")))</option>
+                    }
+                }
+            </select>
+            <input type="button" value="回滚" class="btn1" onclick="rollback();"/>
+        </div>
+        <div class="bs-callout bs-callout-info">
+            <h4 id="callout-progress-csp">发布时间：@ViewBag.VersionTime</h4>
+            <p>
+                @ViewBag.Description
+            </p>
+        </div>
+        <div id="tradelist" class="list">
+            <table>
+                <tr>
+                    <th width="50px">id</th>
+                    <th width="200px">任务名</th>
+                    <th width="100px">发布版本</th>
+                    <th width="150px">发布时间</th>
+                    <th width="100px">程序集版本</th>
+                    <th width="200px">部署节点</th>
+                </tr>
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.taskid</td>
+        <td>@item.taskname</td>
+        <td>@item.version</td>
+        <td>@item.createtime</td>
+        <td>@item.assemblyversion</td>
+        <td>@item.nodename (@item.nodeid)</td>
+    </tr>
+    }
+</table>
+        </div>
+    </div>
+</div>
+<div id="dialogRollback" style="display:none">
+    <p>执行此操作，当前的任务会回滚到指定的版本，请谨慎操作！</p>
+    <p id="pWait" style="font-size:16px;color:red;display:none">回滚中，请等待...</p>
+</div>
+<script src="~/Scripts/jquery-ui-1.8.24.min.js"></script>
+<script>
+    $(function () {
+        $("#selectVersion").change(function () {
+            location.href = "/task/rollbackview?id="+$(this).val();
+        });
+    })
+    var syncing = false;
+    function rollback() {
+        $("#dialogRollback").dialog({
+            title: "回滚确认",
+            resizable: false,
+            height: "auto",
+            width: 425,
+            modal: true,
+            buttons: {
+                "确定": function () {
+                    if (syncing) {
+                        alert("正在执行中");
+                        return;
+                    }
+                    $("#pWait").show();
+                    syncing = true;
+                    var _this = $(this);
+                    $.ajax({
+                        url: '@Url.Action("Rollback", "Task")',
+                        type: "post",
+                        data: {
+                            versionid: $("#selectVersion").val(),
+                        },
+                        success: function (data) {
+                            if (data.code == 1) {
+                                syncing = false;
+                                $("#pWait").hide();
+                                _this.dialog("close");
+                                alert(data.msg);
+                            }
+                            else {
+                                alert(data.msg);
+                                $("#pWait").hide();
+                                syncing = false;
+                            }
+                        }
+                    });
+                },
+                Cancel: function () {
+                    syncing = false;
+                    $("#pWait").hide();
+                    $(this).dialog("close");
+                }
+            }
+        });
+    }
+</script>
+

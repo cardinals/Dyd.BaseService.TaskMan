@@ -39,5 +39,6 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         public TaskLock TaskLock;
 
         public Process Process { get; set; }
+        public int ProcessId { get; set; }
     }
 }

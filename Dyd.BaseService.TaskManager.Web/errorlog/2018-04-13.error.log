@@ -1,0 +1,118 @@
+【时间】2018-04-13 13:22:43:493
+【服务器】10.11.30.236
+【数据库】
+【补充信息】[sql执行]select s.* from tb_task s where s.id=@id
+【原始信息】ExecuteNonQuery 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+【request参数】
+【堆栈打印】   在 System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 XXF.Db.DbConnSql.<>c__DisplayClass1.<ExecuteSql>b__0()
+   在 XXF.Db.DbCatch.Catch[T](Boolean istimeWatch, String datasource, String sql, List`1 procedurePar, Func`1 action)
+******************************************************************************************************************************************************
+【时间】2018-04-13 13:23:41:384
+【服务器】10.11.30.236
+【数据库】
+【补充信息】[sql执行]select s.* from tb_task s where s.id=@id
+【原始信息】ExecuteNonQuery 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+【request参数】
+【堆栈打印】   在 System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 XXF.Db.DbCatch.Catch[T](Boolean istimeWatch, String datasource, String sql, List`1 procedurePar, Func`1 action)
+******************************************************************************************************************************************************
+【时间】2018-04-13 13:24:16:929
+【服务器】10.11.30.236
+【数据库】
+【补充信息】[sql执行]select s.* from tb_task s where s.id=@id
+【原始信息】ExecuteNonQuery 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+【request参数】
+【堆栈打印】   在 System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 XXF.Db.DbConnSql.<>c__DisplayClass1.<ExecuteSql>b__0()
+   在 XXF.Db.DbCatch.Catch[T](Boolean istimeWatch, String datasource, String sql, List`1 procedurePar, Func`1 action)
+******************************************************************************************************************************************************
+【时间】2018-04-13 13:40:19:642
+【服务器】10.11.30.236
+【数据库】
+【补充信息】[sql执行]select s.* from tb_task s where s.id=@id
+【原始信息】ExecuteNonQuery 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+【request参数】
+【堆栈打印】   在 System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 XXF.Db.DbConnSql.<>c__DisplayClass1.<ExecuteSql>b__0()
+   在 XXF.Db.DbCatch.Catch[T](Boolean istimeWatch, String datasource, String sql, List`1 procedurePar, Func`1 action)
+******************************************************************************************************************************************************
+【时间】2018-04-13 13:43:09:045
+【服务器】10.11.30.236
+【数据库】
+【补充信息】[sql执行]select s.* from tb_task s where s.id=@id
+【原始信息】ExecuteNonQuery 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+【request参数】
+【堆栈打印】   在 System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 XXF.Db.DbConnSql.<>c__DisplayClass1.<ExecuteSql>b__0()
+   在 XXF.Db.DbCatch.Catch[T](Boolean istimeWatch, String datasource, String sql, List`1 procedurePar, Func`1 action)
+******************************************************************************************************************************************************
+【时间】2018-04-13 13:45:19:201
+【服务器】10.11.30.236
+【数据库】
+【补充信息】[sql执行]select s.* from tb_task s where s.id=@id
+【原始信息】ExecuteNonQuery 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+【request参数】
+【堆栈打印】   在 System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 XXF.Db.DbConnSql.<>c__DisplayClass1.<ExecuteSql>b__0()
+   在 XXF.Db.DbCatch.Catch[T](Boolean istimeWatch, String datasource, String sql, List`1 procedurePar, Func`1 action)
+******************************************************************************************************************************************************
+【时间】2018-04-13 17:20:19:978
+【服务器】10.11.30.236
+【数据库】
+【补充信息】[sql执行]insert into tb_businessversion(versionid,taskid,businessversion,description,createtime)
+										   values(@versionid,@taskid,@businessversion,@description,@createtime)
+【原始信息】ExecuteNonQuery 要求已打开且可用的 Connection。连接的当前状态为已关闭。
+【request参数】[ids:1][description:同步发布测试同步发布测试同步发布测试同步发布测试]
+【堆栈打印】   在 System.Data.SqlClient.SqlCommand.ValidateCommand(String method, Boolean async)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 XXF.Db.DbConnSql.<>c__DisplayClass1.<ExecuteSql>b__0()
+   在 XXF.Db.DbCatch.Catch[T](Boolean istimeWatch, String datasource, String sql, List`1 procedurePar, Func`1 action)
+******************************************************************************************************************************************************
+【时间】2018-04-13 17:26:07:111
+【服务器】10.11.30.236
+【数据库】
+【补充信息】[sql执行]insert into tb_businessversion(versionid,taskid,businessversion,description,createtime)
+										   values(@versionid,@taskid,@businessversion,@description,@createtime)
+【原始信息】SqlDateTime 溢出。必须介于 1/1/1753 12:00:00 AM 和 12/31/9999 11:59:59 PM 之间。
+【request参数】[ids:1][description:同步发布测试同步发布测试同步发布测试]
+【堆栈打印】   在 System.Data.SqlClient.TdsParser.TdsExecuteRPC(SqlCommand cmd, _SqlRPC[] rpcArray, Int32 timeout, Boolean inSchema, SqlNotificationRequest notificationRequest, TdsParserStateObject stateObj, Boolean isCommandProc, Boolean sync, TaskCompletionSource`1 completion, Int32 startRpc, Int32 startParam)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 XXF.Db.DbConnSql.<>c__DisplayClass1.<ExecuteSql>b__0()
+   在 XXF.Db.DbCatch.Catch[T](Boolean istimeWatch, String datasource, String sql, List`1 procedurePar, Func`1 action)
+******************************************************************************************************************************************************
+【时间】2018-04-13 17:28:59:672
+【服务器】10.11.30.236
+【数据库】hxerp.fastfish.com.cn
+【补充信息】[sql执行]insert into tb_businessversion(versionid,taskid,businessversion,description,createtime)
+										   values(@versionid,@taskid,@businessversion,@description,@createtime)
+【原始信息】必须声明标量变量 "@versionid"。
+【request参数】[ids:1][description:同步发布测试同步发布测试同步发布测试]
+【堆栈打印】   在 System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   在 System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   在 System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   在 System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString, Boolean isInternal, Boolean forDescribeParameterEncryption)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, Boolean inRetry, SqlDataReader ds, Boolean describeParameterEncryptionRequest)
+   在 System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.InternalExecuteNonQuery(TaskCompletionSource`1 completion, String methodName, Boolean sendToPipe, Int32 timeout, Boolean& usedCache, Boolean asyncWrite, Boolean inRetry)
+   在 System.Data.SqlClient.SqlCommand.ExecuteNonQuery()
+   在 XXF.Db.DbConnSql.<>c__DisplayClass1.<ExecuteSql>b__0()
+   在 XXF.Db.DbCatch.Catch[T](Boolean istimeWatch, String datasource, String sql, List`1 procedurePar, Func`1 action)
+******************************************************************************************************************************************************
