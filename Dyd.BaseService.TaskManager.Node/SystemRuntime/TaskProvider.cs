@@ -61,15 +61,17 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             XXF.Common.IOHelper.CreateDirectory(filelocalcachepath);
             XXF.Common.IOHelper.CreateDirectory(fileinstallpath);
             System.IO.File.WriteAllBytes(filelocalcachepath, taskruntimeinfo.TaskVersionModel.zipfile);
-
+          //  System.IO.Directory.Delete(fileinstallpath,true);
             CompressHelper.UnCompress(filelocalcachepath, fileinstallpath);
             //拷贝共享程序集
             XXF.Common.IOHelper.CopyDirectory(taskshareddlldir, fileinstallpath);
             LogHelper.AddTaskLog($"原程序集版本：{taskruntimeinfo.TaskVersionModel.assemblyversion}", taskid);
             //LogHelper.AddTaskLog($"程序集文件：{fileinstallmainclassdllpath}",taskid);
             string assemblyVersion = GetAssemblyVersion(fileinstallmainclassdllpath);
-      
-            if(taskruntimeinfo.TaskModel.task_type==TaskType.Service.Code)
+            byte[] bytes = Encoding.Default.GetBytes(taskruntimeinfo.TaskModel
+                .taskappconfigjson);
+            string jsonConfig=Convert.ToBase64String(bytes);
+            if (taskruntimeinfo.TaskModel.task_type==TaskType.Service.Code)
             {
                 try
                 {
@@ -79,8 +81,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                         {
 
                             FileName = fileinstallmainclassdllpath,
-                            Arguments = taskruntimeinfo.TaskModel
-                                .taskappconfigjson,
+                            Arguments=jsonConfig,
                             UseShellExecute = false,
                             RedirectStandardOutput = true,
                             CreateNoWindow = true
@@ -104,11 +105,13 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                         result.WaitForExit();
                     };
                   */
-                    Task a = Task.Factory.StartNew(() =>
-                    {
+                  //  Task a = Task.Factory.StartNew(() =>
+                   // {
                      
-                        result.Start();
-                        ChildProcessTracker.AddProcess(result);
+                      bool isStart=   result.Start();
+                    ChildProcessTracker.AddProcess(result);
+                   Task.Factory.StartNew(() =>
+                    {
                         while (!result.StandardOutput.EndOfStream)
                         {
                             string line = result.StandardOutput.ReadLine();
@@ -116,7 +119,9 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                             LogHelper.AddTaskLog(line, taskid);
                         }
                     });
-                 
+                    // };
+
+
 
                 }
                 catch (Exception ex)
@@ -342,8 +347,18 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
         private static void KillProcess(string taskId,NodeTaskRuntimeInfo taskruntimeinfo)
         {
-            taskruntimeinfo.Process.Kill();
-            taskruntimeinfo.Process.WaitForExit();
+            if (taskruntimeinfo.Process != null)
+            {
+                try
+                {
+                    taskruntimeinfo.Process.Kill();
+                    taskruntimeinfo.Process.WaitForExit();
+                }
+                catch (Exception ex)
+                {
+                    LogHelper.AddNodeError($"kill process{ex.Message}",ex);
+                }
+            }
             try
             {
                 TaskPoolManager.CreateInstance().Remove(taskId);

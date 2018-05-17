@@ -475,7 +475,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                                 id = item.id,
                                 fromtask = new tasksyncinfo { taskid = fromtaskinfo.id, taskname = fromtaskinfo.taskname, nodeid = fromtasknodeinfo.id, nodename = fromtasknodeinfo.nodename, version = fromtaskinfo.taskversion.ToString(), assemblyversion = fromtaskversioninfo.assemblyversion, createtime = fromtaskversioninfo.versioncreatetime.ToString("yyyy-MM-dd HH:mm:ss") },
                                 totask = new tasksyncinfo { taskid = totaskinfo.id, taskname = totaskinfo.taskname, nodeid = totasknodeinfo.id, nodename = totasknodeinfo.nodename, version = totaskinfo.taskversion.ToString(), assemblyversion = totaskversioninfo.assemblyversion, createtime = totaskversioninfo.versioncreatetime.ToString("yyyy-MM-dd HH:mm:ss") },
-                                isdiff = fromtaskversioninfo.assemblyversion != totaskversioninfo.assemblyversion
+                                isdiff =true //fromtaskversioninfo.assemblyversion != totaskversioninfo.assemblyversion
                             });
                         }
                     }

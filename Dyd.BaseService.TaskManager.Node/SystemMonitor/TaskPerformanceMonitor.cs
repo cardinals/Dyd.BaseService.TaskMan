@@ -31,7 +31,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemMonitor
             {
                 try
                 {
-                    if (taskruntimeinfo == null)
+                    if (taskruntimeinfo == null||taskruntimeinfo.DllTask==null)
                         continue;
                     /*如果dispose，skip*/
                     if(taskruntimeinfo.DllTask.SafeDisposeOperator.DisposedState!=TaskDisposedState.None)

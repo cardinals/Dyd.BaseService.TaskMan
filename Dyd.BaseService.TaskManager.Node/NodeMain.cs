@@ -20,8 +20,8 @@ namespace Dyd.BaseService.TaskManager.Node
         public NodeMain()
         {
             //此处隐藏节点窗体
-         //   this.ShowInTaskbar = false;
-           // this.WindowState = FormWindowState.Minimized;
+           this.ShowInTaskbar = false;
+          this.WindowState = FormWindowState.Minimized;
             InitializeComponent();
         }
 
@@ -64,6 +64,9 @@ namespace Dyd.BaseService.TaskManager.Node
                 GlobalConfig.Monitors.Add(new SystemMonitor.NodeHeartBeatMonitor());
                 GlobalConfig.Monitors.Add(new SystemMonitor.TaskStopMonitor());
                 this.Text = this.Text + GlobalConfig.NodeID;
+             
+
+
             }
             catch (Exception exp)
             {

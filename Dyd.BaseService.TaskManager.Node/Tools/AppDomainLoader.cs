@@ -29,7 +29,7 @@ namespace Dyd.BaseService.TaskManager.Node.Tools
             
             
             domain = AppDomain.CreateDomain(System.IO.Path.GetFileName(dllpath), null, setup);
-            domain.UnhandledException += Domain_UnhandledException;
+          //  domain.UnhandledException += Domain_UnhandledException;
             AppDomain.MonitoringIsEnabled = true;
             T obj = (T)domain.CreateInstanceFromAndUnwrap(dllpath, classpath);
             return obj;

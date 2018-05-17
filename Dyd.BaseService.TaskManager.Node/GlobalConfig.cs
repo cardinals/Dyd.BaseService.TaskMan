@@ -23,6 +23,9 @@ namespace Dyd.BaseService.TaskManager.Node
         /// 任务调度平台web url地址
         /// </summary>
         public static string TaskManagerWebUrl { get { return System.Configuration.ConfigurationManager.AppSettings["TaskManagerWebUrl"]; } }
+
+        public static string Consule => System.Configuration.ConfigurationManager.AppSettings["consule"];
+
         /// <summary>
         /// 任务dll根目录
         /// </summary>
