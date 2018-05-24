@@ -47,6 +47,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Consul, Version=0.7.0.1, Culture=neutral, PublicKeyToken=20a6ad9a81df1d95, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\引用\Consul.dll</HintPath>
+    </Reference>
     <Reference Include="NamedPipeWrapper, Version=1.5.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NamedPipeWrapper.1.5.3-Beta\lib\net40\NamedPipeWrapper.dll</HintPath>
     </Reference>

@@ -113,6 +113,7 @@
           <e p="StopTaskCommand.cs" t="Include" />
           <e p="UninstallTaskCommand.cs" t="Include" />
         </e>
+        <e p="Consul" t="Include" />
         <e p="Corn" t="Include">
           <e p="CornFactory.cs" t="Include" />
         </e>
@@ -122,6 +123,7 @@
         <e p="NodeMain.Designer.cs" t="Include" />
         <e p="NodeMain.resx" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="AssemblyInfo.cs" t="Include" />
@@ -135,6 +137,8 @@
           <e p="TaskStopMonitor.cs" t="Include" />
         </e>
         <e p="SystemRuntime" t="Include">
+          <e p="ChildProcessTracker.cs" t="Include" />
+          <e p="ConsulServiceItem.cs" t="Include" />
           <e p="NodeTaskRuntimeInfo.cs" t="Include" />
           <e p="TaskJob.cs" t="Include" />
           <e p="TaskPoolManager.cs" t="Include" />
@@ -492,6 +496,7 @@
         <e p="Dyd.BaseService.TaskManager.WinService.csproj" t="IncludeRecursive" />
         <e p="NodeService.cs" t="Include" />
         <e p="obj" t="ExcludeRecursive" />
+        <e p="packages.config" t="Include" />
         <e p="Program.cs" t="Include" />
         <e p="ProjectInstaller.cs" t="Include" />
         <e p="ProjectInstaller.Designer.cs" t="Include" />

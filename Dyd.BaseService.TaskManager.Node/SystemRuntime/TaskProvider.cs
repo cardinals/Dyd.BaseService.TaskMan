@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Text;
@@ -15,6 +16,8 @@ using XXF.BaseService.TaskManager.SystemRuntime;
 using XXF.ProjectTool;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Consul;
+using ServiceStack.Text;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
@@ -149,6 +152,23 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                         }
                     }
                 });
+                //
+                ConsulRegisteration item=Parse(taskruntimeinfo.TaskModel);
+                var client = new ConsulClient(configuration =>
+                {
+                    configuration.Address=new Uri(GlobalConfig.Consule);
+                }); // uses default host:port which is localhost:8500
+            
+             
+                 var agentReg = new AgentServiceRegistration()
+                {
+                    Address = item.Host,
+                    ID =item.ServiceId,
+                    Name =item.Service,
+                    Port =item.Port
+                };
+               
+               client.Agent.ServiceRegister(agentReg).Wait();
                 LogHelper.AddTaskLog("节点开启任务成功", taskid);
                 return r;
 
@@ -218,6 +238,22 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     throw exp;
                 }
             }
+        }
+
+        private ConsulRegisteration Parse(tb_task_model taskruntimeinfoTaskModel)
+        {
+            ConsulRegisteration item=new ConsulRegisteration();
+            TaskAppConfigInfo config = taskruntimeinfoTaskModel
+                .taskappconfigjson.FromJson<TaskAppConfigInfo>();
+
+            Uri service = new Uri(config["service_url"]);
+            item.Host = service.Host;
+            item.Port = service.Port;
+
+            string serviceNames = Path.GetFileNameWithoutExtension(taskruntimeinfoTaskModel.taskmainclassdllfilename);
+            item.Service = serviceNames;
+            item.ServiceId = $"{serviceNames}_{item.Host}_{item.Port}";
+            return item;
         }
 
         /// <summary>
@@ -320,6 +356,13 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
                 {
                     KillProcess(taskid.ToString(),taskruntimeinfo);
+                    ConsulRegisteration item = Parse(taskruntimeinfo.TaskModel);
+                    var client = new ConsulClient(configuration =>
+                    {
+                        configuration.Address = new Uri(GlobalConfig.Consule);
+                    }); // uses default host:port which is localhost:8500
+                    string service = item.ServiceId;
+                    client.Agent.ServiceDeregister(service).Wait();
                     r = true;
                 }
                 catch (Exception e)
