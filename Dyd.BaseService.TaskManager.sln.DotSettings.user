@@ -25,4 +25,5 @@
   &lt;Assembly Path="D:\project\Dyd.BasService.TaskMan\引用\XXF.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Data.dll" /&gt;&#xD;
   &lt;Assembly Path="D:\project\Dyd.BasService.TaskMan\packages\NamedPipeWrapper.1.5.3-Beta\lib\net40\NamedPipeWrapper.dll" /&gt;&#xD;
+  &lt;Assembly Path="D:\project\Dyd.BasService.TaskMan\引用\Consul.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
