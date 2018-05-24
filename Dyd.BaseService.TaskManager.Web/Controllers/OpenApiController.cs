@@ -139,7 +139,68 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                             });
                             
                         }
-                        if(change==-99)
+                      
+                        tempdatadal.UpdateByTaskID(PubConn, new tb_tempdata_model()
+                        {
+                            taskid = model.id,
+                            tempdatajson = tempdatajson,
+                            tempdatalastupdatetime = DateTime.Now
+                        });
+                        return Json(new { code = 0, message = "上传成功" });
+                    }
+                }
+                catch (Exception exp)
+                {
+                    return Json(new { code = -1, message = exp.Message });
+                }
+            });
+        }
+          [HttpPost]
+        public JsonResult Update2(HttpPostedFileBase TaskDll, tb_task_model model, string tempdatajson)
+        {
+
+            HttpPostedFileBase file = Request.Files[0];
+
+            return this.Visit(Core.EnumUserRole.Admin, () =>
+            {
+                try
+                {
+                    tb_task_dal dal = new tb_task_dal();
+                    tb_version_dal dalversion = new tb_version_dal();
+                    tb_tempdata_dal tempdatadal = new tb_tempdata_dal();
+                    byte[] dllbyte = null;
+                    string filename = "";
+                    int change = model.taskversion;
+                    if (change == -1)
+                    {
+                        if (TaskDll == null)
+                        {
+                            return Json(new { code = -1, message = "没有文件" });
+                        }
+                        filename = TaskDll.FileName;
+                        Stream dll = TaskDll.InputStream;
+                        dllbyte = new byte[dll.Length];
+                        dll.Read(dllbyte, 0, Convert.ToInt32(dll.Length));
+                        //model.taskcreateuserid = Common.GetUserId(this);
+                    }
+                    using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                    {
+                        PubConn.Open();
+                        var task = dal.GetOneTask(PubConn, model.id);
+                        if (task.taskstate == (int)Dyd.BaseService.TaskManager.Core.EnumTaskState.Running)
+                        {
+                            return Json(new { code = -1, message = "当前任务在运行中,请停止后提交" });
+                        }
+                        if (change == -1)
+                        {
+                            model.taskversion = dalversion.GetVersion(PubConn, model.id) + 1;
+                        }
+
+                      
+                        model.taskupdatetime = DateTime.Now;
+                        dal.UpdateTask(PubConn, model);
+                      
+                        if(change==-1)
                         {
                             
                             tb_version_model versionModel = dalversion.Get(PubConn, model.id);
