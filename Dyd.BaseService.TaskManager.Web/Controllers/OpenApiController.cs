@@ -123,8 +123,6 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                         {
                             model.taskversion = dalversion.GetVersion(PubConn, model.id) + 1;
                         }
-
-                      
                         model.taskupdatetime = DateTime.Now;
                         dal.UpdateTask(PubConn, model);
                         if (change == -1)
@@ -137,17 +135,6 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                                 zipfile = dllbyte,
                                 zipfilename = System.IO.Path.GetFileName(filename)
                             });
-                            
-                        }
-                        if(change==-99)
-                        {
-                            
-                            tb_version_model versionModel = dalversion.Get(PubConn, model.id);
-                            versionModel.zipfile = dllbyte;
-                            versionModel.versioncreatetime = DateTime.Now;
-                            versionModel.zipfile = dllbyte;
-                            versionModel.zipfilename = System.IO.Path.GetFileName(filename);
-                            dalversion.Edit(PubConn,versionModel);
                         }
                         tempdatadal.UpdateByTaskID(PubConn, new tb_tempdata_model()
                         {
