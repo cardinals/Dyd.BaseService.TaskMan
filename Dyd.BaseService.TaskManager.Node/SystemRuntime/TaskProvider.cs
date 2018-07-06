@@ -39,7 +39,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             {
                 throw new Exception("任务已在运行中");
             }
-
+            
             taskruntimeinfo = new NodeTaskRuntimeInfo();
             taskruntimeinfo.TaskLock = new TaskLock();
             SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
@@ -64,9 +64,11 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             XXF.Common.IOHelper.CreateDirectory(filelocalcachepath);
             XXF.Common.IOHelper.CreateDirectory(fileinstallpath);
             System.IO.File.WriteAllBytes(filelocalcachepath, taskruntimeinfo.TaskVersionModel.zipfile);
-          //  System.IO.Directory.Delete(fileinstallpath,true);
+            if(Directory.Exists(fileinstallpath))
+                System.IO.Directory.Delete(fileinstallpath,true);
             CompressHelper.UnCompress(filelocalcachepath, fileinstallpath);
             //拷贝共享程序集
+
             XXF.Common.IOHelper.CopyDirectory(taskshareddlldir, fileinstallpath);
             LogHelper.AddTaskLog($"原程序集版本：{taskruntimeinfo.TaskVersionModel.assemblyversion}", taskid);
             //LogHelper.AddTaskLog($"程序集文件：{fileinstallmainclassdllpath}",taskid);
