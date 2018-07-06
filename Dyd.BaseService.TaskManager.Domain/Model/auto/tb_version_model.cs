@@ -10,7 +10,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
     [Serializable]
     public partial class tb_version_model
     {
-	/*´úÂë×Ô¶¯Éú³É¹¤¾ß×Ô¶¯Éú³É,²»ÒªÔÚÕâÀïĞ´×Ô¼ºµÄ´úÂë£¬·ñÔò»á±»×Ô¶¯¸²¸ÇÅ¶ - ³µÒã*/
+	/*ä»£ç è‡ªåŠ¨ç”Ÿæˆå·¥å…·è‡ªåŠ¨ç”Ÿæˆ,ä¸è¦åœ¨è¿™é‡Œå†™è‡ªå·±çš„ä»£ç ï¼Œå¦åˆ™ä¼šè¢«è‡ªåŠ¨è¦†ç›–å“¦ - è½¦æ¯…*/
         
         /// <summary>
         /// 
@@ -33,7 +33,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
         public DateTime versioncreatetime { get; set; }
         
         /// <summary>
-        /// Ñ¹ËõÎÄ¼ş¶ş½øÖÆÎÄ¼ş
+        /// å‹ç¼©æ–‡ä»¶äºŒè¿›åˆ¶æ–‡ä»¶
         /// </summary>
         public byte[] zipfile { get; set; }
         
@@ -43,7 +43,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
         public string zipfilename { get; set; }
 
         /// <summary>
-        /// ³ÌĞò¼¯°æ±¾ºÅ
+        /// ç¨‹åºé›†ç‰ˆæœ¬å·
         /// </summary>
         public string assemblyversion { get; set; }
     }
