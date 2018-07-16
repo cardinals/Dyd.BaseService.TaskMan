@@ -36,8 +36,10 @@ namespace Dyd.BaseService.TaskManager.Node
         public static string TaskDllCompressFileCacheDir = "任务dll版本缓存";
         /// <summary>
         /// 任务平台共享程序集
-        /// </summary>
+        /// </summary>s
         public static string TaskSharedDllsDir = "任务dll共享程序集";
+
+        public static string TaskShellDir = "shell";
         /// <summary>
         /// 任务平台节点使用的监控插件
         /// </summary>

@@ -60,16 +60,35 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             string fileinstallpath = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + GlobalConfig.TaskDllDir + @"\" + taskruntimeinfo.TaskModel.id;
             string fileinstallmainclassdllpath = fileinstallpath + @"\" + taskruntimeinfo.TaskModel.taskmainclassdllfilename;
             string taskshareddlldir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + GlobalConfig.TaskSharedDllsDir;
+            string shelldlldir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + GlobalConfig.TaskShellDir;
 
             XXF.Common.IOHelper.CreateDirectory(filelocalcachepath);
             XXF.Common.IOHelper.CreateDirectory(fileinstallpath);
-            System.IO.File.WriteAllBytes(filelocalcachepath, taskruntimeinfo.TaskVersionModel.zipfile);
+            File.WriteAllBytes(filelocalcachepath, taskruntimeinfo.TaskVersionModel.zipfile);
             if(Directory.Exists(fileinstallpath))
-                System.IO.Directory.Delete(fileinstallpath,true);
+                Directory.Delete(fileinstallpath,true);
             CompressHelper.UnCompress(filelocalcachepath, fileinstallpath);
             //拷贝共享程序集
 
             XXF.Common.IOHelper.CopyDirectory(taskshareddlldir, fileinstallpath);
+            //如果是module 
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            if(taskruntimeinfo.TaskModel.IsModule)
+            {
+                XXF.Common.IOHelper.CopyDirectory(shelldlldir,fileinstallpath);
+            }
             LogHelper.AddTaskLog($"原程序集版本：{taskruntimeinfo.TaskVersionModel.assemblyversion}", taskid);
             //LogHelper.AddTaskLog($"程序集文件：{fileinstallmainclassdllpath}",taskid);
             string assemblyVersion = GetAssemblyVersion(fileinstallmainclassdllpath);
@@ -78,20 +97,45 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             string jsonConfig=Convert.ToBase64String(bytes);
             if (taskruntimeinfo.TaskModel.task_type==TaskType.Service.Code)
             {
+                bool is_module=taskruntimeinfo.TaskModel.IsModule;
+                //当
+                //
                 try
                 {
-                    Process result = new Process
+                    Process result;
+                    if (!is_module)
                     {
-                        StartInfo = new ProcessStartInfo
-                        {
 
-                            FileName = fileinstallmainclassdllpath,
-                            Arguments=jsonConfig,
-                            UseShellExecute = false,
-                            RedirectStandardOutput = true,
-                            CreateNoWindow = true
-                        }
-                    };
+                        result = new Process
+                        {
+                            StartInfo = new ProcessStartInfo
+                            {
+
+                                FileName = fileinstallmainclassdllpath,
+                                Arguments = jsonConfig,
+                                UseShellExecute = false,
+                                RedirectStandardOutput = true,
+                                CreateNoWindow = true
+                            }
+                        };
+                    }
+                    else
+                    {
+                        string shell = fileinstallpath + @"\" + "FastFish.Service.Shell.exe";
+                        result = new Process
+                        {
+                            StartInfo = new ProcessStartInfo
+                            {
+
+                                FileName = shell, //fileinstallmainclassdllpath,
+
+                                Arguments = $"--run {fileinstallmainclassdllpath} --args {jsonConfig}",
+                                UseShellExecute = false,
+                                RedirectStandardOutput = true,
+                                CreateNoWindow = true
+                            }
+                        };
+                    }
 
                     taskruntimeinfo.Process = result;
                   /*  AppDomain.CurrentDomain.DomainUnload += (s, e) =>

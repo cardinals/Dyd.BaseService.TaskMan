@@ -40,5 +40,6 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
         public Process Process { get; set; }
         public int ProcessId { get; set; }
+        
     }
 }

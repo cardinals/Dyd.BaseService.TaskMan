@@ -252,6 +252,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             {
                 o.businessversion = dr["businessversion"]==null? string.Empty: dr["businessversion"].ToString();
             }
+	        if (dr.Table.Columns.Contains("service_flag"))
+	        {
+		        o.ServiceFlag = Convert.IsDBNull(dr["service_flag"])?string.Empty:dr["service_flag"].ToString();
+	        }
             return o;
         }
     }
