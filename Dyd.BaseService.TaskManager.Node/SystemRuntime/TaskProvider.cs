@@ -113,6 +113,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
                                 FileName = fileinstallmainclassdllpath,
                                 Arguments = jsonConfig,
+                                WorkingDirectory= fileinstallpath,
                                 UseShellExecute = false,
                                 RedirectStandardOutput = true,
                                 CreateNoWindow = true
@@ -131,6 +132,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
                                 Arguments = $"--run {fileinstallmainclassdllpath} --args {jsonConfig}",
                                 UseShellExecute = false,
+                                WorkingDirectory = fileinstallpath,
                                 RedirectStandardOutput = true,
                                 CreateNoWindow = true
                             }
