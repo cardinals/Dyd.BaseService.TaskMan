@@ -65,8 +65,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             XXF.Common.IOHelper.CreateDirectory(filelocalcachepath);
             XXF.Common.IOHelper.CreateDirectory(fileinstallpath);
             File.WriteAllBytes(filelocalcachepath, taskruntimeinfo.TaskVersionModel.zipfile);
-            if(Directory.Exists(fileinstallpath))
-                Directory.Delete(fileinstallpath,true);
+          /*  if(Directory.Exists(fileinstallpath))
+                Directory.Delete(fileinstallpath,true);*/
             CompressHelper.UnCompress(filelocalcachepath, fileinstallpath);
             //拷贝共享程序集
 

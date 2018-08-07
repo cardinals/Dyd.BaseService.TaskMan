@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Text;
 using XXF.Db;
 using Dyd.BaseService.TaskManager.Domain.Model;
@@ -19,14 +21,118 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 StringBuilder stringSql = new StringBuilder();
                 stringSql.Append(@"select s.* from tb_version s where s.taskid=@taskid and s.version=@version");
                 DataSet ds = new DataSet();
-                PubConn.SqlToDataSet(ds, stringSql.ToString(), ps.ToParameters());
+               SqlToDataSet(ds,PubConn, stringSql.ToString(), ps.ToParameters());
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count>0)
                 {
-                    return CreateModel(ds.Tables[0].Rows[0]);
+                    var model= CreateModel(ds.Tables[0].Rows[0]);
+                    ds.Dispose();
+                  
+                    return model;
                 }
                 return null;
             });
         }
+
+        public void SqlToDataSet(DataSet ds, DbConn dbConn, string sql, List<ProcedureParameter> procedurePar)
+
+        {
+            IDbConnection conn = dbConn.GetConnection();
+            SqlDataAdapter da = null;
+            SqlCommand sqlCommand = null;
+            try
+            {
+
+               sqlCommand = new SqlCommand();
+                sqlCommand.CommandTimeout = 0;
+
+                sqlCommand.Connection = (SqlConnection) conn;
+                sqlCommand.CommandType = CommandType.Text;
+                sqlCommand.CommandText = sql;
+                if (procedurePar != null)
+                {
+                    for (int index = 0; index < procedurePar.Count; ++index)
+                    {
+                        SqlParameter sqlParameter = ParameterTransform(procedurePar[index]);
+                        sqlCommand.Parameters.Add(sqlParameter);
+                    }
+                }
+                da = new SqlDataAdapter() {SelectCommand = sqlCommand};
+                da.Fill(ds);
+            }
+            finally
+            {
+                /*if (conn != null)
+                {
+                    if (conn.State != ConnectionState.Closed)
+                        conn.Close();
+                    conn.Dispose();
+                }*/
+                sqlCommand?.Dispose();
+                da?.Dispose();
+            }
+        }
+
+        private SqlParameter ParameterTransform(ProcedureParameter Par)
+        {
+            if (Par.ParType == ProcParType.Default)
+                return new SqlParameter(Par.Name, Par.Value);
+            SqlParameter sqlParameter = new SqlParameter();
+            sqlParameter.ParameterName = Par.Name;
+            switch (Par.ParType)
+            {
+                case ProcParType.Char:
+                    sqlParameter.SqlDbType = SqlDbType.Char;
+                    break;
+                case ProcParType.VarChar:
+                    sqlParameter.SqlDbType = SqlDbType.VarChar;
+                    break;
+                case ProcParType.NVarchar:
+                    sqlParameter.SqlDbType = SqlDbType.NVarChar;
+                    break;
+                case ProcParType.Image:
+                    sqlParameter.SqlDbType = SqlDbType.Binary;
+                    break;
+                case ProcParType.DateTime:
+                    sqlParameter.SqlDbType = SqlDbType.DateTime;
+                    break;
+                case ProcParType.Int16:
+                    sqlParameter.SqlDbType = SqlDbType.SmallInt;
+                    break;
+                case ProcParType.Int32:
+                    sqlParameter.SqlDbType = SqlDbType.Int;
+                    break;
+                case ProcParType.Int64:
+                    sqlParameter.SqlDbType = SqlDbType.BigInt;
+                    break;
+                case ProcParType.Single:
+                    sqlParameter.SqlDbType = SqlDbType.Real;
+                    break;
+                case ProcParType.Double:
+                    sqlParameter.SqlDbType = SqlDbType.Float;
+                    break;
+                case ProcParType.Decimal:
+                    sqlParameter.SqlDbType = SqlDbType.Decimal;
+                    break;
+                default:
+                    throw new Exception("Î´ÖªÀàÐÍProcParType£º" + Par.ParType.ToString());
+            }
+            sqlParameter.Size = Par.Size;
+            sqlParameter.Direction = Par.Direction;
+            switch (Par.Direction)
+            {
+                case ParameterDirection.Input:
+                case ParameterDirection.InputOutput:
+                    if (Par.Value == null)
+                    {
+                        sqlParameter.Value = (object)DBNull.Value;
+                        break;
+                    }
+                    sqlParameter.Value = Par.Value;
+                    break;
+            }
+            return sqlParameter;
+        }
+
 
         public virtual tb_version_model GetSimpleVersion(DbConn PubConn, int taskid, int version)
         {
