@@ -93,6 +93,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                     PubConn.Open();
                     model.taskcreatetime = DateTime.Now;
                     model.taskversion = 1;
+                    ConvertServiceTypeToFlag(model);
                     int taskid = dal.AddTask(PubConn, model);
                     dalversion.Add(PubConn, new tb_version_model()
                     {
@@ -113,6 +114,21 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
             });
         }
 
+        private static void ConvertServiceTypeToFlag(tb_task_model model)
+        {
+            switch (model.task_type)
+            {
+                case "module":
+                    model.task_type = "service";
+                    model.ServiceFlag = "module";
+                    break;
+                case "service":
+                    model.task_type = "service";
+                    model.ServiceFlag = string.Empty;
+                    break;
+            }
+        }
+
         public ActionResult Update(int taskid)
         {
             return this.Visit(Core.EnumUserRole.None, () =>
@@ -122,6 +138,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                     PubConn.Open();
                     tb_task_dal dal = new tb_task_dal();
                     tb_task_model model = dal.GetOneTask(PubConn, taskid);
+                    ConvertServiceFlagToType(model);
                     tb_tempdata_model tempdatamodel = new tb_tempdata_dal().GetByTaskID(PubConn, taskid);
                     List<tb_version_model> Version = new tb_version_dal().GetTaskVersion(PubConn, taskid);
                     List<tb_category_model> Category = new tb_category_dal().GetList(PubConn, "");
@@ -135,6 +152,17 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                     return View(model);
                 }
             });
+        }
+
+        private static void ConvertServiceFlagToType(tb_task_model model)
+        {
+            if (model.task_type == "service")
+
+            {
+                if (model.ServiceFlag == "module")
+                    model.task_type = "module";
+               
+            }
         }
 
         [HttpPost]
@@ -176,6 +204,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                             model.taskversion = dalversion.GetVersion(PubConn, model.id) + 1;
                         }
                         model.taskupdatetime = DateTime.Now;
+                        ConvertServiceTypeToFlag(model);
                         dal.UpdateTask(PubConn, model);
                         if (change == -1)
                         {
