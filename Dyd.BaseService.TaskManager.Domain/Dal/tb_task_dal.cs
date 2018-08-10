@@ -74,10 +74,13 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             {
                 string sqlwhere = "";
                 StringBuilder sql = new StringBuilder();
-                sql.Append("select ROW_NUMBER() over(order by T.id desc) as rownum,T.*,C.categoryname,N.nodename,U.username from tb_task T ");
+                sql.Append("select ROW_NUMBER() over(order by T.id desc) as rownum,T.*,C.categoryname,N.nodename,U.username,V.assemblyversion from tb_task T ");
                 sql.Append("left join tb_category C on C.id=T.categoryid ");
                 sql.Append("left join tb_user U on U.id=T.taskcreateuserid ");
+                sql.Append("left join tb_version V on T.id = V.taskid and T.taskversion = V.version ");
                 sql.Append("left join tb_node N on N.id=T.nodeid where 1=1 ");
+                
+                //throw new Exception(sql.ToString());
                 if (!string.IsNullOrWhiteSpace(taskid))
                 {
                     ps.Add("taskid", taskid);
@@ -270,6 +273,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             if (dr.Table.Columns.Contains("businessversion"))
             {
                 o.businessversion = dr["businessversion"].Tostring();
+            }
+            if (dr.Table.Columns.Contains("assemblyversion"))
+            {
+                o.AssemblyVersion= dr["assemblyversion"].Tostring();
             }
             return o;
         }
