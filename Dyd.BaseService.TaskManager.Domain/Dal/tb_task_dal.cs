@@ -74,10 +74,13 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             {
                 string sqlwhere = "";
                 StringBuilder sql = new StringBuilder();
-                sql.Append("select ROW_NUMBER() over(order by T.id desc) as rownum,T.*,C.categoryname,N.nodename,U.username from tb_task T ");
+                sql.Append("select ROW_NUMBER() over(order by T.id desc) as rownum,T.*,C.categoryname,N.nodename,U.username,V.assemblyversion from tb_task T ");
                 sql.Append("left join tb_category C on C.id=T.categoryid ");
                 sql.Append("left join tb_user U on U.id=T.taskcreateuserid ");
+                sql.Append("left join tb_version V on T.id = V.taskid and T.taskversion = V.version ");
                 sql.Append("left join tb_node N on N.id=T.nodeid where 1=1 ");
+                
+                //throw new Exception(sql.ToString());
                 if (!string.IsNullOrWhiteSpace(taskid))
                 {
                     ps.Add("taskid", taskid);
@@ -271,6 +274,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             {
                 o.businessversion = dr["businessversion"].Tostring();
             }
+            if (dr.Table.Columns.Contains("assemblyversion"))
+            {
+                o.AssemblyVersion= dr["assemblyversion"].Tostring();
+            }
             return o;
         }
 
@@ -307,6 +314,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskremark", model.taskremark);
                 ps.Add("@taskmainclassdllfilename", model.taskmainclassdllfilename);
                 ps.Add("@task_type", model.task_type);
+                
                 int rev = Convert.ToInt32(PubConn.ExecuteScalar(@"insert into tb_task(taskname,categoryid,nodeid,taskcreatetime,taskruncount,taskcreateuserid,taskstate,taskversion,taskappconfigjson,taskcron,taskmainclassnamespace,taskremark,taskmainclassdllfilename,task_type)
 										   values(@taskname,@categoryid,@nodeid,@taskcreatetime,@taskruncount,@taskcreateuserid,@taskstate,@taskversion,@taskappconfigjson,@taskcron,@taskmainclassnamespace,@taskremark,@taskmainclassdllfilename,@task_type) select @@IDENTITY", ps.ToParameters()));
                 return rev;

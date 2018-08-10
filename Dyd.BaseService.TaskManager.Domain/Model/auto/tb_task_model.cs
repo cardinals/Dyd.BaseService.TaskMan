@@ -112,5 +112,23 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
         public string task_type { get; set; }
 
         public string businessversion { get; set; }
+        /// <summary>
+        /// ÊÇ·ñmodule
+        /// </summary>
+
+        public string ServiceFlag { get; set; }
+
+        public bool IsModule
+        {
+            get
+            {
+                if (ServiceFlag == "module")
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        }
     }
 }

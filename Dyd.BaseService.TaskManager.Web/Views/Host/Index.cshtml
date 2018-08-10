@@ -1,0 +1,28 @@
+﻿@model dynamic
+
+@{
+ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>title</h2>
+<div class="orderlist m10 myorder">
+    <div class="tab_cont">
+        <a href="@Url.Action("add", "command")" class="btn1">新增</a>
+        <div class="list">
+            <table>
+                <tr>
+                    <th>id</th>
+                    <th>任务名</th>
+                    <th>命令json</th>
+                    <th>命令名称</th>
+                    <th>状态</th>
+                    <th>节点ID</th>
+                    <th>操作</th>
+                </tr>
+
+            </table>
+        </div>
+    </div>
+</div>
+

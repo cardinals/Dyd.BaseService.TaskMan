@@ -11,5 +11,6 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
         public string categoryname { get; set; }
         public string nodename { get; set; }
         public string username { get; set; }
+        public string AssemblyVersion { get; set; }
     }
 }
