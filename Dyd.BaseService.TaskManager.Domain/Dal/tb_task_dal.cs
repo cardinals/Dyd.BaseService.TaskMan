@@ -314,9 +314,9 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskremark", model.taskremark);
                 ps.Add("@taskmainclassdllfilename", model.taskmainclassdllfilename);
                 ps.Add("@task_type", model.task_type);
-                
-                int rev = Convert.ToInt32(PubConn.ExecuteScalar(@"insert into tb_task(taskname,categoryid,nodeid,taskcreatetime,taskruncount,taskcreateuserid,taskstate,taskversion,taskappconfigjson,taskcron,taskmainclassnamespace,taskremark,taskmainclassdllfilename,task_type)
-										   values(@taskname,@categoryid,@nodeid,@taskcreatetime,@taskruncount,@taskcreateuserid,@taskstate,@taskversion,@taskappconfigjson,@taskcron,@taskmainclassnamespace,@taskremark,@taskmainclassdllfilename,@task_type) select @@IDENTITY", ps.ToParameters()));
+                ps.Add("@service_flag", model.ServiceFlag);
+                int rev = Convert.ToInt32(PubConn.ExecuteScalar(@"insert into tb_task(taskname,categoryid,nodeid,taskcreatetime,taskruncount,taskcreateuserid,taskstate,taskversion,taskappconfigjson,taskcron,taskmainclassnamespace,taskremark,taskmainclassdllfilename,task_type,service_flag)
+										   values(@taskname,@categoryid,@nodeid,@taskcreatetime,@taskruncount,@taskcreateuserid,@taskstate,@taskversion,@taskappconfigjson,@taskcron,@taskmainclassnamespace,@taskremark,@taskmainclassdllfilename,@task_type,@service_flag) select @@IDENTITY", ps.ToParameters()));
                 return rev;
             });
         }
@@ -339,9 +339,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskversion", model.taskversion);
                 ps.Add("@task_type", model.task_type);
                 ps.Add("@businessversion", string.IsNullOrEmpty(model.businessversion) ? "" : model.businessversion);
+                ps.Add("@service_flag", model.ServiceFlag);
                 string sql = "Update tb_task Set taskname=@taskname,categoryid=@categoryid,nodeid=@nodeid,taskupdatetime=@taskupdatetime,";
                 sql += "taskappconfigjson=@taskappconfigjson,taskcron=@taskcron,taskcreateuserid=@taskcreateuserid,";
-                sql += "taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark,taskmainclassdllfilename=@taskmainclassdllfilename,taskversion=@taskversion,task_type=@task_type,businessversion=@businessversion";
+                sql += "taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark,taskmainclassdllfilename=@taskmainclassdllfilename,taskversion=@taskversion,task_type=@task_type,businessversion=@businessversion,service_flag=@service_flag";
                 sql += " where id=@id";
                 int i = PubConn.ExecuteSql(sql, ps.ToParameters());
                 return i;
