@@ -339,7 +339,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskversion", model.taskversion);
                 ps.Add("@task_type", model.task_type);
                 ps.Add("@businessversion", string.IsNullOrEmpty(model.businessversion) ? "" : model.businessversion);
-                ps.Add("@service_flag", model.ServiceFlag);
+                ps.Add("@service_flag", model.ServiceFlag ?? string.Empty);
                 string sql = "Update tb_task Set taskname=@taskname,categoryid=@categoryid,nodeid=@nodeid,taskupdatetime=@taskupdatetime,";
                 sql += "taskappconfigjson=@taskappconfigjson,taskcron=@taskcron,taskcreateuserid=@taskcreateuserid,";
                 sql += "taskmainclassnamespace=@taskmainclassnamespace,taskremark=@taskremark,taskmainclassdllfilename=@taskmainclassdllfilename,taskversion=@taskversion,task_type=@task_type,businessversion=@businessversion,service_flag=@service_flag";

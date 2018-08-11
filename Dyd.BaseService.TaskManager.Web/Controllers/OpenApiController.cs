@@ -82,7 +82,24 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                 }
             });
         }
-      [HttpPost]
+       
+        public JsonResult GetVersion(int taskid,int version)
+
+        {
+           // http: //10.1.13.28:8046/OpenApi/GetVersion
+            return this.Visit(Core.EnumUserRole.None, () =>
+            {
+                using (DbConn PubConn = DbConfig.CreateConn(Config.TaskConnectString))
+                {
+                    PubConn.Open();
+                    tb_version_dal dal = new tb_version_dal();
+                    tb_version_model model = dal.GetSimpleVersion(PubConn, taskid,version);
+                    return Json(model);
+                }
+            });
+        }
+
+        [HttpPost]
         public JsonResult Update2(HttpPostedFileBase TaskDll, tb_task_model model, string tempdatajson)
         {
 
