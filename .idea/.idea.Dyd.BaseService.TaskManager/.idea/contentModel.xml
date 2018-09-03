@@ -347,6 +347,7 @@
         <e p="Controllers" t="Include">
           <e p="CategoryController.cs" t="Include" />
           <e p="CommandController.cs" t="Include" />
+          <e p="HostController.cs" t="Include" />
           <e p="LogController.cs" t="Include" />
           <e p="LoginController.cs" t="Include" />
           <e p="NodeController.cs" t="Include" />
@@ -449,6 +450,9 @@
             <e p="Add.cshtml" t="Include" />
             <e p="Index.cshtml" t="Include" />
             <e p="Update.cshtml" t="Include" />
+          </e>
+          <e p="Host" t="Include">
+            <e p="Index.cshtml" t="Include" />
           </e>
           <e p="Log" t="Include">
             <e p="ErrorLog.cshtml" t="Include" />

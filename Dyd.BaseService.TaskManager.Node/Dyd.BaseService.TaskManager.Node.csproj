@@ -124,6 +124,7 @@
     <Compile Include="SystemRuntime\TaskType.cs" />
     <Compile Include="Tools\AppDomainLoader.cs" />
     <Compile Include="Tools\LogHelper.cs" />
+    <Compile Include="WinApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dyd.BaseService.TaskManager.Core\Dyd.BaseService.TaskManager.Core.csproj">

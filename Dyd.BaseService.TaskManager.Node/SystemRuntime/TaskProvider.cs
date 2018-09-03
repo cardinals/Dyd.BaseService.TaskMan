@@ -15,12 +15,15 @@ using XXF.BaseService.TaskManager;
 using XXF.BaseService.TaskManager.SystemRuntime;
 using XXF.ProjectTool;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Consul;
 using ServiceStack.Text;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
+   
     /// <summary>
     /// 任务操作提供者
     /// 提供任务的开始，关闭,重启，卸载
@@ -130,18 +133,21 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                         {
                             StartInfo = new ProcessStartInfo
                             {
-
+                                
                                 FileName = shell, //fileinstallmainclassdllpath,
-
+                                
                                 Arguments = $"--run {fileinstallmainclassdllpath} --args {jsonConfig}",
                                 UseShellExecute = false,
                                 WorkingDirectory = fileinstallpath,
                                 RedirectStandardOutput = true,
                                 CreateNoWindow = true
+                                
+                                
                             }
+                            
                         };
                     }
-
+                    
                     taskruntimeinfo.Process = result;
                   /*  AppDomain.CurrentDomain.DomainUnload += (s, e) =>
                     {
@@ -164,7 +170,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                      
                       bool isStart=   result.Start();
                     ChildProcessTracker.AddProcess(result);
-                   Task.Factory.StartNew(() =>
+                   
+                    Task.Factory.StartNew(() =>
                     {
                         while (!result.StandardOutput.EndOfStream)
                         {
@@ -209,8 +216,11 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 {
                     configuration.Address=new Uri(GlobalConfig.Consule);
                 }); // uses default host:port which is localhost:8500
-            
-             
+              
+                //修改title
+                WinApi.SetWindowText(taskruntimeinfo.Process.Handle, item.ServiceId);
+
+
                  var agentReg = new AgentServiceRegistration()
                 {
                     Address = item.Host,

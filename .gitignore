@@ -6,6 +6,9 @@ packages/
 packages/
 bin/
 obj/
-
 /.vs
 /.idea
+obj/
+errorlog/
+任务调度平台安装/
+**/obj/
