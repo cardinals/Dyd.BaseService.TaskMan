@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Windows.Forms;
 using Consul;
 using ServiceStack.Text;
 
@@ -216,9 +217,11 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 {
                     configuration.Address=new Uri(GlobalConfig.Consule);
                 }); // uses default host:port which is localhost:8500
-              
+                //SpinWait.SpinUntil(() => (taskruntimeinfo.Process.MainWindowHandle != IntPtr.Zero));
+                //while (taskruntimeinfo.Process.MainWindowHandle == IntPtr.Zero)
+                  //  Application.DoEvents();
                 //修改title
-                WinApi.SetWindowText(taskruntimeinfo.Process.Handle, item.ServiceId);
+                //WinApi.SetWindowText(taskruntimeinfo.Process.Handle, item.ServiceId);
 
 
                  var agentReg = new AgentServiceRegistration()

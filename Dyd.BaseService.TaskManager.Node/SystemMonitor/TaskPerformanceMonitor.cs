@@ -34,7 +34,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemMonitor
                     if (taskruntimeinfo == null||taskruntimeinfo.DllTask==null)
                         continue;
                     /*如果dispose，skip*/
-                    if(taskruntimeinfo.DllTask.SafeDisposeOperator.DisposedState!=TaskDisposedState.None)
+                    if(taskruntimeinfo.DllTask.SafeDisposeOperator!=null&&taskruntimeinfo.DllTask.SafeDisposeOperator.DisposedState!=TaskDisposedState.None)
                         continue;
                     string fileinstallpath = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\') + "\\" + GlobalConfig.TaskDllDir + @"\" + taskruntimeinfo.TaskModel.id;
                     double dirsizeM = -1;
