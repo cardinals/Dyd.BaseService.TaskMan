@@ -31,6 +31,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
     /// </summary>
     public class TaskProvider
     {
+        private readonly ConsulRegisterManger _consulRegisterMgr=new ConsulRegisterManger();
+
         /// <summary>
         /// 任务的开启
         /// </summary>
@@ -212,27 +214,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     }
                 });
                 //
-                ConsulRegisteration item=Parse(taskruntimeinfo.TaskModel);
-                var client = new ConsulClient(configuration =>
-                {
-                    configuration.Address=new Uri(GlobalConfig.Consule);
-                }); // uses default host:port which is localhost:8500
-                //SpinWait.SpinUntil(() => (taskruntimeinfo.Process.MainWindowHandle != IntPtr.Zero));
-                //while (taskruntimeinfo.Process.MainWindowHandle == IntPtr.Zero)
-                  //  Application.DoEvents();
-                //修改title
-                //WinApi.SetWindowText(taskruntimeinfo.Process.Handle, item.ServiceId);
-
-
-                 var agentReg = new AgentServiceRegistration()
-                {
-                    Address = item.Host,
-                    ID =item.ServiceId,
-                    Name =item.Service,
-                    Port =item.Port
-                };
-               
-               client.Agent.ServiceRegister(agentReg).Wait();
+                ConsulRegisteration item=_consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
+                _consulRegisterMgr.Register(item);
                 LogHelper.AddTaskLog("节点开启任务成功", taskid);
                 return r;
 
@@ -304,21 +287,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             }
         }
 
-        private ConsulRegisteration Parse(tb_task_model taskruntimeinfoTaskModel)
-        {
-            ConsulRegisteration item=new ConsulRegisteration();
-            TaskAppConfigInfo config = taskruntimeinfoTaskModel
-                .taskappconfigjson.FromJson<TaskAppConfigInfo>();
-
-            Uri service = new Uri(config["service_url"]);
-            item.Host = service.Host;
-            item.Port = service.Port;
-
-            string serviceNames = Path.GetFileNameWithoutExtension(taskruntimeinfoTaskModel.taskmainclassdllfilename);
-            item.Service = serviceNames;
-            item.ServiceId = $"{serviceNames}_{item.Host}_{item.Port}";
-            return item;
-        }
+       
 
         /// <summary>
         /// 获取程序集版本
@@ -420,13 +389,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
                 {
                     KillProcess(taskid.ToString(),taskruntimeinfo);
-                    ConsulRegisteration item = Parse(taskruntimeinfo.TaskModel);
-                    var client = new ConsulClient(configuration =>
-                    {
-                        configuration.Address = new Uri(GlobalConfig.Consule);
-                    }); // uses default host:port which is localhost:8500
-                    string service = item.ServiceId;
-                    client.Agent.ServiceDeregister(service).Wait();
+                    ConsulRegisteration item =_consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
+                    _consulRegisterMgr.UnRegister(item);
                     r = true;
                 }
                 catch (Exception e)
