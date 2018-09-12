@@ -40,24 +40,32 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                             //WinApi.SetWindowText(taskruntimeinfo.Process.Handle, item.ServiceId);
             
             
-                             var agentReg = new AgentServiceRegistration()
-                            {
-                                Address = item.Host,
-                                ID =item.ServiceId,
-                                Name =item.Service,
-                                Port =item.Port
-                            };
+                           
 
-            await client.Agent.ServiceRegister(agentReg);
+          
             var reg = new AgentCheckRegistration()
             {
                 Name = item.Service,
                 ServiceID = item.ServiceId,
-                TTL = TimeSpan.FromSeconds(15)
+                Interval = TimeSpan.FromSeconds(30),
+                DeregisterCriticalServiceAfter = TimeSpan.FromMinutes(1),
+                TCP =$"{item.Host}:{item.Port}"
+
+
+                
             };
-            await client.Agent.CheckRegister(reg);
+            var agentReg = new AgentServiceRegistration()
+            {
+                Checks = new[] { reg },
+                Address = item.Host,
+                ID =item.ServiceId,
+                Name =item.Service,
+                Port =item.Port
+                                
+            };
+           // await client.Agent.CheckRegister(reg);
  
-          
+            await client.Agent.ServiceRegister(agentReg);
         }
 
         public async void UnRegister(ConsulRegisteration item)
@@ -68,7 +76,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                                }); // uses default host:port which is localhost:8500
                                string service = item.ServiceId;
             await client.Agent.ServiceDeregister(service);
-            await  client.Agent.CheckDeregister(item.ServiceId);
+          //  await  client.Agent.CheckDeregister(item.ServiceId);
         }
     }
 }

@@ -116,7 +116,7 @@
     <Compile Include="SystemMonitor\TaskRecoverMonitor.cs" />
     <Compile Include="SystemMonitor\TaskStopMonitor.cs" />
     <Compile Include="SystemRuntime\ChildProcessTracker.cs" />
-    <Compile Include="SystemRuntime\ConsulManger.cs" />
+    <Compile Include="SystemRuntime\ConsulRegisterManger.cs" />
     <Compile Include="SystemRuntime\ConsulServiceItem.cs" />
     <Compile Include="SystemRuntime\TaskJob.cs" />
     <Compile Include="SystemRuntime\TaskPoolManager.cs" />

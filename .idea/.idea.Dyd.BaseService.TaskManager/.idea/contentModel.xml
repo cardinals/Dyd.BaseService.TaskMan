@@ -138,7 +138,7 @@
         </e>
         <e p="SystemRuntime" t="Include">
           <e p="ChildProcessTracker.cs" t="Include" />
-          <e p="ConsulManger.cs" t="Include" />
+          <e p="ConsulRegisterManger.cs" t="Include" />
           <e p="ConsulServiceItem.cs" t="Include" />
           <e p="NodeTaskRuntimeInfo.cs" t="Include" />
           <e p="TaskJob.cs" t="Include" />
