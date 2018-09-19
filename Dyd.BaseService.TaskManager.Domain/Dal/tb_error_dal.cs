@@ -32,7 +32,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
             {
                 ps.Add("@lastlogid", lastlogid);
                 StringBuilder stringSql = new StringBuilder();
-                stringSql.Append(@"select top 100 s.*,t.taskcreateuserid,t.taskname from tb_error s,tb_task tb_task t JOIN dbo.tb_node n ON t.nodeid=n.id where s.id>@lastlogid and s.taskid=t.id  AND n.env='PRO' order by s.id desc");
+                stringSql.Append(@"select top 100 s.*,t.taskcreateuserid,t.taskname from tb_error s,tb_task  t JOIN dbo.tb_node n ON t.nodeid=n.id where s.id>@lastlogid and s.taskid=t.id  AND n.env='PRO' order by s.id desc");
                 DataSet ds = new DataSet();
                 PubConn.SqlToDataSet(ds, stringSql.ToString(), ps.ToParameters());
                 List<tb_senderror_model> rs = new List<tb_senderror_model>();
