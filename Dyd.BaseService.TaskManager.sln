@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager.Web", "Dyd.BaseService.TaskManager.Web\Dyd.BaseService.TaskManager.Web.csproj", "{2CBA7699-53A3-4289-A973-E41089E72C2C}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager.MonitorTasks", "Dyd.BaseService.TaskManager.MonitorTasks\Dyd.BaseService.TaskManager.MonitorTasks.csproj", "{B8D9A1E9-F03B-44A5-ACDA-A6787CF3A5D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager.NodeTests", "Dyd.BaseService.TaskManager.NodeTests\Dyd.BaseService.TaskManager.NodeTests.csproj", "{7121CE77-5497-4BF6-AECF-99FFA29F0F52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManger.MonitorTaskTests", "Dyd.BaseService.TaskManger.MonitorTaskTests\Dyd.BaseService.TaskManger.MonitorTaskTests.csproj", "{4DD32FB4-04D9-4067-A17E-20C577CBFB88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,9 +65,16 @@ Global
 		{7121CE77-5497-4BF6-AECF-99FFA29F0F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7121CE77-5497-4BF6-AECF-99FFA29F0F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7121CE77-5497-4BF6-AECF-99FFA29F0F52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DD32FB4-04D9-4067-A17E-20C577CBFB88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DD32FB4-04D9-4067-A17E-20C577CBFB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DD32FB4-04D9-4067-A17E-20C577CBFB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DD32FB4-04D9-4067-A17E-20C577CBFB88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {38012789-B582-4E67-8E2C-3D740F8A3F48}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
