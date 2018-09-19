@@ -314,7 +314,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 ps.Add("@taskremark", model.taskremark);
                 ps.Add("@taskmainclassdllfilename", model.taskmainclassdllfilename);
                 ps.Add("@task_type", model.task_type);
-                ps.Add("@service_flag", model.ServiceFlag);
+                ps.Add("@service_flag", model.ServiceFlag??string.Empty);
                 int rev = Convert.ToInt32(PubConn.ExecuteScalar(@"insert into tb_task(taskname,categoryid,nodeid,taskcreatetime,taskruncount,taskcreateuserid,taskstate,taskversion,taskappconfigjson,taskcron,taskmainclassnamespace,taskremark,taskmainclassdllfilename,task_type,service_flag)
 										   values(@taskname,@categoryid,@nodeid,@taskcreatetime,@taskruncount,@taskcreateuserid,@taskstate,@taskversion,@taskappconfigjson,@taskcron,@taskmainclassnamespace,@taskremark,@taskmainclassdllfilename,@task_type,@service_flag) select @@IDENTITY", ps.ToParameters()));
                 return rev;
