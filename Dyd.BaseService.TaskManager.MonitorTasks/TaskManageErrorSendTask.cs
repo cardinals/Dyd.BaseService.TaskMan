@@ -16,6 +16,7 @@ namespace Dyd.BaseService.TaskManager.MonitorTasks
     /// </summary>
     public class TaskManageErrorSendTask : XXF.BaseService.TaskManager.BaseDllTask
     {
+        
 
         public override void Run()
         {
@@ -93,6 +94,7 @@ namespace Dyd.BaseService.TaskManager.MonitorTasks
             this.AppConfig.Add("sendmailhost", "smtp.fastfish.com.cn");
             this.AppConfig.Add("sendmailname", "ffadmin");
             this.AppConfig.Add("password", "ffadmin@ex");
+            
 
             base.TestRun();
         }
