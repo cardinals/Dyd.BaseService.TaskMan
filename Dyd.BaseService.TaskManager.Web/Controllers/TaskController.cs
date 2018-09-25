@@ -101,7 +101,9 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                         version = 1,
                         versioncreatetime = DateTime.Now,
                         zipfile = dllbyte,
-                        zipfilename = System.IO.Path.GetFileName(filename)
+                        zipfilename = System.IO.Path.GetFileName(filename),
+                        commit_id=string.Empty
+                        
                     });
                     tempdatadal.Add(PubConn, new tb_tempdata_model()
                     {
@@ -214,7 +216,9 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                                 version = model.taskversion,
                                 versioncreatetime = DateTime.Now,
                                 zipfile = dllbyte,
-                                zipfilename = System.IO.Path.GetFileName(filename)
+                                zipfilename = System.IO.Path.GetFileName(filename),
+                                commit_id=string.Empty
+                                
                             });
                         }
                         tempdatadal.UpdateByTaskID(PubConn, new tb_tempdata_model()
@@ -457,6 +461,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                         vermodel.taskid = taskid;
                         vermodel.version = 1;
                         vermodel.versioncreatetime = DateTime.Now;
+                        vermodel.commit_id = string.Empty;
                         dalversion.Add(PubConn, vermodel);
 
                         tempdatamodel.taskid = taskid;
@@ -564,7 +569,8 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                                     version = totaskversion.version + 1,
                                     versioncreatetime = DateTime.Now,
                                     zipfile = fromtaskversion.zipfile,
-                                    zipfilename = fromtaskversion.zipfilename
+                                    zipfilename = fromtaskversion.zipfilename,
+                                    commit_id=string.Empty
                                 };
                                 TaskHelper.AddVersion(model);
                                 TaskHelper.AddTaskCommand(new tb_command_model

@@ -26,10 +26,11 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 					//压缩文件二进制文件
 					new ProcedureParameter("@zipfile",    model.zipfile),
 					//
-					new ProcedureParameter("@zipfilename",    model.zipfilename)   
+					new ProcedureParameter("@zipfilename",    model.zipfilename) ,
+                    new ProcedureParameter("@commit_id", model.commit_id)
                 };
-            int rev = PubConn.ExecuteSql(@"insert into tb_version(taskid,version,versioncreatetime,zipfile,zipfilename)
-										   values(@taskid,@version,@versioncreatetime,@zipfile,@zipfilename)", Par);
+            int rev = PubConn.ExecuteSql(@"insert into tb_version(taskid,version,versioncreatetime,zipfile,zipfilename,Commit_ID)
+										   values(@taskid,@version,@versioncreatetime,@zipfile,@zipfilename,@commit_id)", Par);
             return rev == 1;
 
         }
@@ -49,12 +50,13 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 					new ProcedureParameter("@zipfile",    model.zipfile),
 					//
 					new ProcedureParameter("@zipfilename",    model.zipfilename),
+                     new ProcedureParameter("@commit_id",model.commit_id)
 
                    // new ProcedureParameter("@assemblyversion",   model.assemblyversion??string.Empty)
             };
 			Par.Add(new ProcedureParameter("@id",  model.id));
 
-            int rev = PubConn.ExecuteSql("update tb_version set taskid=@taskid,version=@version,versioncreatetime=@versioncreatetime,zipfile=@zipfile,zipfilename=@zipfilename where id=@id", Par);
+            int rev = PubConn.ExecuteSql("update tb_version set taskid=@taskid,version=@version,versioncreatetime=@versioncreatetime,zipfile=@zipfile,zipfilename=@zipfilename,Commit_ID=@commit_id where id=@id", Par);
             return rev == 1;
 
         }

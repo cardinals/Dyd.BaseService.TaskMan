@@ -10,7 +10,8 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
     [Serializable]
     public partial class tb_version_model
     {
-	/*代码自动生成工具自动生成,不要在这里写自己的代码，否则会被自动覆盖哦 - 车毅*/
+        public string commit_id;
+        /*代码自动生成工具自动生成,不要在这里写自己的代码，否则会被自动覆盖哦 - 车毅*/
         
         /// <summary>
         /// 

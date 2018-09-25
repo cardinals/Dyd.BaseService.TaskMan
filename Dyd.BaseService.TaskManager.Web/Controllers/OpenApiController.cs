@@ -100,7 +100,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update2(HttpPostedFileBase TaskDll, tb_task_model model, string tempdatajson)
+        public JsonResult Update2(HttpPostedFileBase TaskDll, tb_task_model model,string commitId, string tempdatajson)
         {
 
             HttpPostedFileBase file = Request.Files[0];
@@ -150,6 +150,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                                 versionModel.versioncreatetime = DateTime.Now;
                                 versionModel.zipfile = dllbyte;
                                 versionModel.zipfilename = System.IO.Path.GetFileName(filename);
+                                versionModel.commit_id = commitId;
                                 // versionModel.assemblyversion = "";
                                 dalversion.Edit(PubConn, versionModel);
                             }
@@ -162,6 +163,7 @@ namespace Dyd.BaseService.TaskManager.Web.Controllers
                                     version = model.taskversion,
                                     versioncreatetime = DateTime.Now,
                                     zipfile = dllbyte,
+                                    commit_id=commitId,
                                     zipfilename = System.IO.Path.GetFileName(filename)
                                 });
                             }
