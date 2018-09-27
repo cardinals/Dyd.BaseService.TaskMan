@@ -33,7 +33,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
                 if (ds != null && ds.Tables.Count > 0 && ds.Tables[0].Rows.Count>0)
                 {
                     var model= CreateModel(ds.Tables[0].Rows[0]);
-                    FillByte(PubConn,taskid,version, model);
+                   // FillByte(PubConn,taskid,version, model);
                     ds.Dispose();
                   
                     return model;
@@ -125,7 +125,86 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 
 
         }
+        public void FillByteToFile(DbConn dbConn,int taskid,int version,FileStream fs)
 
+        {
+            string sql=$@"select s.zipfile from tb_version s where s.taskid={taskid} and s.version={version}";
+
+            IDbConnection conn = dbConn.GetConnection();
+            SqlCommand cmd=null;
+            SqlDataReader rd = null;
+            
+            int bufferSize = 32*1024;   
+            // Size of the BLOB buffer.
+            byte[] outbyte = new byte[bufferSize];  // The BLOB byte[] buffer to be filled by GetBytes.
+            long retval;                            // The bytes returned from GetBytes.
+            long startIndex = 0;                    // The starting position in the BLOB output.
+            try
+            {
+
+                cmd =(SqlCommand) conn.CreateCommand();
+
+
+                cmd.CommandType = CommandType.Text;
+                cmd.CommandText = sql;
+                //img= new MemoryStream((byte[])cmd.ExecuteScalar());
+               rd= cmd.ExecuteReader(CommandBehavior.SequentialAccess);
+
+                while (rd.Read())
+                {
+                    // Get the publisher id, which must occur before getting the logo.
+                
+
+                    // Create a file to hold the output.
+                  
+                    var bw = new BinaryWriter(fs);
+
+                    // Reset the starting byte for the new BLOB.
+                    startIndex = 0;
+
+                    // Read the bytes into outbyte[] and retain the number of bytes returned.
+                    retval = rd.GetBytes(0, startIndex, outbyte, 0, bufferSize);
+
+                    // Continue reading and writing while there are bytes beyond the size of the buffer.
+                    while (retval == bufferSize)
+                    {
+                        bw.Write(outbyte);
+                        bw.Flush();
+
+                        // Reposition the start index to the end of the last buffer and fill the buffer.
+                        startIndex += bufferSize;
+                        retval = rd.GetBytes(0, startIndex, outbyte, 0, bufferSize);
+                    }
+
+                    // Write the remaining buffer.
+                    if(retval > 0) // if file size can divide to buffer size
+                        bw.Write(outbyte, 0, (int)retval); //original MSDN source had retval-1, a bug
+                    bw.Flush();
+                   // bw.Close();
+                    //fs.Seek(0, SeekOrigin.Begin);
+                  
+                    bw.Close();
+                    // Close the output file.
+                  
+                 
+                    
+                    
+                  
+                }
+                
+                //img.Read(model.zipfile,0,(int)img.Length);
+                
+            }
+            finally
+            {
+                rd?.Close();
+
+                cmd?.Dispose();
+
+            }
+
+
+        }
         public void SqlToDataSet(DataSet ds, DbConn dbConn, string sql, List<ProcedureParameter> procedurePar)
 
         {

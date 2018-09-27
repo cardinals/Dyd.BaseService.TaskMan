@@ -53,7 +53,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     tb_task_dal taskdal = new tb_task_dal();
                     taskruntimeinfo.TaskModel = taskdal.Get(c, taskid);
                     tb_version_dal versiondal = new tb_version_dal();
-                    taskruntimeinfo.TaskVersionModel = versiondal.GetCurrentVersion(c, taskid, taskruntimeinfo.TaskModel.taskversion);
+                    taskruntimeinfo.TaskVersionModel = versiondal.GetCurrentVersion(c, taskid,taskruntimeinfo.TaskModel.taskversion );
                     //taskruntimeinfo.ProcessId=taskdal.GetProcess(c, taskid);
                 });
             //如果异常退出，进程后没有更新
@@ -70,7 +70,14 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
             XXF.Common.IOHelper.CreateDirectory(filelocalcachepath);
             XXF.Common.IOHelper.CreateDirectory(fileinstallpath);
-            File.WriteAllBytes(filelocalcachepath, taskruntimeinfo.TaskVersionModel.zipfile);
+           // File.WriteAllBytes(filelocalcachepath, taskruntimeinfo.TaskVersionModel.zipfile);
+            FileStream fs=new FileStream(filelocalcachepath,FileMode.Create,FileAccess.ReadWrite);
+            SqlHelper.ExcuteSql(GlobalConfig.TaskDataBaseConnectString, (c) =>
+            {
+                tb_version_dal versiondal = new tb_version_dal();
+                versiondal.FillByteToFile(c, taskid, taskruntimeinfo.TaskModel.taskversion, fs);
+            });
+            fs.Close(); 
             if (Directory.Exists(fileinstallpath))
             {
                 File.SetAttributes(fileinstallpath, FileAttributes.Normal);

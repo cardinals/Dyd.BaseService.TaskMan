@@ -25,6 +25,7 @@ namespace Dyd.BaseService.TaskManager.Node
         public static string TaskManagerWebUrl { get { return System.Configuration.ConfigurationManager.AppSettings["TaskManagerWebUrl"]; } }
 
         public static string Consule => System.Configuration.ConfigurationManager.AppSettings["consul"];
+        public static string JavaPath => System.Configuration.ConfigurationManager.AppSettings["java_bin"];
 
         /// <summary>
         /// 任务dll根目录
