@@ -145,6 +145,7 @@
           <e p="ConsulRegisterManger.cs" t="Include" />
           <e p="ConsulServiceItem.cs" t="Include" />
           <e p="NodeTaskRuntimeInfo.cs" t="Include" />
+          <e p="ProcessStart.cs" t="Include" />
           <e p="TaskJob.cs" t="Include" />
           <e p="TaskPoolManager.cs" t="Include" />
           <e p="TaskProvider.cs" t="Include" />

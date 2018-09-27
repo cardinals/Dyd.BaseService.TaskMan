@@ -114,20 +114,30 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     Process result;
                     if (!is_module)
                     {
-
-                        result = new Process
+                        string flag = taskruntimeinfo.TaskModel.ServiceFlag;
+                        if (!string.IsNullOrEmpty(flag))
                         {
-                            StartInfo = new ProcessStartInfo
-                            {
 
-                                FileName = fileinstallmainclassdllpath,
-                                Arguments = jsonConfig,
-                                WorkingDirectory= fileinstallpath,
-                                UseShellExecute = false,
-                                RedirectStandardOutput = true,
-                                CreateNoWindow = true
-                            }
-                        };
+                            result = ProcessStart.Load(flag,fileinstallmainclassdllpath, jsonConfig, fileinstallpath);
+                        }
+
+                        else
+                        {
+
+                            result = new Process
+                            {
+                                StartInfo = new ProcessStartInfo
+                                {
+
+                                    FileName = fileinstallmainclassdllpath,
+                                    Arguments = jsonConfig,
+                                    WorkingDirectory = fileinstallpath,
+                                    UseShellExecute = false,
+                                    RedirectStandardOutput = true,
+                                    CreateNoWindow = true
+                                }
+                            };
+                        }
                     }
                     else
                     {
@@ -170,9 +180,21 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                   */
                   //  Task a = Task.Factory.StartNew(() =>
                    // {
-                     
-                      bool isStart=   result.Start();
-                    ChildProcessTracker.AddProcess(result);
+
+                    bool isStart = result.Start();
+                    try
+                    {
+                        ChildProcessTracker.AddProcess(result);
+                    }
+                    catch (Exception ex)
+                    {
+                        LogHelper.AddTaskLog($"节点开启任务失败{ex.Message}", taskid);
+                        //LogHelper.AddNodeError();
+                        //Console.WriteLine(e);
+                        //throw;
+                    }
+                    
+                    
                    
                     Task.Factory.StartNew(() =>
                     {

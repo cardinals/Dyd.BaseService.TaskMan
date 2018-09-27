@@ -118,6 +118,7 @@
     <Compile Include="SystemRuntime\ChildProcessTracker.cs" />
     <Compile Include="SystemRuntime\ConsulRegisterManger.cs" />
     <Compile Include="SystemRuntime\ConsulServiceItem.cs" />
+    <Compile Include="SystemRuntime\ProcessStart.cs" />
     <Compile Include="SystemRuntime\TaskJob.cs" />
     <Compile Include="SystemRuntime\TaskPoolManager.cs" />
     <Compile Include="SystemRuntime\TaskProvider.cs" />
