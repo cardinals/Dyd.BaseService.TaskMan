@@ -8,7 +8,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
     public static class ProcessStart
     {
-        public static Process Load(ProcessStarupParam parm)
+        public static Process Load(ProcessStartupParam parm)
         {
             /* const uint NORMAL_PRIORITY_CLASS = 0x0020;
              string args=$" -jar {fileName}";

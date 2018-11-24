@@ -126,7 +126,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                         {
 
 
-                            var startupParam =new ProcessStarupParam()
+                            var startupParam =new ProcessStartupParam()
                                 {Flag = flag,FileName = fileinstallmainclassdllpath, 
                                     Config = jsonConfig, WorkDir = fileinstallpath,
                                     Cron=taskruntimeinfo.TaskModel.taskcron,
