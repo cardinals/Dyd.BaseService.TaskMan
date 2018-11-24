@@ -125,7 +125,15 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                         if (!string.IsNullOrEmpty(flag))
                         {
 
-                            result = ProcessStart.Load(flag,fileinstallmainclassdllpath, jsonConfig, fileinstallpath);
+
+                            var startupParam =new ProcessStarupParam()
+                                {Flag = flag,FileName = fileinstallmainclassdllpath, 
+                                    Config = jsonConfig, WorkDir = fileinstallpath,
+                                    Cron=taskruntimeinfo.TaskModel.taskcron,
+                                    NameSpace=taskruntimeinfo.TaskModel.taskmainclassnamespace
+                                };
+
+                            result = ProcessStart.Load(startupParam);
                         }
 
                         else

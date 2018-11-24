@@ -26,6 +26,7 @@ namespace Dyd.BaseService.TaskManager.Node
 
         public static string Consule => System.Configuration.ConfigurationManager.AppSettings["consul"];
         public static string JavaPath => System.Configuration.ConfigurationManager.AppSettings["java_bin"];
+        public static string CronShell=> System.Configuration.ConfigurationManager.AppSettings["cron"];
 
         /// <summary>
         /// 任务dll根目录
