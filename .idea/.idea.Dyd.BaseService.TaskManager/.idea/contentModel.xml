@@ -144,8 +144,12 @@
           <e p="ChildProcessTracker.cs" t="Include" />
           <e p="ConsulRegisterManger.cs" t="Include" />
           <e p="ConsulServiceItem.cs" t="Include" />
+          <e p="CronProcessBuilder.cs" t="Include" />
+          <e p="IProcessBuilder.cs" t="Include" />
+          <e p="JarProcessBuilder.cs" t="Include" />
           <e p="NodeTaskRuntimeInfo.cs" t="Include" />
           <e p="ProcessStart.cs" t="Include" />
+          <e p="ProcessStartupParam.cs" t="Include" />
           <e p="TaskJob.cs" t="Include" />
           <e p="TaskPoolManager.cs" t="Include" />
           <e p="TaskProvider.cs" t="Include" />

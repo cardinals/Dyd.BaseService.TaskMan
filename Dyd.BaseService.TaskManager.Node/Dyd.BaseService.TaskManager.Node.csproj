@@ -121,8 +121,11 @@
     <Compile Include="SystemRuntime\ChildProcessTracker.cs" />
     <Compile Include="SystemRuntime\ConsulRegisterManger.cs" />
     <Compile Include="SystemRuntime\ConsulServiceItem.cs" />
+    <Compile Include="SystemRuntime\CronProcessBuilder.cs" />
+    <Compile Include="SystemRuntime\IProcessBuilder.cs" />
+    <Compile Include="SystemRuntime\JarProcessBuilder.cs" />
     <Compile Include="SystemRuntime\ProcessStart.cs" />
-    <Compile Include="SystemRuntime\ProcessStarupParam.cs" />
+    <Compile Include="SystemRuntime\ProcessStartupParam.cs" />
     <Compile Include="SystemRuntime\TaskJob.cs" />
     <Compile Include="SystemRuntime\TaskPoolManager.cs" />
     <Compile Include="SystemRuntime\TaskProvider.cs" />

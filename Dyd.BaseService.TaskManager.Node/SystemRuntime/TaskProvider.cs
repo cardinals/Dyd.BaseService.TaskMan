@@ -130,10 +130,13 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                                 {Flag = flag,FileName = fileinstallmainclassdllpath, 
                                     Config = jsonConfig, WorkDir = fileinstallpath,
                                     Cron=taskruntimeinfo.TaskModel.taskcron,
-                                    NameSpace=taskruntimeinfo.TaskModel.taskmainclassnamespace
+                                    NameSpace=taskruntimeinfo.TaskModel.taskmainclassnamespace,
+                                    TaskDbConnection=GlobalConfig.TaskDataBaseConnectString,
+                                    TaskModel=taskruntimeinfo.TaskModel
+
                                 };
 
-                            result = ProcessStart.Load(startupParam);
+                            result = ProcessStart.GetInstance().Load(startupParam);
                         }
 
                         else

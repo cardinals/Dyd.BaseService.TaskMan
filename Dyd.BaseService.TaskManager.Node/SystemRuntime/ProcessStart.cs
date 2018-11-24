@@ -1,14 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Management.Instrumentation;
 using System.Runtime.InteropServices;
 using System.Text;
-
+using XXF.BaseService.TaskManager.SystemRuntime;
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
-    public static class ProcessStart
+    public class ProcessStart
     {
-        public static Process Load(ProcessStartupParam parm)
+        private static ProcessStart _instance;
+
+        private Dictionary<string, IProcessBuilder> _builders = new Dictionary<string, IProcessBuilder>
+        {
+            {"cron", new CronProcessBuilder()},
+            {"jar", new JarProcessBuilder()}
+        };
+
+
+
+
+
+
+        public static ProcessStart GetInstance()
+        {
+            if (_instance == null)
+            {
+                _instance = new ProcessStart();
+            }
+
+            return _instance;
+        }
+
+        public Process Load(ProcessStartupParam parm)
         {
             /* const uint NORMAL_PRIORITY_CLASS = 0x0020;
              string args=$" -jar {fileName}";
@@ -22,63 +46,31 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
              bool retValue;
              retValue =  WinApi.CreateProcess(app, args,ref pSec,ref tSec,false,NORMAL_PRIORITY_CLASS,
                  IntPtr.Zero,null,ref sInfo,out pInfo);*/
-            switch (parm.Flag)
+            /*  switch (parm.Flag)
+              {
+  
+  
+  
+                  case "jar":
+  
+                      return StarJarProcess(parm.FileName,parm.Config, parm.WorkDir);
+  
+                  //return pInfo.dwProcessId;
+                  case "cron":
+                      return StartCronProcess(parm.FileName,parm.WorkDir);
+  
+              }*/
+            if (!_builders.ContainsKey(parm.Flag))
             {
-
-
-
-                case "jar":
-
-                    return StarJarProcess(parm.FileName,parm.Config, parm.WorkDir);
-
-                //return pInfo.dwProcessId;
-                case "cron":
-                    return StartCronProcess(parm.FileName,parm.WorkDir);
-
+                throw new Exception($"{parm.Flag}不支持");
             }
 
-            return null;
-        }
-
-        private static Process StartCronProcess(string fileName,string workDir)
-        {
-            XXF.Common.IOHelper.CopyDirectory(GlobalConfig.CronShell, workDir);
-            var result = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = "FastFish.Cron ", //fileinstallmainclassdllpath,
-
-                    Arguments = $" -jar {fileName} ",
-                    UseShellExecute = false,
-                    WorkingDirectory = workDir,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true,
-                }
-            };
-            return result;
-        }
-
-        private static Process StarJarProcess(string fileName,string config, string workDir)
-        {
-            //
-           
-         
-           
-            var result = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    FileName = GlobalConfig.JavaPath + @"\\java", //fileinstallmainclassdllpath,
-
-                    Arguments = $" -jar {fileName} --config {config} ",
-                    UseShellExecute = false,
-                    WorkingDirectory = workDir,
-                    RedirectStandardOutput = true,
-                    CreateNoWindow = true,
-                }
-            };
-            return result;
+            return _builders[parm.Flag].StartProcess(parm);
         }
     }
+
+
+
+
 }
+    
