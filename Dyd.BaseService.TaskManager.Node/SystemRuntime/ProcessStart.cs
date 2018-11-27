@@ -10,11 +10,18 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
     public class ProcessStart
     {
         private static ProcessStart _instance;
+        private StandardProcessBuilder _standardProcess=new StandardProcessBuilder();
 
         private Dictionary<string, IProcessBuilder> _builders = new Dictionary<string, IProcessBuilder>
         {
             {"cron", new CronProcessBuilder()},
-            {"jar", new JarProcessBuilder()}
+            {"jar", new JarProcessBuilder()},
+            {
+                "module",new ModuleProcessBuilder()
+
+            },
+           
+
         };
 
 
@@ -62,15 +69,12 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
               }*/
             if (!_builders.ContainsKey(parm.Flag))
             {
-                throw new Exception($"{parm.Flag}不支持");
+                //throw new Exception($"{parm.Flag}不支持");
+              return   _standardProcess.StartProcess(parm);
             }
 
             return _builders[parm.Flag].StartProcess(parm);
         }
     }
-
-
-
-
 }
     

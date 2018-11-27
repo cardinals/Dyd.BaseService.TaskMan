@@ -27,7 +27,6 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=A6BBB109_002D7948_002D4C8A_002D86A2_002D817C83A365D9_002Ff_003ABaseDllTask_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="E:\project2\Dyd.BasService.TaskMan\引用\XXF.dll" /&gt;&#xD;
-  &lt;ProjFile Path="E:\project2\xxf\XXF\XXF.csproj" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\fastfish\Desktop\服务总线\Debug\ServicesConsole.exe" /&gt;&#xD;
   &lt;Assembly Path="C:\Windows\Microsoft.NET\Framework\v4.0.30319\mscorlib.dll" /&gt;&#xD;
   &lt;Assembly Path="D:\project\Dyd.BasService.TaskMan\引用\Quartz.dll" /&gt;&#xD;
@@ -35,4 +34,7 @@
   &lt;Assembly Path="C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Data.dll" /&gt;&#xD;
   &lt;Assembly Path="D:\project\Dyd.BasService.TaskMan\packages\NamedPipeWrapper.1.5.3-Beta\lib\net40\NamedPipeWrapper.dll" /&gt;&#xD;
   &lt;Assembly Path="D:\project\Dyd.BasService.TaskMan\引用\Consul.dll" /&gt;&#xD;
-&lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
+  &lt;ProjFile Path="d:\project\XXF\XXF.csproj" /&gt;&#xD;
+  &lt;Assembly Path="D:\project\XXF\bin\Debug\netstandard2.0\XXF.Core.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	</wpf:ResourceDictionary>

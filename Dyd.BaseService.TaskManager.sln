@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager.Domain", "Dyd.BaseService.TaskManager.Domain\Dyd.BaseService.TaskManager.Domain.csproj", "{327E419A-E161-43B1-9A6A-3284E7F42C2B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager.Node", "Dyd.BaseService.TaskManager.Node\Dyd.BaseService.TaskManager.Node.csproj", "{A17F6E87-E455-4493-B4AE-3E11BD881F36}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager.Core", "Dyd.BaseService.TaskManager.Core\Dyd.BaseService.TaskManager.Core.csproj", "{DD7F3150-002B-4AD3-9FA3-695F52D88FCC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager.Test", "Dyd.BaseService.TaskManager.Test\Dyd.BaseService.TaskManager.Test.csproj", "{6A16D30C-282C-40AC-8598-B5C52A8D6DD0}"
@@ -22,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager.NodeTests", "Dyd.BaseService.TaskManager.NodeTests\Dyd.BaseService.TaskManager.NodeTests.csproj", "{7121CE77-5497-4BF6-AECF-99FFA29F0F52}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManger.MonitorTaskTests", "Dyd.BaseService.TaskManger.MonitorTaskTests\Dyd.BaseService.TaskManger.MonitorTaskTests.csproj", "{4DD32FB4-04D9-4067-A17E-20C577CBFB88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dyd.BaseService.TaskManager.Node", "Dyd.BaseService.TaskManager.Node\Dyd.BaseService.TaskManager.Node.csproj", "{A17F6E87-E455-4493-B4AE-3E11BD881F36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{327E419A-E161-43B1-9A6A-3284E7F42C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{327E419A-E161-43B1-9A6A-3284E7F42C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{327E419A-E161-43B1-9A6A-3284E7F42C2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A17F6E87-E455-4493-B4AE-3E11BD881F36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A17F6E87-E455-4493-B4AE-3E11BD881F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A17F6E87-E455-4493-B4AE-3E11BD881F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A17F6E87-E455-4493-B4AE-3E11BD881F36}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DD7F3150-002B-4AD3-9FA3-695F52D88FCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD7F3150-002B-4AD3-9FA3-695F52D88FCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD7F3150-002B-4AD3-9FA3-695F52D88FCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,6 +65,10 @@ Global
 		{4DD32FB4-04D9-4067-A17E-20C577CBFB88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DD32FB4-04D9-4067-A17E-20C577CBFB88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DD32FB4-04D9-4067-A17E-20C577CBFB88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A17F6E87-E455-4493-B4AE-3E11BD881F36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A17F6E87-E455-4493-B4AE-3E11BD881F36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A17F6E87-E455-4493-B4AE-3E11BD881F36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A17F6E87-E455-4493-B4AE-3E11BD881F36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

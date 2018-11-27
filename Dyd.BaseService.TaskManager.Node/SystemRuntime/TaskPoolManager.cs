@@ -15,20 +15,24 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
     /// 管理任务的移入，移除任务运行池
     /// 全局仅一个实例
     /// </summary>
-    public class TaskPoolManager:IDisposable
+    public class TaskPoolManager : IDisposable
     {
         /// <summary>
         /// 任务运行池
         /// </summary>
-        private static Dictionary<string, NodeTaskRuntimeInfo> TaskRuntimePool = new Dictionary<string, NodeTaskRuntimeInfo>();
+        private static Dictionary<string, NodeTaskRuntimeInfo> TaskRuntimePool =
+            new Dictionary<string, NodeTaskRuntimeInfo>();
+
         /// <summary>
         /// 任务池管理者,全局仅一个实例
         /// </summary>
         private static TaskPoolManager _taskpoolmanager;
+
         /// <summary>
         /// 任务池管理操作锁标记
         /// </summary>
         private static object _locktag = new object();
+
         /// <summary>
         /// 任务池执行计划
         /// </summary>
@@ -44,6 +48,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             _sched = sf.GetScheduler();
             _sched.Start();
         }
+
         /// <summary>
         /// 资源释放
         /// </summary>
@@ -52,6 +57,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             if (_sched != null && !_sched.IsShutdown)
                 _sched.Shutdown();
         }
+
         /// <summary>
         /// 获取任务池的全局唯一实例
         /// </summary>
@@ -60,6 +66,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         {
             return _taskpoolmanager;
         }
+
         /// <summary>
         /// 将任务移入任务池
         /// </summary>
@@ -73,8 +80,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 switch (taskruntimeinfo.TaskModel.task_type)
                 {
                     case "service":
-                      
-                          
+
+
 
                         if (!TaskRuntimePool.ContainsKey(taskid))
                         {
@@ -83,6 +90,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                             TaskRuntimePool.Add(taskid, taskruntimeinfo);
                             return true;
                         }
+
                         return false;
                     default:
                         if (!TaskRuntimePool.ContainsKey(taskid))
@@ -95,16 +103,45 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                             TaskRuntimePool.Add(taskid, taskruntimeinfo);
                             return true;
                         }
+
                         return false;
                 }
             }
         }
         /// <summary>
-        /// 将任务移出任务池
+        /// 加入pool manger
         /// </summary>
         /// <param name="taskid"></param>
+        /// <param name="taskruntimeinfo"></param>
         /// <returns></returns>
-        public bool Remove(string taskid)
+        public bool AddInstance(string taskid, NodeTaskRuntimeInfo taskruntimeinfo)
+
+
+        {
+            lock (_locktag)
+            {
+               
+
+
+                        if (!TaskRuntimePool.ContainsKey(taskid))
+                        {
+                            //taskruntimeinfo.DllTask.TryRun();
+
+                            TaskRuntimePool.Add(taskid, taskruntimeinfo);
+                            return true;
+                        }
+
+                        return false;
+                
+            }
+        }
+
+        /// <summary>
+            /// 将任务移出任务池
+            /// </summary>
+            /// <param name="taskid"></param>
+            /// <returns></returns>
+            public bool Remove(string taskid)
         {
             lock (_locktag)
             {
