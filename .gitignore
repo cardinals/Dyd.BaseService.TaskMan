@@ -12,3 +12,6 @@ obj/
 errorlog/
 任务调度平台安装/
 **/obj/
+agent/
+publish/
+Upgrade*.*

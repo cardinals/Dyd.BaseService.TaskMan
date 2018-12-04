@@ -456,15 +456,20 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             }
 
             bool r;
-            if (taskruntimeinfo.TaskModel.task_type == TaskType.Service.Code)
+            if (taskruntimeinfo.TaskModel.task_type == TaskType.Service.Code||
+                (taskruntimeinfo.TaskModel.task_type==TaskType.Task.Code&&taskruntimeinfo.TaskModel.ServiceFlag=="cron"))
             {
                 try
 
 
                 {
-                    KillProcess(taskid.ToString(),taskruntimeinfo);
-                    ConsulRegisteration item =_consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
-                    _consulRegisterMgr.UnRegister(item);
+                    KillProcess(taskid.ToString(), taskruntimeinfo);
+                    if (taskruntimeinfo.TaskModel.task_type == TaskType.Service.Code)
+                    {
+                        ConsulRegisteration item = _consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
+                        _consulRegisterMgr.UnRegister(item);
+                    }
+
                     r = true;
                 }
                 catch (Exception ex)
