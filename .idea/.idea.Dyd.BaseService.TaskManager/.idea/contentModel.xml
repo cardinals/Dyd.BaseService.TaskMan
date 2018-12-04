@@ -122,6 +122,7 @@
           <e p="CornFactory.cs" t="Include" />
         </e>
         <e p="Dyd.BaseService.TaskManager.Node.csproj" t="IncludeRecursive" />
+        <e p="Dyd.BaseService.TaskManager.Node_TemporaryKey.pfx" t="Include" />
         <e p="GlobalConfig.cs" t="Include" />
         <e p="NodeMain.cs" t="Include" />
         <e p="NodeMain.Designer.cs" t="Include" />
@@ -147,9 +148,11 @@
           <e p="CronProcessBuilder.cs" t="Include" />
           <e p="IProcessBuilder.cs" t="Include" />
           <e p="JarProcessBuilder.cs" t="Include" />
+          <e p="ModuleProcessBuilder.cs" t="Include" />
           <e p="NodeTaskRuntimeInfo.cs" t="Include" />
           <e p="ProcessStart.cs" t="Include" />
           <e p="ProcessStartupParam.cs" t="Include" />
+          <e p="StandardProcessBuilder.cs" t="Include" />
           <e p="TaskJob.cs" t="Include" />
           <e p="TaskPoolManager.cs" t="Include" />
           <e p="TaskProvider.cs" t="Include" />

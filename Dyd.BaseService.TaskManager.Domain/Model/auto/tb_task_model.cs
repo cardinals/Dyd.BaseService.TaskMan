@@ -130,5 +130,7 @@ namespace Dyd.BaseService.TaskManager.Domain.Model
                 return false;
             }
         }
+
+        public int IsRegister { get; set; }
     }
 }

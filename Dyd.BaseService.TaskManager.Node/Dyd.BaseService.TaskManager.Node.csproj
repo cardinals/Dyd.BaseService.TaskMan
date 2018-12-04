@@ -107,6 +107,7 @@
     <Reference Include="System.Net.Http">
       <HintPath>..\引用\System.Net.Http.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />

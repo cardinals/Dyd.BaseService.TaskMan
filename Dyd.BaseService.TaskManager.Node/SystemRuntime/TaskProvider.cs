@@ -170,8 +170,13 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     }
                 });
                 //
-                ConsulRegisteration item=_consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
-                _consulRegisterMgr.Register(item);
+                if (taskruntimeinfo.TaskModel.IsRegister == 1)
+                {
+
+                    ConsulRegisteration item = _consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
+                    _consulRegisterMgr.Register(item);
+                }
+
                 LogHelper.AddTaskLog("节点开启任务成功", taskid);
                 return r;
 
@@ -464,7 +469,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
                 {
                     KillProcess(taskid.ToString(), taskruntimeinfo);
-                    if (taskruntimeinfo.TaskModel.task_type == TaskType.Service.Code)
+                    if (taskruntimeinfo.TaskModel.task_type == TaskType.Service.Code&&
+                        taskruntimeinfo.TaskModel.IsRegister==1)
                     {
                         ConsulRegisteration item = _consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
                         _consulRegisterMgr.UnRegister(item);

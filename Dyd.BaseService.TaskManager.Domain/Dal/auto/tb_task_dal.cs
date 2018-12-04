@@ -256,6 +256,10 @@ namespace Dyd.BaseService.TaskManager.Domain.Dal
 	        {
 		        o.ServiceFlag = Convert.IsDBNull(dr["service_flag"])?string.Empty:dr["service_flag"].ToString();
 	        }
+            if (dr.Table.Columns.Contains("is_register"))
+            {
+                o.IsRegister = Convert.IsDBNull(dr["is_register"]) ? 0 : Convert.ToInt32(dr["is_register"]);
+            }
             return o;
         }
     }
