@@ -27,11 +27,16 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             return item;
         }
 
-        public async void Register(ConsulRegisteration item)
+        public async void Register(ConsulRegisteration item,string url="")
         {
+            if (string.IsNullOrEmpty(url))
+
+            {
+                url = GlobalConfig.Consule;
+            }
             var client = new ConsulClient(configuration =>
                             {
-                                configuration.Address=new Uri(GlobalConfig.Consule);
+                                configuration.Address=new Uri(url);
                             }); // uses default host:port which is localhost:8500
                             //SpinWait.SpinUntil(() => (taskruntimeinfo.Process.MainWindowHandle != IntPtr.Zero));
                             //while (taskruntimeinfo.Process.MainWindowHandle == IntPtr.Zero)
@@ -47,8 +52,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             {
                 Name = item.Service,
                 ServiceID = item.ServiceId,
-                Interval = TimeSpan.FromSeconds(30),
-                DeregisterCriticalServiceAfter = TimeSpan.FromMinutes(1),
+                Interval = TimeSpan.FromMinutes(2),
+                DeregisterCriticalServiceAfter = TimeSpan.FromMinutes(5),
                 TCP =$"{item.Host}:{item.Port}"
 
 
@@ -63,9 +68,12 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 Port =item.Port
                                 
             };
-           // await client.Agent.CheckRegister(reg);
- 
+
+            // await client.Agent.CheckRegister(reg);
             await client.Agent.ServiceRegister(agentReg);
+           
+          // WriteResult reult = client.Agent.ServiceRegister(agentReg).Result;
+          // Console.WriteLine(reult.StatusCode);
         }
 
         public async void UnRegister(ConsulRegisteration item)
