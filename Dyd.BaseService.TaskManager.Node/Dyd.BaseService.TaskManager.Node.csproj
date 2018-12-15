@@ -77,11 +77,8 @@
     <Reference Include="Common.Logging">
       <HintPath>..\引用\Common.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Consul">
-      <HintPath>..\引用\Consul.dll</HintPath>
-    </Reference>
-    <Reference Include="ConsulClient, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Consul-api.1.0.19.0\lib\net40\ConsulClient.dll</HintPath>
+    <Reference Include="Consul, Version=0.7.2.6, Culture=neutral, PublicKeyToken=20a6ad9a81df1d95, processorArchitecture=MSIL">
+      <HintPath>..\packages\Consul.0.7.2.6\lib\net45\Consul.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -107,6 +104,7 @@
     <Reference Include="System.Net.Http">
       <HintPath>..\引用\System.Net.Http.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />

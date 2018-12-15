@@ -122,8 +122,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     Process result;
                    
                         string flag = taskruntimeinfo.TaskModel.ServiceFlag;
-                    
 
+               
 
                             var startupParam =new ProcessStartupParam()
                                 {Flag = flag,FileName = fileinstallmainclassdllpath, 
@@ -131,7 +131,10 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                                     Cron=taskruntimeinfo.TaskModel.taskcron,
                                     NameSpace=taskruntimeinfo.TaskModel.taskmainclassnamespace,
                                     TaskDbConnection=GlobalConfig.TaskDataBaseConnectString,
-                                    TaskModel=taskruntimeinfo.TaskModel
+                                    TaskModel=taskruntimeinfo.TaskModel,
+                                    AppConfig=  new XXF.Serialization.JsonHelper().Deserialize<TaskAppConfigInfo>(taskruntimeinfo
+                                        .TaskModel
+                                        .taskappconfigjson)
 
                                 };
 

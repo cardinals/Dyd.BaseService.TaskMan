@@ -1,4 +1,5 @@
 ﻿using Dyd.BaseService.TaskManager.Domain.Model;
+using XXF.BaseService.TaskManager.SystemRuntime;
 
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
@@ -14,5 +15,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         public string NameSpace { get; set; }
         public string TaskDbConnection { get; set; }
         public tb_task_model TaskModel { get; set; }
+    
+        public TaskAppConfigInfo AppConfig { get; set; }
     }
 }

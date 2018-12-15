@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using Dyd.BaseService.TaskManager.Node.Tools;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
@@ -7,18 +9,34 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         public  Process StartProcess(ProcessStartupParam parm)
         {
             //
+          //  string args= $" -jar {parm.FileName} --config {parm.Config} " ;
 
+            string url= parm.AppConfig["service_url"];
+            try
+            {
+                Uri uri = new Uri(url);
+            }
+            catch
+            {
+                string err = $"{url}不是正确的格式";
+                LogHelper.AddTaskLog(err,parm.TaskModel.id);
+                throw  new Exception(err);
+            }
+            
 
+            string args= $" -jar {parm.FileName} --server.port={uri.Port} " ;
+            string fileName = GlobalConfig.JavaPath + @"\java ";
+            LogHelper.AddTaskLog($"start:{fileName} {args}",parm.TaskModel.id);
 
             var result = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = GlobalConfig.JavaPath + @"\\java", //fileinstallmainclassdllpath,
+                    FileName =fileName, //fileinstallmainclassdllpath,
 
-                    Arguments = $" -jar {parm.FileName} --config {parm.Config} ",
+                    Arguments =args,
                     UseShellExecute = false,
-                    WorkingDirectory = parm.Config,
+                    WorkingDirectory =parm.WorkDir,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true,
                 }
