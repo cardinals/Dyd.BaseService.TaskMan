@@ -12,9 +12,10 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
           //  string args= $" -jar {parm.FileName} --config {parm.Config} " ;
 
             string url= parm.AppConfig["service_url"];
+            Uri uri = null;
             try
             {
-                Uri uri = new Uri(url);
+                uri= new Uri(url);
             }
             catch
             {
