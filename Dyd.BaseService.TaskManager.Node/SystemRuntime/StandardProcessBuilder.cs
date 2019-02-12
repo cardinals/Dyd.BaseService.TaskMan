@@ -2,8 +2,9 @@
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
-    public  class StandardProcessBuilder : IProcessBuilder
+    public  class StandardProcessBuilder :ProcessBuilderBase
     {
+        
         public Process StartProcess(ProcessStartupParam param)
         {
             return   new Process

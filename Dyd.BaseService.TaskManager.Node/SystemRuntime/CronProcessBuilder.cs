@@ -9,7 +9,7 @@ using XXF.ProjectTool;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
-    public class CronProcessBuilder:IProcessBuilder
+    public class CronProcessBuilder:ProcessBuilderBase
     {
         public   Process StartProcess(ProcessStartupParam param)
         {

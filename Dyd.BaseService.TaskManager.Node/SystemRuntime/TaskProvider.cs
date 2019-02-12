@@ -107,7 +107,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             }
             LogHelper.AddTaskLog($"原程序集版本：{taskruntimeinfo.TaskVersionModel.assemblyversion}", taskid);
             //LogHelper.AddTaskLog($"程序集文件：{fileinstallmainclassdllpath}",taskid);
-            string assemblyVersion = GetAssemblyVersion(fileinstallmainclassdllpath);
+            string assemblyVersion = null;
             byte[] bytes = Encoding.Default.GetBytes(taskruntimeinfo.TaskModel
                 .taskappconfigjson);
             string jsonConfig=Convert.ToBase64String(bytes);
@@ -119,6 +119,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 //
                 try
                 {
+                   // string assemblyVersion = GetAssemblyVersion(fileinstallmainclassdllpath);
                     Process result;
                    
                         string flag = taskruntimeinfo.TaskModel.ServiceFlag;
@@ -138,7 +139,10 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
                                 };
 
-                            result = ProcessStart.GetInstance().Load(startupParam                                );
+                            IProcessBuilder builder = ProcessStart.GetInstance().GetBuilder(startupParam);
+                            builder.GetMainFileName();
+                            assemblyVersion=builder.GetAssemblyVersion();
+                            result = builder.StartProcess();
                         
 
                       
@@ -186,6 +190,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             }
             else
             {
+                //以dll加载的方式处理，基本已废弃
+                assemblyVersion= GetAssemblyVersion(fileinstallmainclassdllpath);
 
                 if (!string.IsNullOrEmpty(taskruntimeinfo.TaskModel.ServiceFlag))
                 {

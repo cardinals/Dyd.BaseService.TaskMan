@@ -8,6 +8,9 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
     {
      
         public string Flag { get;  set; }
+        /// <summary>
+        /// 主文件名
+        /// </summary>
         public string FileName { get; set; }
         public string Config { get;  set; }
         public string WorkDir { get;set; }
@@ -15,7 +18,9 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         public string NameSpace { get; set; }
         public string TaskDbConnection { get; set; }
         public tb_task_model TaskModel { get; set; }
-    
+        
+        //public string FullFileName { get; set; }
+
         public TaskAppConfigInfo AppConfig { get; set; }
     }
 }

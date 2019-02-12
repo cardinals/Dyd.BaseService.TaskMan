@@ -4,10 +4,11 @@ using XXF.Api;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
-    public class ModuleProcessBuilder : IProcessBuilder
+    public class ModuleProcessBuilder : ProcessBuilderBase
     {
-        public Process StartProcess(ProcessStartupParam param)
+        public override Process StartProcess()
         {
+            ProcessStartupParam param = StartupParam;
             string shell = param.WorkDir + @"\" + "FastFish.Service.Shell.exe";
            var result = new Process
             {

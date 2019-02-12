@@ -67,14 +67,31 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                       return StartCronProcess(parm.FileName,parm.WorkDir);
   
               }*/
-            if (!_builders.ContainsKey(parm.Flag))
+         /*   if (!_builders.ContainsKey(parm.Flag))
             {
                 //throw new Exception($"{parm.Flag}不支持");
               return   _standardProcess.StartProcess(parm);
             }
 
-            return _builders[parm.Flag].StartProcess(parm);
+            return _builders[parm.Flag].StartProcess(parm);*/
+         return null;
         }
+
+        public IProcessBuilder GetBuilder(ProcessStartupParam parm)
+
+        {
+            IProcessBuilder result=null;
+            if (!_builders.ContainsKey(parm.Flag))
+            {
+                //throw new Exception($"{parm.Flag}不支持");
+                result=   _standardProcess;
+            }
+
+           result= _builders[parm.Flag];
+           result.StartupParam = parm;
+           return result;
+        }
+
     }
 }
     
