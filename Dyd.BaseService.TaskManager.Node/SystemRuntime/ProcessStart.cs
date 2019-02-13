@@ -86,9 +86,13 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 //throw new Exception($"{parm.Flag}不支持");
                 result=   _standardProcess;
             }
+            else
+            {
 
-           result= _builders[parm.Flag];
-           result.StartupParam = parm;
+                result = _builders[parm.Flag];
+            }
+
+            result.StartupParam = parm;
            return result;
         }
 

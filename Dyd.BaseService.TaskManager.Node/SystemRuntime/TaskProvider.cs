@@ -115,6 +115,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             if (taskruntimeinfo.TaskModel.task_type==TaskType.Service.Code)
             {
                 bool is_module=taskruntimeinfo.TaskModel.IsModule;
+                IProcessBuilder builder;
                 //当
                 //
                 try
@@ -128,6 +129,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
                             var startupParam =new ProcessStartupParam()
                                 {Flag = flag,FileName = fileinstallmainclassdllpath, 
+                                    FilePatten = taskruntimeinfo.TaskModel.taskmainclassdllfilename,
                                     Config = jsonConfig, WorkDir = fileinstallpath,
                                     Cron=taskruntimeinfo.TaskModel.taskcron,
                                     NameSpace=taskruntimeinfo.TaskModel.taskmainclassnamespace,
@@ -139,9 +141,10 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 
                                 };
 
-                            IProcessBuilder builder = ProcessStart.GetInstance().GetBuilder(startupParam);
+                           builder= ProcessStart.GetInstance().GetBuilder(startupParam);
                             builder.GetMainFileName();
                             assemblyVersion=builder.GetAssemblyVersion();
+                       //     taskruntimeinfo.TaskModel.taskmainclassdllfilename = builder.StartupParam.FileName;
                             result = builder.StartProcess();
                         
 
@@ -181,6 +184,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 {
 
                     ConsulRegisteration item = _consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
+                    item.Service = builder.GetService();
+                    taskruntimeinfo.RegistService = item;
                     _consulRegisterMgr.Register(item);
                 }
 
@@ -481,7 +486,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                     if (taskruntimeinfo.TaskModel.task_type == TaskType.Service.Code&&
                         taskruntimeinfo.TaskModel.IsRegister==1)
                     {
-                        ConsulRegisteration item = _consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
+                        ConsulRegisteration item = taskruntimeinfo.RegistService;// _consulRegisterMgr.Parse(taskruntimeinfo.TaskModel);
                         _consulRegisterMgr.UnRegister(item);
                     }
 

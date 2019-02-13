@@ -38,6 +38,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         /// </summary>
         public TaskLock TaskLock;
 
+        public ConsulRegisteration RegistService;
+
         public Process Process { get; set; }
         public int ProcessId { get; set; }
         

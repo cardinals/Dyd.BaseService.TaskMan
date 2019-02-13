@@ -5,8 +5,9 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
     public  class StandardProcessBuilder :ProcessBuilderBase
     {
         
-        public Process StartProcess(ProcessStartupParam param)
+        public override Process StartProcess()
         {
+            ProcessStartupParam param = StartupParam;
             return   new Process
             {
                 StartInfo = new ProcessStartInfo

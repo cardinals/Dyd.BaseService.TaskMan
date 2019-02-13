@@ -20,6 +20,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         public tb_task_model TaskModel { get; set; }
         
         //public string FullFileName { get; set; }
+        public string FilePatten { get; set; }
 
         public TaskAppConfigInfo AppConfig { get; set; }
     }

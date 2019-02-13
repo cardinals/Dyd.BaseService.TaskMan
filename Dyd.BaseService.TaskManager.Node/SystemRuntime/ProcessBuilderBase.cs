@@ -1,25 +1,31 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Dyd.BaseService.TaskManager.Node.Tools;
 
 namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
-    public class ProcessBuilderBase : IProcessBuilder
+    public abstract class ProcessBuilderBase : IProcessBuilder
 
     {
         public ProcessStartupParam StartupParam { get; set; }
 
-        public virtual Process StartProcess()
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract Process StartProcess();
+        
+      
+      
 
         public virtual void GetMainFileName()
 
         {
             
+        }
+
+        public virtual string GetService()
+        {
+            return Path.GetFileNameWithoutExtension(StartupParam.FileName);
         }
 
         public virtual string GetAssemblyVersion()
