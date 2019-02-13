@@ -11,5 +11,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         /// 按文件模板取出文件名
         /// </summary>
         void GetMainFileName();
+
+        string GetService();
     }
 }

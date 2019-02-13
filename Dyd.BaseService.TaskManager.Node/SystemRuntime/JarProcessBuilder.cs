@@ -8,8 +8,9 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
     public class JarProcessBuilder : ProcessBuilderBase
     {
-        public Process StartProcess(ProcessStartupParam parm)
+        public override Process StartProcess()
         {
+            ProcessStartupParam parm = StartupParam;
             //
             //  string args= $" -jar {parm.FileName} --config {parm.Config} " ;
 
@@ -50,7 +51,7 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
         public override void GetMainFileName()
         {
             //string patten=$"{Env.MainFile}.*.jar";
-            string patten = StartupParam.FileName;
+            string patten = StartupParam.FilePatten;
             string msg;
 
             string[] files = Directory.GetFiles(StartupParam.WorkDir, patten);
@@ -68,9 +69,16 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
                 throw new Exception(msg);
             }
 
-            StartupParam.FileName = files[0];
+            StartupParam.FileName =Path.Combine(StartupParam.WorkDir, files[0]);
 
 
+        }
+
+        public override string GetService()
+        {
+            string patten=StartupParam.FilePatten;
+            string service=patten.Substring(0,patten.IndexOf("-*"));
+            return service;
         }
 
         public override string GetAssemblyVersion()

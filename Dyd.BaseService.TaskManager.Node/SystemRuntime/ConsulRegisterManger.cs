@@ -11,7 +11,9 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
     public class ConsulRegisterManger
     {
         
-        public  ConsulRegisteration Parse(tb_task_model taskruntimeinfoTaskModel)
+        public  ConsulRegisteration Parse(tb_task_model taskruntimeinfoTaskModel
+        
+        )
         {
             ConsulRegisteration item=new ConsulRegisteration();
             TaskAppConfigInfo config = taskruntimeinfoTaskModel
@@ -22,6 +24,8 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
             item.Port = service.Port;
 
             string serviceNames = Path.GetFileNameWithoutExtension(taskruntimeinfoTaskModel.taskmainclassdllfilename);
+            string ext = Path.GetExtension(taskruntimeinfoTaskModel.taskmainclassdllfilename);
+          
             item.Service = serviceNames;
             item.ServiceId = $"{serviceNames}_{item.Host}_{item.Port}";
             return item;

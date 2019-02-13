@@ -11,8 +11,9 @@ namespace Dyd.BaseService.TaskManager.Node.SystemRuntime
 {
     public class CronProcessBuilder:ProcessBuilderBase
     {
-        public   Process StartProcess(ProcessStartupParam param)
+        public override  Process StartProcess()
         {
+            ProcessStartupParam param = StartupParam;
             XXF.Common.IOHelper.CopyDirectory(GlobalConfig.CronShell, param.WorkDir);
             TaskSystemRuntimeInfo info = new TaskSystemRuntimeInfo()
             {
